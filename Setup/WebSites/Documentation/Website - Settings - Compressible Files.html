@@ -1,0 +1,79 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Settings - Compressible Files</h2>
+<hr/>
+
+<blockquote>
+Fortitude supports standard deflate/zlib compression and can compress and cache static content and
+optionally also compress (but not cache) dynamic content such as that produced via
+<a href="/Website - Scripting - Engines.html">scripting engines</a>. Compression can be configured
+and levels set per file type and size-tolenrances anc cache sizes are also easily configurable.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Compressible Files</h3>
+Allows the server administrator to add, edit, delete and reorder website compressible file extensions.
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Compressible Files.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Compress dynamic content</td>
+		<td>Enables or disables the compression of dynamic content such as SSI parsed files and the output of <a href="/Website - Scripting - Engines.html">scripting engines</a>.</td>
+	</tr>
+	<tr>
+		<td>Maximum file size</td>
+		<td>Defines the largest file size (in bytes) which the server will attempt to compress. If a file is outside of this boundary, it will simply deleiver the file without compressing it.</td>
+	</tr>
+	<tr>
+		<td>Mimimum file size</td>
+		<td>Defines the smallest file size (in bytes) which the server will attempt to compress. If a file is outside of this boundary, it will simply deleiver the file without compressing it.</td>
+	</tr>
+	<tr>
+		<td>Default compression level</td>
+		<td>The default level of deflate/zLib compression for content which is not explicitly defined (e.g. dynamic content).</td>
+	</tr>
+	<tr>
+		<td>Memory Level</td>
+		<td>Defines the memory level on a scale of 1 through 9, lowe levels use less memory when compressing but compression is lower and attained compression ratios are generally lower.</td>
+	</tr>
+	<tr>
+		<td>Cache path</td>
+		<td>The local file system path where cached files are to be stored. The directory is cleaned out as per the cache rules or when the server is shutdown or restarted.</td>
+	</tr>
+	<tr>
+		<td>Cache size</td>
+		<td>The maximum number of files which can exist in the file system cache. When the cache size reaches this set constraint, the server will removed the least requested item from the cache.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Compressible Files - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Compressible Files - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	<tr>
+	<tr>
+		<td>Extension</td>
+		<td>Defines the extension as compressible.</td>
+	<tr>
+	<tr>
+		<td>Compression level</td>
+		<td>Defines to which level the server should attempt to compress the content. Generally, static content should be compressed to its maximum level as it will be cached and only re-compressed when it changes.</td>
+	<tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

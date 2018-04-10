@@ -1,0 +1,50 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Filters - URL Filters</h2>
+<hr/>
+
+<blockquote>
+URL filters are used to reject request for specified sequences or strings. These filters are a very important
+part of the server's security as they (by default) disallow directory traversals, alternate file streams and
+escaping after normalization. It is by no means advisable to ever disable this security feature or any of the
+default sequences. Any URL sequences matches will cause the server to reject the request by returning HTTP error 401.
+
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>URL Filters</h3>
+Allows the server administrator to add, edit, delete and reorder website URL filters.
+
+<br /><img src="/Images/ScreenShots/Website - Filters - URL Filters.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>URL Filters - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Filters - URL Filters - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Sequence</td>
+		<td>Specifies the sequence to search for within the request. Any matches will cause the server to reject the request by returning HTTP error 401.</td>
+	</tr>
+	<tr>
+		<td>Scan request</td>
+		<td>Specifies whether the request part of the request URI will be scanned for the specified sequence.</td>
+	</tr>
+	<tr>
+		<td>Scan query</td>
+		<td>Specifies whether the query string part of the request URI will be scanned for the specified sequence.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

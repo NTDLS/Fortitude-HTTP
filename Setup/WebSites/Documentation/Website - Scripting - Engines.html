@@ -1,0 +1,85 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Scripting - Engines</h2>
+<hr/>
+
+<blockquote>
+Scripting engines (such as PHP, Perl and Python, etc.) are powerful methods to create rich and
+dynamic content. There are many to choose from and can be used to vastly extend the server's
+capabilities beyond serving static content or to support mainstream applications/portals.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Engines</h3>
+Allows the server administrator to add, edit, delete and reorder website scripting engines.
+
+<br /><img src="/Images/ScreenShots/Website - Scripting - Engines.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Engines - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Scripting - Engines - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>File extension</td>
+		<td>The extension which should be interpreted by a scripting enigne (such as .PHP) instead of directly delivered .</td>
+	</tr>
+	<tr>
+		<td>Success code</td>
+		<td>The expected success code of the scripting engine.</td>
+	</tr>
+	<tr>
+		<td>Use success code</td>
+		<td>Defines whether the presents of a code other than the defined success code should return an error to the peer.</td>
+	</tr>
+	<tr>
+		<td>Script engine executable</td>
+		<td>Defines the executable scriping engine which should parse the requested script.</td>
+	</tr>
+	<tr>
+		<td>Parameters</td>
+		<td>
+			Specifies the commend line which should be passed to the scripting engine.
+			<br />
+			<table border="1" class="dialogValues">
+				<tr>
+					<td class="Header">Parameter</td>
+					<td class="Header">Description</td>
+				</tr>
+				<tr>
+					<td>%%</td>
+					<td>Places a literal percent sign into the command line.</td>
+				</tr>
+				<tr>
+					<td>%0</td>
+					<td>The full path and file name of the script engine being executed.</td>
+				</tr>
+				<tr>
+					<td>%1</td>
+					<td>The full path and file name of the script being executed.</td>
+				</tr>
+				<tr>
+					<td>%2</td>
+					<td>The file name of the script being executed.</td>
+				</tr>
+				<tr>
+					<td>%3</td>
+					<td>The directory context in which the scripting engine is executing.</td>
+				</tr>
+			</table>		
+		</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

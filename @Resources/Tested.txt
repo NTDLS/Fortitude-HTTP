@@ -1,0 +1,23 @@
+Confirmed Runtimes:
+	ActivePerl 5.12.2
+	Strawberry Perl 5.12.2.0
+	PHP 5.3.5
+
+Confirmed Websites:
+	Boardawy Forum
+	phpMyAdmin
+	SquirrelMail
+	Drupal
+	osCommerce
+	Joomla
+	Magento
+	Mediawiki
+	phpBB
+	Wordpress
+
+Confirmed Utility:
+	MySql 5.5.9
+
+Not Tested:
+	ActivePython 2.7.1.3
+	ActiveTcl 8.5.9.1

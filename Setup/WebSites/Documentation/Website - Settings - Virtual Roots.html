@@ -1,0 +1,60 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Settings - Virtual Roots</h2>
+<hr/>
+
+<blockquote>
+Virtual roots allow a server administrator to build virtual directory structures under a website.
+In this way a website can have its root located in "C:\Websites\My Website" but then have requests
+for "/images" locally and silently redirected to "C:\CommonImages\".
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Virtual Roots</h3>
+Allows the server administrator to add, edit, delete and reorder website virtual roots.
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Virtual Roots.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Virtual Roots - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Virtual Roots - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Web path</td>
+		<td>The relative path from the website root which is to be interpreted as an alternate physical path.</td>
+	</tr>
+	<tr>
+		<td>File system path</td>
+		<td>The local or UNC path which the request should be locally redirected to.</td>
+	</tr>
+	<tr>
+		<td>Authentication required on resource</td>
+		<td>Defines whether the website virtual root path requires credentials other than that of the service account under which the server is running.</td>
+	</tr>
+	<tr>
+		<td>Username</td>
+		<td>The username of the user to impersonate when connecting to the website virtual root path.</td>
+	</tr>
+	<tr>
+		<td>Domain</td>
+		<td>The domain of the user to impersonate when connecting to the website virtual root path.</td>
+	</tr>
+	<tr>
+		<td>Password</td>
+		<td>The password of the user to impersonate when connecting to the website virtual root path.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

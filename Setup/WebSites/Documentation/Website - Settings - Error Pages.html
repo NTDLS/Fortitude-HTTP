@@ -1,0 +1,98 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Settings - Error Pages</h2>
+<hr/>
+
+<blockquote>
+The error pages configuration is used to map standard HTTP error numbers to human readable
+text and to override HTTP errors with alternate success codes or even alternate pages/scripts.
+The error pages configuration could be used (for example) to redirect all 404 errors to a search page.
+<br /><br />
+
+When an error message is sent, the server will always respond with an error page. This page could be the
+built-in default error page or could be a custom page - when this page is a script (handled by a
+<a href="Website - Scripting - Engines.html">scripting engine</a>) information about the original request
+is made available via environment variables which can be access from within the script. When this alternate
+page is a static file (such as HTML), information on the original error is made available via
+<a href="/Website - Scripting - SSI Files.html">Server Side Includes</a>. In addition, the script may also
+be post-parsed for <a href="/Website - Scripting - SSI Files.html">SSI</a> tags - thereby also making information
+about the original request available via <a href="/Website - Scripting - SSI Files.html">Server Side Includes</a>.
+</blockquote>
+
+<strong>Environment variables and SSI tags:<strong>
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Variable</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>ORIGINAL_PATH_INFO</td>
+		<td>The original extra path information.</td>
+	</tr>
+	<tr>
+		<td>ORIGINAL_SCRIPT_FILENAME</td>
+		<td>The original name of the local script of file which was requested by the peer.</td>
+	</tr>
+	<tr>
+		<td>ORIGINAL_REQUEST</td>
+		<td>the original full untranslated request made by the peer.</td>
+	</tr>
+	<tr>
+		<td>ORIGINAL_PATH_TRANSLATED</td>
+		<td>The original locally translated request made by the peer.</td>
+	</tr>
+	<tr>
+		<td>ORIGINAL_SCRIPT_NAME</td>
+		<td>The original relative name of the file requested by the peer.</td>
+	</tr>
+	<tr>
+		<td>ORIGINAL_MIME_TYPE</td>
+		<td>The original mime type of the file requested by the peer.</td>
+	</tr>	
+</table>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Error Pages</h3>
+Allows the server administrator to add, edit, delete and reorder website error pages.
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Error Pages.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Error Pages - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Error Pages - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Error code</td>
+		<td>Defines the error code which will trigger this defined error response.</td>
+	</tr>
+	<tr>
+		<td>Error code response text</td>
+		<td>Defines the error text which will be sent to the connected peer in the HTTP header. This should be kept short (under 100 characters).</td>
+	</tr>
+	<tr>
+		<td>Error page</td>
+		<td>The realitive-to-root path to an error page. This can be mapped as local through the use of <a href="/Website - Settings - Virtual Roots.html">virtual roots</a>.</td>
+	</tr>
+	<tr>
+		<td>Error code (Response)</td>
+		<td>The alternate error code which should be sent instead of the error which actually occured. A common use is to set this to 200 (OK) so that the peer does not receive a built-in browser error when the server delivers a custom page. This code must be defined in the custom error configuration as it is used to determine the alternate error code response text.</td>
+	</tr>
+	<tr>
+		<td>Error code response text (Response)</td>
+		<td>The alternate error text sent to the connected peer. This is automaticly determined via the custom error code.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

@@ -1,0 +1,828 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Dialogs">
+      <UniqueIdentifier>{007e4476-f5f0-41ff-90df-9b7e16b455c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure">
+      <UniqueIdentifier>{d4f18afe-233a-4a07-b1e1-14b0da8abafe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{b2087831-4837-44d6-9ebe-5666ef96302b}</UniqueIdentifier>
+      <Extensions>res;rc;ico;bmp</Extensions>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries">
+      <UniqueIdentifier>{c1b7a20b-5f90-4782-8de0-fdd878e944b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\NSWFL">
+      <UniqueIdentifier>{930cd49e-35f0-4db7-a9e1-c20fd8d77bc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CCmdLine">
+      <UniqueIdentifier>{7ecf235c-5a68-408a-b592-8edafee73959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CMemPool">
+      <UniqueIdentifier>{872233b2-7d38-41da-9e1d-fad01aff8f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\Debug">
+      <UniqueIdentifier>{b396e842-7b28-424f-ad98-d346570626e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CSocketServer">
+      <UniqueIdentifier>{5e05118b-fc5d-4900-b5ec-498a9b390ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CXML">
+      <UniqueIdentifier>{8cd36e12-d446-416a-af3d-23c9d9050996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CStringBuilder">
+      <UniqueIdentifier>{89130453-41ad-47c5-b1ee-6436ff08ebd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CService">
+      <UniqueIdentifier>{2cf4e8e4-1df2-448d-b0e1-14e1bf940836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CLocks">
+      <UniqueIdentifier>{6ca29ab3-a405-475c-bae2-5716066310a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CStack">
+      <UniqueIdentifier>{b8da599a-72d9-43a2-8ab2-eede272b2f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\NASCCL">
+      <UniqueIdentifier>{47640ec5-7f5d-48a7-85f9-3b337f55d3a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\WebSites">
+      <UniqueIdentifier>{1007aedb-cae9-4ed2-8a23-3adba1a626d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Virtual Roots">
+      <UniqueIdentifier>{9c4dcf10-1eaa-46dd-89e2-e81a2d66602c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\CGI Folders">
+      <UniqueIdentifier>{810ec775-87a2-4564-848c-22e9991354fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Mime Types">
+      <UniqueIdentifier>{698b1d08-bd92-4bbf-8449-59c839ade8ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Scripting Engines">
+      <UniqueIdentifier>{d994b39f-a9f6-44f1-9fe2-1c21ba23baee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\SSI Files">
+      <UniqueIdentifier>{5299379b-edd6-4383-aa46-10fe706f2833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\URL Filters">
+      <UniqueIdentifier>{7c249244-6a67-461f-b178-596ffec5fee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Compressible Files">
+      <UniqueIdentifier>{04c906e4-b15a-40fb-8c3f-a3a0e12b846b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Custom Filters">
+      <UniqueIdentifier>{ea2b7edc-d301-48f3-9b15-f1c2237fc029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Default Pages">
+      <UniqueIdentifier>{28376ba7-9970-4ac5-970b-a03da87ef201}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Error Pages">
+      <UniqueIdentifier>{eef09be2-5c3e-4ca7-9ad4-9d07a96a8186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Extension Filters">
+      <UniqueIdentifier>{725e75d2-ec6a-40de-a5b0-c86202db925d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\IP Filters">
+      <UniqueIdentifier>{149de290-d2e1-47e5-93f2-8328827d561a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Server Settings">
+      <UniqueIdentifier>{d344018d-82fd-4c23-8879-5cfcdc3072e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Socket Pool">
+      <UniqueIdentifier>{bbb9ff85-d7ab-4fa7-8894-330d54e6032b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{dbbc3c0a-6b5e-494a-b97c-9c232565e6d6}</UniqueIdentifier>
+      <Extensions>c;cpp;lib</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{b62d490b-e32b-4a2b-a1e6-ce05338ea985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Configure\Website Advanced">
+      <UniqueIdentifier>{ea4eabf7-314e-4311-a15c-0ba34ba7bd71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CTabControl">
+      <UniqueIdentifier>{c4a59ef1-7d86-4b1f-8fe3-df8a77371c21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\InsecureInterface">
+      <UniqueIdentifier>{2cc114e4-8082-4e2a-a165-1e98953a7ee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\CSHA1">
+      <UniqueIdentifier>{c5e54288-71c4-47da-b051-5e5060ad3e9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes &amp; Libraries\Base64">
+      <UniqueIdentifier>{08689bbb-5db9-4413-b5af-1a3a8e0079ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{b83e083d-ae53-4197-96f8-e844e140611d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\CManagement.Cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ConfigTree.Cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entry.Cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Init.Cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Routines.Cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\MainDlg.Cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\NetLogoDlg.Cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_Conversion.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_DateTime.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_File.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_KeyGeneration.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_ListBox.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_ListView.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_Math.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_Memory.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_Menu.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_Registry.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_String.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_System.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_Types.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\NSWFL\NSWFL_Windows.Cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CCmdLine\CCmdLine.Cpp">
+      <Filter>Classes &amp; Libraries\CCmdLine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CMemPool\CMemPool.Cpp">
+      <Filter>Classes &amp; Libraries\CMemPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\Debug\Debug.Cpp">
+      <Filter>Classes &amp; Libraries\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Accept.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_ClassProperties.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_ClientProperties.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_ClientThread.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Command.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Connect.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Events.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Initialize.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Internal.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Locks.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Memory.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Packetize.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_PumpThread.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Receive.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Send.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_StartStop.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_Utilities.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSocketServer\CSocketServer_WSAInterface.Cpp">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CXML\CXMLReader.Cpp">
+      <Filter>Classes &amp; Libraries\CXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CXML\CXMLWriter.Cpp">
+      <Filter>Classes &amp; Libraries\CXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CStringBuilder\CStringBuilder.Cpp">
+      <Filter>Classes &amp; Libraries\CStringBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CService\CService.Cpp">
+      <Filter>Classes &amp; Libraries\CService</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CLocks\CLocks.cpp">
+      <Filter>Classes &amp; Libraries\CLocks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CStack\CStack.cpp">
+      <Filter>Classes &amp; Libraries\CStack</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DetailList.Cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CNASCCL (Stream)\CNASCCL.Cpp">
+      <Filter>Classes &amp; Libraries\NASCCL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CNASCCL (Stream)\CNASCCLBox.Cpp">
+      <Filter>Classes &amp; Libraries\NASCCL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CNASCCL (Stream)\CNASCCLKey.Cpp">
+      <Filter>Classes &amp; Libraries\NASCCL</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\ConnectDlg.Cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_CGIFolders.Cpp">
+      <Filter>Dialogs\Configure\CGI Folders</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_CGIFolders_Item.Cpp">
+      <Filter>Dialogs\Configure\CGI Folders</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_CompressibleFiles.Cpp">
+      <Filter>Dialogs\Configure\Compressible Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_CompressibleFiles_Item.Cpp">
+      <Filter>Dialogs\Configure\Compressible Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_CustomFilters.Cpp">
+      <Filter>Dialogs\Configure\Custom Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_CustomFilters_Item.Cpp">
+      <Filter>Dialogs\Configure\Custom Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_DefaultPages.Cpp">
+      <Filter>Dialogs\Configure\Default Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_DefaultPages_Item.Cpp">
+      <Filter>Dialogs\Configure\Default Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ErrorPages.Cpp">
+      <Filter>Dialogs\Configure\Error Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ErrorPages_Item.Cpp">
+      <Filter>Dialogs\Configure\Error Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ExtensionFilters.Cpp">
+      <Filter>Dialogs\Configure\Extension Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ExtensionFilters_Item.Cpp">
+      <Filter>Dialogs\Configure\Extension Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_IPFilters.Cpp">
+      <Filter>Dialogs\Configure\IP Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_IPFilters_Item.Cpp">
+      <Filter>Dialogs\Configure\IP Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_MimeTypes.Cpp">
+      <Filter>Dialogs\Configure\Mime Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_MimeTypes_Item.Cpp">
+      <Filter>Dialogs\Configure\Mime Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ScriptingEngines.Cpp">
+      <Filter>Dialogs\Configure\Scripting Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ScriptingEngines_Item.Cpp">
+      <Filter>Dialogs\Configure\Scripting Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_SSIFiles.Cpp">
+      <Filter>Dialogs\Configure\SSI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_SSIFiles_Item.Cpp">
+      <Filter>Dialogs\Configure\SSI Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_URLFilters.Cpp">
+      <Filter>Dialogs\Configure\URL Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_URLFilters_Item.Cpp">
+      <Filter>Dialogs\Configure\URL Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_VirtualRoots.Cpp">
+      <Filter>Dialogs\Configure\Virtual Roots</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_VirtualRoots_Item.Cpp">
+      <Filter>Dialogs\Configure\Virtual Roots</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_WebSites.Cpp">
+      <Filter>Dialogs\Configure\WebSites</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_WebSites_Item.Cpp">
+      <Filter>Dialogs\Configure\WebSites</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_SocketPools.Cpp">
+      <Filter>Dialogs\Configure\Socket Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_SocketPools_Item.Cpp">
+      <Filter>Dialogs\Configure\Socket Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ListenIPs_Item.Cpp">
+      <Filter>Dialogs\Configure\Socket Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_HostHeaders_Item.Cpp">
+      <Filter>Dialogs\Configure\WebSites</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_WebsiteAdvanced.Cpp">
+      <Filter>Dialogs\Configure\Website Advanced</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CTabControl\CTabControl.cpp">
+      <Filter>Classes &amp; Libraries\CTabControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\CommandWaitDialog.Cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\InsecureInterface\ISecInt.Cpp">
+      <Filter>Classes &amp; Libraries\InsecureInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\CSHA1\CSHA1.cpp">
+      <Filter>Classes &amp; Libraries\CSHA1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\%40Libraries\Base64\Base64.cpp">
+      <Filter>Classes &amp; Libraries\Base64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\%40Common\Cryptography.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ServerSettings.Cpp">
+      <Filter>Dialogs\Configure\Server Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_ServerSettings_User_Item.Cpp">
+      <Filter>Dialogs\Configure\Server Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_Tab_Admins.Cpp">
+      <Filter>Dialogs\Configure\Server Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs\Config_Tab_Advanced.Cpp">
+      <Filter>Dialogs\Configure\Server Settings</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\CManagement.H">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConfigTree.H">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entry.H">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Init.H">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Routines.H">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MainDlg.H">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\NetLogoDlg.H">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL.h">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_Conversion.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_DateTime.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_File.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_KeyGeneration.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_ListBox.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_ListView.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_Math.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_Memory.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_Menu.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_Registry.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_String.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_System.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_Types.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\NSWFL\NSWFL_Windows.H">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CCmdLine\CCmdLine.H">
+      <Filter>Classes &amp; Libraries\CCmdLine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CMemPool\CMemPool.H">
+      <Filter>Classes &amp; Libraries\CMemPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\Debug\Debug.H">
+      <Filter>Classes &amp; Libraries\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CSocketServer\CSocketServer.H">
+      <Filter>Classes &amp; Libraries\CSocketServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CXML\CXML.H">
+      <Filter>Classes &amp; Libraries\CXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CXML\CXMLReader.H">
+      <Filter>Classes &amp; Libraries\CXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CXML\CXMLWriter.H">
+      <Filter>Classes &amp; Libraries\CXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CStringBuilder\CStringBuilder.H">
+      <Filter>Classes &amp; Libraries\CStringBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CService\CService.H">
+      <Filter>Classes &amp; Libraries\CService</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CLocks\CLocks.h">
+      <Filter>Classes &amp; Libraries\CLocks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CStack\CStack.H">
+      <Filter>Classes &amp; Libraries\CStack</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DetailList.H">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\Authentication.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\CGIFolders.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\Compression.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\CustomFilters.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\DefaultPages.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\ErrorPages.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\ExtentionFilters.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\IPFilters.H">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\MimeTypes.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\Realms.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\ScriptingEngines.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\URLFilters.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\VirtualRoots.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\WebSite.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\SSIFiles.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CNASCCL (Stream)\CNASCCL.H">
+      <Filter>Classes &amp; Libraries\NASCCL</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ConnectDlg.H">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_CGIFolders.H">
+      <Filter>Dialogs\Configure\CGI Folders</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_CGIFolders_Item.H">
+      <Filter>Dialogs\Configure\CGI Folders</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_CompressibleFiles_Item.H">
+      <Filter>Dialogs\Configure\Compressible Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_CompressibleFiles.H">
+      <Filter>Dialogs\Configure\Compressible Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_CustomFilters_Item.H">
+      <Filter>Dialogs\Configure\Custom Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_CustomFilters.H">
+      <Filter>Dialogs\Configure\Custom Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_DefaultPages_Item.H">
+      <Filter>Dialogs\Configure\Default Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_DefaultPages.H">
+      <Filter>Dialogs\Configure\Default Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ErrorPages_Item.H">
+      <Filter>Dialogs\Configure\Error Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ErrorPages.H">
+      <Filter>Dialogs\Configure\Error Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ExtensionFilters.H">
+      <Filter>Dialogs\Configure\Extension Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ExtensionFilters_Item.H">
+      <Filter>Dialogs\Configure\Extension Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_IPFilters_Item.H">
+      <Filter>Dialogs\Configure\IP Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_IPFilters.H">
+      <Filter>Dialogs\Configure\IP Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_MimeTypes_Item.H">
+      <Filter>Dialogs\Configure\Mime Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_MimeTypes.H">
+      <Filter>Dialogs\Configure\Mime Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ScriptingEngines_Item.H">
+      <Filter>Dialogs\Configure\Scripting Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ScriptingEngines.H">
+      <Filter>Dialogs\Configure\Scripting Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_SSIFiles_Item.H">
+      <Filter>Dialogs\Configure\SSI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_SSIFiles.H">
+      <Filter>Dialogs\Configure\SSI Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_URLFilters_Item.H">
+      <Filter>Dialogs\Configure\URL Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_URLFilters.H">
+      <Filter>Dialogs\Configure\URL Filters</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_VirtualRoots_Item.H">
+      <Filter>Dialogs\Configure\Virtual Roots</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_VirtualRoots.H">
+      <Filter>Dialogs\Configure\Virtual Roots</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_WebSites_Item.H">
+      <Filter>Dialogs\Configure\WebSites</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_WebSites.H">
+      <Filter>Dialogs\Configure\WebSites</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\ServerSettings.H">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\WebsiteSettings.H">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\SocketPools.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_SocketPools.H">
+      <Filter>Dialogs\Configure\Socket Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_SocketPools_Item.H">
+      <Filter>Dialogs\Configure\Socket Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\HostHeaders.H">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ListenIPs_Item.H">
+      <Filter>Dialogs\Configure\Socket Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_HostHeaders_Item.H">
+      <Filter>Dialogs\Configure\WebSites</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_WebsiteAdvanced.H">
+      <Filter>Dialogs\Configure\Website Advanced</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CTabControl\CTabControl.h">
+      <Filter>Classes &amp; Libraries\CTabControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\CommandWaitDialog.H">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\InsecureInterface\ISecInt.H">
+      <Filter>Classes &amp; Libraries\InsecureInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\CSHA1\CSHA1.h">
+      <Filter>Classes &amp; Libraries\CSHA1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\%40Libraries\Base64\Base64.h">
+      <Filter>Classes &amp; Libraries\Base64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\%40Common\Cryptography.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ServerSettings.H">
+      <Filter>Dialogs\Configure\Server Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_ServerSettings_User_Item.H">
+      <Filter>Dialogs\Configure\Server Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_Tab_Admins.H">
+      <Filter>Dialogs\Configure\Server Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Config_Tab_Advanced.H">
+      <Filter>Dialogs\Configure\Server Settings</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cache.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\CGI Folders.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Compression.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Config Auth.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Config Filter.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Config Realms.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Config Scripting.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Config Settings.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Config WebSites.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Custom Filters.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Default Pages.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Disabled.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Enabled.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\ErrorPages.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Extension Filters.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\handcurs.cur">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\IP Filters.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\MainIcon.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Mime Types.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Scripting Engines.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Server.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Site Started.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Site Stopped.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\SSI Files.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Texture.raw">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\URL Filters.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Virtual Roots.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Settings.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Site.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Keys.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Security.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\LookFeel.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\General.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\CPUSelect.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Advanced.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\SmCPU.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Socket Pool.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\PoolActive.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\PoolInactive.bmp">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Resources\Working.avi">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\Resource.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

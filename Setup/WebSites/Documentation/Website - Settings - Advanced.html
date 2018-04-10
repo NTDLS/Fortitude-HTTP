@@ -1,0 +1,92 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Settings - Advanced</h2>
+<hr/>
+
+<blockquote>
+The website settings allow you to define more than just the basic options from when you initially created the website. The majority of all new website settings will be implemented under tabs on this dialog.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Website - Settings - Advanced - Security</h3>
+This dialog allows you to configure the website to connect to its root using NTFS/AD authentication.
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Advanced - Security.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Authentication required on resource</td>
+		<td>Defines whether the website root path requires credentials other than that of the service account under which the server is running.</td>
+	</tr>
+	<tr>
+		<td>Username</td>
+		<td>The username of the user to impersonate when connecting to the website root path.</td>
+	</tr>
+	<tr>
+		<td>Domain</td>
+		<td>The domain of the user to impersonate when connecting to the website root path.</td>
+	</tr>
+	<tr>
+		<td>Password</td>
+		<td>The password of the user to impersonate when connecting to the website root path.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<p>
+<hr />
+<h3>Website - Settings - Advanced - Advanced</h3>
+This dialog allows you to configure several miscellaneous settings.
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Advanced - Advanced.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Script timeout</td>
+		<td>Defines the maximum amount of time (in seconds) that any scripting/CGI process will be allowed to run before being terminated. When a process times-out, the server will respond with HTTP error 500.</td>
+	</tr>
+	<tr>
+		<td>Keep-alive timeout</td>
+		<td>Defines the maximum amount of time (in seconds) that a peer is allows to retain an idle connection. The timeout is reset upon each subsequent request to the server. Can be set to 0 to disable keep-alive - each peer will need to reconnect between requests.</td>
+	</tr>
+	<tr>
+		<td>Max receive size</td>
+		<td>When the server receives a request header which includes a content-length, the server will begin buffering receive chunks up to this defined "Max receive size". If the content length is specified greater than this size the request is rejected with HTTP error 413. After validation of the content-length, the parsed data is also only processed up to this size and any additional data past this size will cause an HTTP error 413.</td>
+	</tr>
+	<tr>
+		<td>Administrator Email</td>
+		<td>This field is not currently used.</td>
+	</tr>
+	<tr>
+		<td>Logging / Path</td>
+		<td>Defines the local server path where website text logging should take place.</td>
+	</tr>
+	<tr>
+		<td>Use Caching</td>
+		<td>Allows website log file caching to be disabled, this can be useful if the server is crashing and the log file tail is being lost.</td>
+	</tr>
+	<tr>
+		<td>Auto-start website</td>
+		<td>Defines whether the site will be automaticly started when the service is started.</td>
+	</tr>
+	<tr>
+		<td>Prevent image leaching</td>
+		<td>Rejects requests by sending HTTP error 403 for all "image/" content types when the refferer is not from the referenced site.</td>
+	</tr>
+	<tr>
+		<td>Allow directory indexing</td>
+		<td>Enables/disables the browsing of directory trees through the browser. This setting is overridden when a <a href="/Website - Settings - Default Pages.html">default page</a> is defined.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

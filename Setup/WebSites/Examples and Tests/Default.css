@@ -1,0 +1,57 @@
+body,td,th {
+    font-family: Tahoma;
+    font-size: 11px;
+    color: #414141;
+}
+body {
+    background-color: #eeeeee;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    padding:0px;
+}
+a:link {
+    color: #1B6F0A;
+}
+a:visited {
+    color: #1B6F0A;
+}
+a:hover {
+    color: #1B6F0A;
+}
+a:active {
+    color: #1B6F0A;
+}
+form{
+    margin:0px;padding:0px;
+}
+input.NoSize{
+    font-family:Tahoma;font-size:11px;border-width:1px;border-style:solid;border-color:#898989;
+}
+input.Default{
+    width:168px;height:21px;font-family:Tahoma;font-size:11px;border-width:1px;border-style:solid;border-color:#898989;
+}
+TD.DefaultTableHeader
+{
+    BORDER-RIGHT: #c0c0c0 1px solid;
+    BORDER-TOP: #ffffff 1px solid;
+    FONT-WEIGHT: bold;
+    BACKGROUND: #b4d0e0;
+    BORDER-LEFT: #ffffff 1px solid;
+    COLOR: #000080;
+    BORDER-BOTTOM: #c0c0c0 1px solid
+}
+TD.DefaultTable
+{
+    BORDER-RIGHT: #c0c0c0 1px solid;
+    BORDER-TOP: #ffffff 1px solid;
+    BACKGROUND: #e8e8eb;
+    BORDER-LEFT: #ffffff 1px solid;
+    COLOR: #000000;
+    BORDER-BOTTOM: #c0c0c0 1px solid
+}
+
+.style1 {font-size: 10px}
+.style3 {font-size: 10px; color: #FFFFFF; }
+.style4 {color: #FFFFFF}

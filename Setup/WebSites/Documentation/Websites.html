@@ -1,0 +1,56 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Websites</h2>
+<hr/>
+
+<blockquote>
+Websites are the core of the webserver. Each website comes with a plethora of configurable attributes.
+The websites node in the Fortitude HTTP management console is a good place to start to get an overview
+of your websites and add/edit/delete them at will. 
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Websites</h3>
+The websites dialog can be opened by double-clicking on the websites node in the management console tree.
+From here you can add/edit/delete sites.
+
+<br /><img src="/Images/ScreenShots/Websites.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<p>
+<hr />
+<h3>Websites - Item</h3>
+This is the first step to adding a new website. You'll need to provide only basic information such as site name,
+root and socket pool. Additional configuration is performed elsewhere in the website settings after creation.
+
+<br /><img src="/Images/ScreenShots/Websites - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Website name</td>
+		<td>The website name is used solely for the purposes of administrator identification.</td>
+	</tr>
+	<tr>
+		<td>Root</td>
+		<td>Specifies where the website content resides on the file-system. This can be a local or UNC path.</td>
+	</tr>
+	<tr>
+		<td>Socket Pool</td>
+		<td>Defines the socket pool which is how the website derives its port and IP address bindings. See also: <a href="/Global - Socket Pools.html">Socket Pools</a>.</td>
+	</tr>
+	<tr>
+		<td>Host Names</td>
+		<td>Optionally defines which host names the website will respond to. Each request made by modern web-browsers
+		includes a “host header” which identifies which domain the user is requesting. In this way, multiple websites
+		can share a single socket pool and therefor share a single IP address and listen port. See also: <a href="/Global - Socket Pools.html">Socket Pools</a>.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

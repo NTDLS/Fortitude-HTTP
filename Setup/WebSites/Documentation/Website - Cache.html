@@ -1,0 +1,43 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Cache</h2>
+<hr/>
+
+<blockquote>
+The website cache is used to store pre-compressed copies of static content. The cache is built as requests
+are made for content. Compression configurations which are local to a single website will have their own
+cache - but the global cache is shared amongst all websites.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Cache</h3>
+Allows the server administrator to view the website cache, along with the names of the cached files, their compression ratios and hit counts.
+
+<br /><img src="/Images/ScreenShots/Website - Cache.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>File Name</td>
+		<td>The name of the original requested file.</td>
+	</tr>
+	<tr>
+		<td>Original Size</td>
+		<td>The original size of the requested file.</td>
+	</tr>
+	<tr>
+		<td>Cached Size</td>
+		<td>The compressed size of the file which has been cached. If the file turns out to be larger after compressed, then the file is not actually stored in the cache and the server will send the orginal file. The entry is however still kept in the cache so that the server does not repeatedly re-compress the requested file.</td>
+	</tr>
+	<tr>
+		<td>Hits</td>
+		<td>The number of times the file has ben requested from cache.</td>
+	</tr>	
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

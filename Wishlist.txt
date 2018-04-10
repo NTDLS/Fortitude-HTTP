@@ -1,0 +1,13 @@
+* Ability to clean HTML - Remove whitespace. This can be done as a post process on scripting engines or implemented as an example server extension.
+* Run script with interpreter in custom error page mode
+* Add CGI Environment Variables
+  * Total active downloads per IP.
+  * Total active downloads for all Servers and virtual domains.
+  * total active downloads per Server.
+  * total active downloads per virtual domain.
+  * total active downloads per file.
+  * total currently connected IPs (all servers and virtual domains).
+  * total currently connected IPs per Server.
+  * total currently connected IPs per virtual.
+* Ensure that headers which are provided by a scripting engine are not duplicated by the server.
+

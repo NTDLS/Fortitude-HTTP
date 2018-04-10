@@ -1,0 +1,10 @@
+1.0.4.1
+Modified custom filters to allow outgoing buffers to be modified.
+Added new custom filter type: On Before Compression.
+Included new filter to minify outgoing data.
+Resolved issue which causes SSI data not to be compressed.
+Consolidated projects into one Visual Studio solution.
+Upgraded platform SDK for Windows 10.
+Resolved several x64 bugs which were very unlikely to be encountered.
+Resolved issue with buffer overflow when accessing virtual roots.
+Resovled memory leak caused by duplicate statuses being returned by a scripting engine.

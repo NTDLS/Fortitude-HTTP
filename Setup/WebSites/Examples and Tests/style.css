@@ -1,0 +1,40 @@
+
+
+TD.DefaultTableHeader
+{
+    BORDER-RIGHT: #c0c0c0 1px solid;
+    BORDER-TOP: #ffffff 1px solid;
+    FONT-WEIGHT: bold;
+    BACKGROUND: #b4d0e0;
+    BORDER-LEFT: #ffffff 1px solid;
+    COLOR: #000080;
+    BORDER-BOTTOM: #c0c0c0 1px solid
+}
+TD.DefaultTable
+{
+    BORDER-RIGHT: #c0c0c0 1px solid;
+    BORDER-TOP: #ffffff 1px solid;
+    BACKGROUND: #e8e8eb;
+    BORDER-LEFT: #ffffff 1px solid;
+    COLOR: #000000;
+    BORDER-BOTTOM: #c0c0c0 1px solid
+}
+
+a.Menu {
+	font-family:Arial;
+	font-size:12px;
+	text-decoration: none;
+	font-weight: bold;
+	color:#002449;
+}
+
+A:Hover  {
+	color : #002449;
+	text-decoration : underline;
+}
+
+H1 {
+	color: #002449;
+	font-weight: bold;
+	font-size : 16px;
+}

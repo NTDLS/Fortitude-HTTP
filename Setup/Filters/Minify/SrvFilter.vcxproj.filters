@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{c99f580d-c187-43af-b438-b5e18f550b1f}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\NSWFL">
+      <UniqueIdentifier>{f44c3e98-f455-4668-9270-1134e7cdc9af}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Entry.Cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HTTPFilter.Cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HTTP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Conversion.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_DateTime.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_File.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_KeyGeneration.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_ListBox.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_ListView.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Math.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Memory.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Menu.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Registry.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_String.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_System.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Types.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Windows.Cpp">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Entry.H">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HTTPFilter.H">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HTTP.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL.h">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Conversion.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_DateTime.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_File.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_KeyGeneration.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_ListBox.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_ListView.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Math.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Memory.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Menu.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Registry.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_String.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_System.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Types.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\%40Libraries\NSWFL\NSWFL_Windows.H">
+      <Filter>Source Files\NSWFL</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,47 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Settings - Mime Types</h2>
+<hr/>
+
+<blockquote>
+Mime types are the at the core of every webserver which aims to deliver data to a large audience
+as mime types are used to inform the requesting peer how to handle the server response.
+For instance, when a web-browser submits a request for a .html file - the server will search
+the mime types configuration for the mime-type string associated with the .html file type and
+will include "text/html" (by default) in the response. The client application then knows that the
+returned information is to be parsed as HTLM as opposed to (for instance) played in an audio/video application.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Mime Types</h3>
+Allows the server administrator to add, edit, delete and reorder website mime types.
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Mime Types.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Mime Types - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Settings - Mime Types - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>File extension</td>
+		<td>Specifies the type which is to be matched to a peer's request.</td>
+	</tr>
+	<tr>
+		<td>Mime type</td>
+		<td>Specifies the mime type string which should be returned to the requesting peer. Should be specified in the form type/subtype.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

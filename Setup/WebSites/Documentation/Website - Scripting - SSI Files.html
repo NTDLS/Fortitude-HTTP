@@ -1,0 +1,137 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Scripting - SSI Files</h2>
+<hr/>
+
+<blockquote>
+Server Side Includes (SSI) is a simple interpreted server-side scripting language used by web servers
+The most frequent use of SSI is to include the contents of one or more files into a web page on a web server.
+For example, a web page containing a daily quotation could include the quotation by placing the following code
+into the file of the web page: <i>&lt;!--#include virtual=&quot;../quote.txt&quot;--&gt;</i>
+
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>SSI Files</h3>
+Allows the server administrator to add, edit, delete and reorder website SSI files/extensions.
+
+<br /><img src="/Images/ScreenShots/Website - Scripting - SSI Files.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>SSI Files - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Scripting - SSI Files - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Extension</td>
+		<td>Defines the file extension which is to be parsed for SSI tags.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<strong>Supported SSI tags:<strong><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Tag</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td class="Header" colspan="2">Standard Echo SSI</td>
+	</tr>
+	<tr><td>&lt;!--#echo var=&quot;ADMIN_EMAIL&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;AUTH_TYPE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;CONTENT_LENGTH&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;CONTENT_TYPE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;DATE_GMT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;DATE_LOCAL&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;DOCUMENT_URI&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;GATEWAY_INTERFACE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;HTTP_USER_AGENT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;LAST_MODIFIED&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;PATH_INFO&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;PATH_TRANSLATED&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;QUERY_STRING&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;QUERY_STRING_UNESCAPED&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;REMOTE_ADDR&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;REMOTE_HOST&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;REMOTE_IDENT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;REMOTE_USER&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;REQUEST_METHOD&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SCRIPT_NAME&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_NAME&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_PORT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;DOCUMENT_NAME&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr>
+		<td class="Header" colspan="2">Proprietary Echo SSI</td>
+	<tr>
+	<tr><td>&lt;!--#echo var=&quot;CONNECTION_ID&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;OS_VERSION&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;PROCESSOR_COUNT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;PROCESSOR_IDENTIFIER&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;PROCESSOR_MHZ&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;PROCESSOR_NAME&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;PROCESSOR_VENDOR&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_ACCEPTED_CONNECTIONS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_ADMIN_EMAIL&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_ALLOW_DIRECTORY_INDEXING&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_BYTES_RECV&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_BYTES_SENT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_CACHE_COMPRESSED_SIZE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_CACHE_COMPRESSION_RATIO&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_CACHE_CURRENT_FILES&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_CACHE_MAX_FILES&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_CACHE_NATIVE_SIZE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_CACHE_PATH&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_CGI_TIMEOUT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_COMPRESS_DYNAMIC_CONTENT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_COMPRESS_MAX_SIZE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_COMPRESS_MIN_SIZE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_CONNECTIONS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_ERRORS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_GLOBAL_CONNECTIONS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_HITS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_KEEP_ALIVE_TIMEOUT&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_LOG_PATH&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_MEMORY_PAGEFILEUSAGE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_MEMORY_PEAKMEMUSAGE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_MEMORY_PEAKPAGEFILEUSAGE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_MEMORY_USED&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_PROCESS_EXTERNAL_CGI&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_PROCESS_SSI_FILES&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_PROTOCOL&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_SCAN_EXTS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_SCAN_IPS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_SCAN_URLS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_SOFTWARE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_TOTAL_CONNECTIONS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_USE_CGI_DIRECTORIES&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_USE_HTTP_COMPRESSION&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_VERSION&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SERVER_WARNINGS&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SYSTEM_MEMORY_FREE&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SYSTEM_MEMORY_TOTAL&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#echo var=&quot;SYSTEM_MEMORY_USED&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr>
+		<td class="Header" colspan="2">Extended SSI</td>
+	<tr>
+	<tr><td>&lt;!--#flastmod virtual=&quot;/FileName.html&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#flastmod file=&quot;C:\Root\FileName.html&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#fsize virtual=&quot;/FileName.html&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#fsize file=&quot;C:\Root\FileName.html&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#include virtual=&quot;/FileName.html&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#include file=&quot;C:\Root\FileName.html&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#exec cgi=&quot;/CGIProcess.exe&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+	<tr><td>&lt;!--#exec cmd=&quot;C:\Root\CGIProcess.exe&quot;--></td><td><!--VALUE_DESCRIPTION--></td></tr>
+</table>
+
+<!--#Include virtual="@Footer.Html"-->

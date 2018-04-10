@@ -1,0 +1,100 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Global - Socket Pools</h2>
+<hr/>
+
+<blockquote>
+Socket pools are designed to allow Fortitude HTTP to share a common port between multiple websites. They can also be
+used to pool resources for a subset of websites and bind to specific IP addresses (or all IP addresses) and to balance
+throughput capabilities and memory load. Every website requires a socket pool, without one - the website cannot be started.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<p>
+<hr />
+<h3>Socket Pools</h3>
+Allows the server administrator to add, edit, delete and reorder server socket pools.
+
+<br /><img src="/Images/ScreenShots/Global - Socket Pools.png" /><br /><br />
+</p>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Socket Pools - Item - Basic</h3>
+<br /><img src="/Images/ScreenShots/Global - Socket Pools - Item - Basic.png" /><br /><br />
+
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Listen Port</td>
+		<td>Specifies the TCP/IP port which the socket pool should bind and listen on.</td>
+	</tr>
+	<tr>
+		<td>Max Connections</td>
+		<td>Specifies the maximum number of connections which the pool will allow to connect before enforcing disconnection of new peers.</td>
+	</tr>
+</table>
+</p>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<p>
+<hr />
+<h3>Socket Pools - Item - IP Addresses</h3>
+<br /><img src="/Images/ScreenShots/Global - Socket Pools - Item - IP Addresses.png" /><br /><br />
+
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>IP Address</td>
+		<td>Allows the server to listen on the configured pools port on a specific IP address.</td>
+	</tr>
+	<tr>
+		<td>Listen on all IP Addresses</td>
+		<td>Causes the socket pool to listen on the configured port on all available IP addresses.</td>
+	</tr>
+</table>
+</p>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<p>
+<hr />
+<h3>Socket Pools - Item - Advanced</h3>
+<br /><img src="/Images/ScreenShots/Global - Socket Pools - Item - Advanced.png" /><br /><br />
+
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Initial Buffer Size</td>
+		<td>
+			Sets the initial size of each connected peers send and receive buffers. If the remote
+			peer cannot receive data fast enough, then the buffer will be resized up to the Max
+			Buffer Size. The same applies to receiving; when the server can't process received
+			data quickly enough, the buffer resized to store received data up to the Max Buffer Size.
+		</td>
+	</tr>
+	<tr>
+		<td>Max Buffer Size</td>
+		<td>Defines the maximum size of the internal per-connection data-pump buffer size. The buffer size is automatically resized as needed, typically due to an inability of the file system or network layers to keep-up with demand. This setting can be used to limit the amount of memory which will be consumed for this purpose. Can be set to 0 to allow the buffer to grow restriction. See [Initial Buffer Size] for more information.</td>
+	</tr>
+	<tr>
+		<td>File Buffer Size</td>
+		<td>The file buffer size defines the number of bytes at a time which will be read at a time when handing file I/O operations (such as compression and reading from the disk for network transmission to a connected peer). Higher setting generally increase throughput but will demand more memory. See [Initial Buffer Size] for more information.</td>
+	</tr>
+</table>
+</p>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

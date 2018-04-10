@@ -1,0 +1,78 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Advanced - Command Line</h2>
+<hr/>
+
+<blockquote>
+The server's service executable (FortitudeSvc.exe) accepts various command line parameters
+to assist in controlling the service and extending i's functionality.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<hr />
+<h3>Command Line Parameters</h3>
+
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>/ServiceName:&lt;Name&gt;</td>
+		<td>
+		Specifies an alternate service name. If not specified the default value of "Fortitude HTTP" is used.
+		Note: The service name is used for process synchronization and must therefor be unique amongst all
+		running instances, even when running standalone.
+		</td>
+	</tr>
+	<tr>
+		<td>/Configuration:&lt;Path&gt;</td>
+		<td>Specifies an alternate path for configuration files. This allows you to run many instances of FortitudeHTTP with various configurations. In this way you can also provide compartmentalization and/or fault tolerance.</td>
+	</tr>
+	<tr>
+		<td>/ManagePort:&lt;Port&gt;</td>
+		<td>Specifies an alternate port number to bind the server management interface to.</td>
+	</tr>
+	<tr>
+		<td>/NoManage</td>
+		<td>Disables the server's internal management interface and prevents the server from binding the management port.</td>
+	</tr>
+	<tr>
+		<td>/RunService</td>
+		<td>This parameter is passed to the server when it is run as a service from the Widnows Service Manager MMC and it's use is not supported outside of this scope.</td>
+	</tr>
+	<tr>
+		<td>/StandAlone</td>
+		<td>Forces the server to run as a standalone entity without running as a service.</td>
+	</tr>
+	<tr>
+		<td>/Delete</td>
+		<td>Deletes the service from the windows Services Manager.</td>
+	</tr>
+	<tr>
+		<td>/Start</td>
+		<td>Starts the service.</td>
+	</tr>
+	<tr>
+		<td>/SilentStart</td>
+		<td>Starts the service without displaying any informational or error messages.</td>
+	</tr>
+	<tr>
+		<td>/VerboseStart</td>
+		<td>Starts the service and displays verbose messages.</td>
+	</tr>
+	<tr>
+		<td>/Stop</td>
+		<td>Stops the service.</td>
+	</tr>
+	<tr>
+		<td>/SilentStop</td>
+		<td>Stops the service without displaying any informational or error messages.</td>
+	</tr>
+	<tr>
+		<td>/VerboseStop</td>
+		<td>Stopps the service and displays verbose messages.</td>
+	</tr>
+</table>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

@@ -1,0 +1,41 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Filters - Extension Filters</h2>
+<hr/>
+
+<blockquote>
+Extension filters are used to reject request for specified file extensions / types. These filters are an important
+part of the server's security as they (by default) disallow access to a few types which could lead to unnecesary
+discovery of server configuration information (such as types: XML, Log, ini). It is not advisable to  disable this
+security feature. Any file extension/type matches will cause the server to reject the request by returning HTTP error 401.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Extension Filters</h3>
+Allows the server administrator to add, edit, delete and reorder website extension/file-type filters.
+
+<br /><img src="/Images/ScreenShots/Website - Filters - Extension Filters.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>Extension Filters - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Filters - Extension Filters - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>Sequence</td>
+		<td>Specifies the file extension/type which is to be rejected.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->

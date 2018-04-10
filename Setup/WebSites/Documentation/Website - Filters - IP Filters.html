@@ -1,0 +1,40 @@
+<!--#Include virtual="@Header.Html"-->
+<h2>Website - Filters - IP Filters</h2>
+<hr/>
+
+<blockquote>
+IP filters allow peers to be blocked at a relatively low-level thereby allowing the server administrator to
+block peers without adding much additional overhead. When a remote peer is disconnected, they are sent an HTTP error 403.6.
+Similar functionality can be accomplished through the use of firewall rules.
+</blockquote>
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>IP Filters</h3>
+Allows the server administrator to add, edit, delete and reorder website IP filters.
+
+<br /><img src="/Images/ScreenShots/Website - Filters - IP Filters.png" /><br /><br />
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- ------------------------------------------------------------------------------------------ -->
+<p>
+<hr />
+<h3>IP Filters - Item</h3>
+
+<br /><img src="/Images/ScreenShots/Website - Filters - IP Filters - Item.png" /><br /><br />
+<table border="1" class="dialogValues">
+	<tr>
+		<td class="Header">Setting</td>
+		<td class="Header">Description</td>
+	</tr>
+	<tr>
+		<td>IP Address</td>
+		<td>Specifies the IP address which will be disconnected and sent an HTTP 403.6 error. Note: The IP address must be an exact match as the server does not curntly support masking.</td>
+	</tr>
+</table>
+</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!--#Include virtual="@Footer.Html"-->
