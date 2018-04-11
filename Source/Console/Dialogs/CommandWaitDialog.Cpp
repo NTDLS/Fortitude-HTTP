@@ -30,6 +30,7 @@
 #include "CommandWaitDialog.H"
 
 using namespace NSWFL::String;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,7 +43,7 @@ using namespace NSWFL::ListView;
 
 HWND hCommandWaitDialog = NULL;
 HANDLE hCommandWaitDialogThread = NULL;
-CXMLReader *pCommandWaitDialogXML = NULL;
+XMLReader *pCommandWaitDialogXML = NULL;
 char *sCommandWaitDialogCommand = NULL;
 const char *sCommandWaitDialogText = NULL;
 
@@ -58,7 +59,7 @@ unsigned __stdcall CommandWaitDialogThread(void *pData)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ProcessLengthyCommand(CXMLReader *pXML, HWND hOwner, const char *sText, const char *sCommandText, ...)
+bool ProcessLengthyCommand(XMLReader *pXML, HWND hOwner, const char *sText, const char *sCommandText, ...)
 {
 	bool bResult = false;
 

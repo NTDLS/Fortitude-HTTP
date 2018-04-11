@@ -51,7 +51,7 @@ CHostHeaders::CHostHeaders(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CHostHeaders::CHostHeaders(void *lpWebSites, CXMLReader *xmlConfig)
+CHostHeaders::CHostHeaders(void *lpWebSites, XMLReader *xmlConfig)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -61,15 +61,15 @@ CHostHeaders::CHostHeaders(void *lpWebSites, CXMLReader *xmlConfig)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CHostHeaders::ToXML(CXMLReader *lpXML)
+bool CHostHeaders::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("HostHeaders");
+	XMLWriter xmlConfig("HostHeaders");
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("HostHeader");
+		XMLWriter Item("HostHeader");
 		Item.Add("Name", this->Collection.Items[iItem].Name);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.Add("Enable", this->Collection.Items[iItem].Enabled);
@@ -85,7 +85,7 @@ bool CHostHeaders::ToXML(CXMLReader *lpXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CHostHeaders::Load(CXMLReader *xmlConfig)
+bool CHostHeaders::Load(XMLReader *xmlConfig)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -97,7 +97,7 @@ bool CHostHeaders::Load(CXMLReader *xmlConfig)
 	memset(&this->Collection, 0, sizeof(this->Collection));
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader xmlItem;
+	XMLReader xmlItem;
 
 	while(xmlConfig->ToReader("HostHeader", &xmlItem))
 	{

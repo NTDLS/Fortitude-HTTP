@@ -18,13 +18,12 @@
 
 #include "CDirectoryIndexing.H"
 
-#include "../../../../@Libraries/URLEncoding/URLEncoding.H"
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::String;
 using namespace NSWFL::File;
 using namespace NSWFL::ListView;
+using namespace NSWFL::Conversion;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -212,7 +211,7 @@ bool CDirectoryIndexing::IndexDirectory(const char *sDirectory)
 	WIN32_FIND_DATA fdFile;
 	HANDLE hFind = NULL;
 
-	CStringBuilder path;
+	StringBuilder path;
 
 	path.AppendF("%s\\*.*", sDirectory);
 	if((hFind = FindFirstFile(path, &fdFile)) == INVALID_HANDLE_VALUE)
@@ -293,7 +292,7 @@ bool CDirectoryIndexing::SendContents(PEER *pC, const char *sDirectory)
 		return false;
 	}
 
-	CStringBuilder HTML;
+	StringBuilder HTML;
 
 	char sRequest[MAX_URI_LEN];
 
@@ -334,9 +333,9 @@ bool CDirectoryIndexing::SendContents(PEER *pC, const char *sDirectory)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-char *URLEncodePath(const char *sRawPath, CStringBuilder *lpURLEncoded)
+char *URLEncodePath(const char *sRawPath, StringBuilder *lpURLEncoded)
 {
-	CStringBuilder TempString;
+	StringBuilder TempString;
 
 	char **sParts = NULL;
 	int iParts = 0;
@@ -381,15 +380,15 @@ char *URLEncodePath(const char *sRawPath, CStringBuilder *lpURLEncoded)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CDirectoryIndexing::ToHTML(const char *sCurrentFolder, CStringBuilder *lpStr)
+bool CDirectoryIndexing::ToHTML(const char *sCurrentFolder, StringBuilder *lpStr)
 {
 	char sImageURL[MAX_URI_LEN];
 	char sSize[128];
 	char sModifiedDate[64];
 	char sModifiedTime[64];
 	int iCurrentFolderLen = (int)strlen(sCurrentFolder);
-	CStringBuilder URLEncoded;
-	CStringBuilder URL;
+	StringBuilder URLEncoded;
+	StringBuilder URL;
 
 	int iLevelIndex = LastIndexOf(sCurrentFolder, iCurrentFolderLen - 1, '/');
 	if(iLevelIndex < 0)
@@ -398,7 +397,7 @@ bool CDirectoryIndexing::ToHTML(const char *sCurrentFolder, CStringBuilder *lpSt
 	}
 	bool bsRoot = ((iCurrentFolderLen <= 1) && (iLevelIndex <= 0));
 
-	CStringBuilder BackLink(sCurrentFolder, iLevelIndex);
+	StringBuilder BackLink(sCurrentFolder, iLevelIndex);
 	BackLink.Append("/");
 	BackLink.Terminate();
 

@@ -81,7 +81,7 @@ void CWebSite::Initialize(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CWebSite::CWebSite(void *lpWebSites, CXMLReader *pXMLSite)
+CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 {
 	this->Initialize();
 
@@ -89,7 +89,7 @@ CWebSite::CWebSite(void *lpWebSites, CXMLReader *pXMLSite)
 
 	InitializeCriticalSection(&this->csLogFile);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	this->Reload(pXMLSite);
 
@@ -252,7 +252,7 @@ void CWebSite::BindSocketPool(void)
 		but does not load the sub items (thse are handled seperatly).
 	If the site has already been loaded, then these settings will be reloaded.
 */
-bool CWebSite::Reload(CXMLReader *xml)
+bool CWebSite::Reload(XMLReader *xml)
 {
 	bool bIsSiteActive = this->IsActive();
 	if(bIsSiteActive)
@@ -273,7 +273,7 @@ bool CWebSite::Reload(CXMLReader *xml)
 
 	this->BindSocketPool();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	//----------------------------------------------------------------------
 	if(xml->ToReader("HostHeaders", &xmlConfig))
 	{
@@ -341,14 +341,14 @@ CWebSite::~CWebSite()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebSite::ToXML(CXMLWriter *pXMLSite)
+bool CWebSite::ToXML(XMLWriter *pXMLSite)
 {
 	return this->ToXML(pXMLSite, false, false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebSite::Bindings(CXMLWriter *pXMLSite)
+bool CWebSite::Bindings(XMLWriter *pXMLSite)
 {
 	if(pXMLSite->Initialize("Site"))
 	{
@@ -363,7 +363,7 @@ bool CWebSite::Bindings(CXMLWriter *pXMLSite)
 			{
 				if(this->pHostHeaders->Collection.Items[i].Enabled)
 				{
-					CStringBuilder binding;
+					StringBuilder binding;
 
 					if(this->pSocketPool->Port == 80)
 					{
@@ -379,7 +379,7 @@ bool CWebSite::Bindings(CXMLWriter *pXMLSite)
 		}
 		else if(this->pSocketPool->ListenIPs.ListenOnAll)
 		{
-			CStringBuilder binding;
+			StringBuilder binding;
 
 			if(this->pSocketPool->Port == 80)
 			{
@@ -396,7 +396,7 @@ bool CWebSite::Bindings(CXMLWriter *pXMLSite)
 			{
 				if(this->pSocketPool->ListenIPs.Items[i].Enabled)
 				{
-					CStringBuilder binding;
+					StringBuilder binding;
 
 					if(this->pSocketPool->Port == 80)
 					{
@@ -418,7 +418,7 @@ bool CWebSite::Bindings(CXMLWriter *pXMLSite)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebSite::Overview(CXMLWriter *pXMLSite)
+bool CWebSite::Overview(XMLWriter *pXMLSite)
 {
 	if(pXMLSite->Initialize("Site"))
 	{
@@ -442,7 +442,7 @@ bool CWebSite::Overview(CXMLWriter *pXMLSite)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebSite::ToXML(CXMLWriter *pXMLSite, bool bIncludeSubItems, bool bIncludeStatusInfo)
+bool CWebSite::ToXML(XMLWriter *pXMLSite, bool bIncludeSubItems, bool bIncludeStatusInfo)
 {
 	if(pXMLSite->Initialize("Site"))
 	{
@@ -457,7 +457,7 @@ bool CWebSite::ToXML(CXMLWriter *pXMLSite, bool bIncludeSubItems, bool bIncludeS
 		pXMLSite->Add("Root", this->Root);
 		pXMLSite->Add("SocketPoolID", this->SocketPoolID);
 
-		CXMLReader xmlSub;
+		XMLReader xmlSub;
 		if(this->pHostHeaders->ToXML(&xmlSub))
 		{
 			pXMLSite->Add(&xmlSub);
@@ -476,9 +476,9 @@ bool CWebSite::ToXML(CXMLWriter *pXMLSite, bool bIncludeSubItems, bool bIncludeS
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int CWebSite::SubItemsToXML(CXMLWriter *xmlConfig)
+int CWebSite::SubItemsToXML(XMLWriter *xmlConfig)
 {
-	CXMLReader xmlSub;
+	XMLReader xmlSub;
 	int iSubItems = 0;
 
 	if(this->pCGIFolders != ((CWebSites *)pWebSites)->DfltCGIFolders)

@@ -13,7 +13,8 @@
 #include <Windows.H>
 #include <ShlObj.H>
 
-#include "../../../../@Libraries/CXML/CXML.H"
+#include "../../../NSWFL/NSWFL.h"
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,7 +80,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool PopulateConfigTree(CXMLReader *pSites);
+bool PopulateConfigTree(XMLReader *pSites);
 void PopulateConfigTree(void);
 
 bool InitializeConfigTree(void);
@@ -90,7 +91,7 @@ void SetConfigItem(int iType, int iSite, void *pClass, int iListIndex);
 void SetConfigItem(int iType, int iSite, void *pClass);
 void SetConfigItem(int iType, void *pClass);
 void SetConfigItem(void);
-bool ProcessXMLResult(HWND hWnd, CXMLReader *pXML, const char *sSuccessText, const char *sFailureText);
+bool ProcessXMLResult(HWND hWnd, XMLReader *pXML, const char *sSuccessText, const char *sFailureText);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

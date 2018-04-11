@@ -10,12 +10,12 @@
 #define _CWebsiteSettings_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/WebsiteSettings.H"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,15 +27,15 @@ private:
 	WEBSITESETTINGS Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	CWebsiteSettings(void *lpWebSites);
 	~CWebsiteSettings(void);
-	CWebsiteSettings(void *lpWebSites, CXMLReader *xmlConfig, CWebsiteSettings *pDefaults);
+	CWebsiteSettings(void *lpWebSites, XMLReader *xmlConfig, CWebsiteSettings *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool AutoStart(void);
 	int ScriptTimeout(void);
@@ -52,7 +52,7 @@ public:
 
 	bool Reload(void);
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CWebsiteSettings *pDefaults);
+	bool Load(XMLReader *xmlConfig, CWebsiteSettings *pDefaults);
 	bool Destroy();
 };
 

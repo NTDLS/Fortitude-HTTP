@@ -99,7 +99,7 @@ INT_PTR CALLBACK Config_ServerSettings(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 
 		TabControl = new CTabControl(GetDlgItem(hWnd, IDC_TABCONTROL), tabNames, dlgNames, &Config_ServerSettings, TRUE);
 
-		CXMLReader xmlServerSettings;
+		XMLReader xmlServerSettings;
 		if(gManage->QueryXMLReader(&xmlServerSettings, "::Configuration:ServerSettings|"))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ INT_PTR CALLBACK Config_ServerSettings(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 			//Processors Tab:
 			hProcessorsTab = TabControl->Handle("Processors");
 
-			CXMLReader xmlProcessors;
+			XMLReader xmlProcessors;
 			if(xmlServerSettings.ToReader("Processors", &xmlProcessors))
 			{
 				char sRegBuf[255];
@@ -302,7 +302,7 @@ INT_PTR CALLBACK Config_ServerSettings(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 			hUsersTab = TabControl->Handle("Users");
 			hUsersList = GetDlgItem(hUsersTab, IDC_LIST);
 
-			CXMLReader xmlUsers;
+			XMLReader xmlUsers;
 			if(xmlServerSettings.ToReader("Users", &xmlUsers))
 			{
 				if(xmlUsers.ToBoolean("AllowRemoteManagement"))
@@ -316,7 +316,7 @@ INT_PTR CALLBACK Config_ServerSettings(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 			//Advanced Tab:
 			hAdvancedTab = TabControl->Handle("Advanced");
 
-			CXMLReader xmlAdvanced;
+			XMLReader xmlAdvanced;
 			if(xmlServerSettings.ToReader("Advanced", &xmlAdvanced))
 			{
 				if(xmlAdvanced.ToBoolean("OptimizeForThroughput")) CheckDlgButton(hAdvancedTab, IDC_OPTIMIZEFORTHROUGHPUT, BST_CHECKED);
@@ -375,14 +375,14 @@ INT_PTR CALLBACK Config_ServerSettings(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 			}
 
 			//---(Begin Server Update)------------------------------------------------------------------
-			CXMLWriter xmlServerSettings("ServerSettings");
+			XMLWriter xmlServerSettings("ServerSettings");
 			//-----------------------------------------------------------------------------------------------
 			//General Tab:
 
 			//-----------------------------------------------------------------------------------------------
 			//Processors Tab:
 
-			CXMLWriter xmlProcessors("Processors");
+			XMLWriter xmlProcessors("Processors");
 			xmlProcessors.AddBool("ProcessBoost", IsDlgButtonChecked(hProcessorsTab, IDC_PROCESSBOOST) == BST_CHECKED);
 			xmlProcessors.AddBool("ThreadBoost", IsDlgButtonChecked(hProcessorsTab, IDC_THREADBOOST) == BST_CHECKED);
 
@@ -407,22 +407,22 @@ INT_PTR CALLBACK Config_ServerSettings(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 			xmlServerSettings.Add(&xmlProcessors);
 			//-----------------------------------------------------------------------------------------------
 			//Users Tab:
-			CXMLWriter xmlUsers("Users");
+			XMLWriter xmlUsers("Users");
 			LoadNewServerSettings_User_Configuration(hUsersTab, hUsersList, &xmlUsers);
 			xmlServerSettings.Add(&xmlUsers);
 
 			//-----------------------------------------------------------------------------------------------
 			//Advanced Tab:
-			CXMLWriter xmlAdvanced("Advanced");
+			XMLWriter xmlAdvanced("Advanced");
 			xmlAdvanced.AddBool("OptimizeForThroughput", IsDlgButtonChecked(hAdvancedTab, IDC_OPTIMIZEFORTHROUGHPUT) == BST_CHECKED);
 			xmlAdvanced.AddBool("ForceSocketReuse", IsDlgButtonChecked(hAdvancedTab, IDX_FORCESOCKETREUSE) == BST_CHECKED);
 			xmlServerSettings.Add(&xmlAdvanced);
 
 			//-----------------------------------------------------------------------------------------------
-			CStringBuilder xmlText;
+			StringBuilder xmlText;
 			xmlServerSettings.Text(&xmlText);
 
-			CXMLReader xmlResult;
+			XMLReader xmlResult;
 			if(gManage->QueryXMLReader(&xmlResult, "::Update|%d:%s:%s", gCI.iSite, "ServerSettings", xmlText.Buffer))
 			{
 				ProcessXMLResult(hWnd, &xmlResult, NULL, "Failed to apply configuration!");

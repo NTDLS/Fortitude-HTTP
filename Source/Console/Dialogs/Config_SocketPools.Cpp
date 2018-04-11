@@ -65,7 +65,7 @@ INT_PTR CALLBACK Config_SocketPools(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
         gCI.hList = GetDlgItem(hWnd, IDC_LIST);
         hEnabled = GetDlgItem(hWnd, IDC_ENABLED);
 
-		CXMLReader xml;
+		XMLReader xml;
 		if(gManage->QueryXMLReader(&xml, "::Configuration:SocketPools|"))
 		{
 			PopSocketPoolsList(gCI.hList, false, &xml, true);
@@ -135,12 +135,12 @@ INT_PTR CALLBACK Config_SocketPools(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 		else if(wParam == IDC_OK)
         {
 			//---(Begin Server Update)------------------------------------------------------------------
-			CXMLWriter xml;
+			XMLWriter xml;
 			if(LoadNewSocketPoolsConfiguration(hWnd, gCI.hList, &xml))
 			{
 				char *xmlText = xml.Text();
 
-				CXMLReader xml;
+				XMLReader xml;
 				if(ProcessLengthyCommand(&xml, hWnd,
 					"Please wait while the new socket pool configuration is applied. This process can"
 					" take a long time depending on the number of connections to dependent websites.",

@@ -52,7 +52,7 @@ bool CSocketPools::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -73,22 +73,22 @@ bool CSocketPools::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSocketPools::ToXML(CXMLReader *lpXML)
+bool CSocketPools::ToXML(XMLReader *lpXML)
 {
 	return this->ToXML(lpXML, false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSocketPools::ToXML(CXMLReader *lpXML, bool bIncludeStats)
+bool CSocketPools::ToXML(XMLReader *lpXML, bool bIncludeStats)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("SocketPools");
+	XMLWriter xmlConfig("SocketPools");
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("SocketPool");
+		XMLWriter Item("SocketPool");
 		Item.Add("UID", this->Collection.Items[iItem].UID);
 		Item.Add("Port", this->Collection.Items[iItem].Port);
 		Item.Add("MaxConnections", this->Collection.Items[iItem].MaxConnections);
@@ -103,11 +103,11 @@ bool CSocketPools::ToXML(CXMLReader *lpXML, bool bIncludeStats)
 			Item.Add("ReferencedSites", this->ReferencedSiteCount(&this->Collection.Items[iItem]));
 		}
 
-		CXMLWriter xmlIPs("IPAddresses");
+		XMLWriter xmlIPs("IPAddresses");
 		xmlIPs.AddBool("ListenOnAll", this->Collection.Items[iItem].ListenIPs.ListenOnAll);
 		for(int iIP = 0; iIP < this->Collection.Items[iItem].ListenIPs.Count; iIP++)
 		{
-			CXMLWriter Item("IPAddress");
+			XMLWriter Item("IPAddress");
 			Item.Add("Address", this->Collection.Items[iItem].ListenIPs.Items[iIP].IP);
 			Item.Add("Description", this->Collection.Items[iItem].ListenIPs.Items[iIP].Description);
 			Item.Add("Enable", this->Collection.Items[iItem].ListenIPs.Items[iIP].Enabled);
@@ -157,11 +157,11 @@ bool CSocketPools::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("SocketPools", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity);
@@ -175,7 +175,7 @@ bool CSocketPools::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSocketPools::Load(CXMLReader *xmlConfig)
+bool CSocketPools::Load(XMLReader *xmlConfig)
 {
 	if(this->Initialized)
 	{
@@ -189,7 +189,7 @@ bool CSocketPools::Load(CXMLReader *xmlConfig)
 	int iLength = 0;
 	memset(&this->Collection, 0, sizeof(this->Collection));
 
-	CXMLReader xml;
+	XMLReader xml;
 
 	xmlConfig->ProgressiveScan(true);
 
@@ -226,14 +226,14 @@ bool CSocketPools::Load(CXMLReader *xmlConfig)
 		
 		//---(Load IP Addresses)--
 
-		CXMLReader xmlIPs;
+		XMLReader xmlIPs;
 		xml.ToReader("IPAddresses", &xmlIPs);
 
 		p->ListenIPs.ListenOnAll = xmlIPs.ToBoolean("ListenOnAll", true);
 
 		xmlIPs.ProgressiveScan(true);
 		
-		for(CXMLReader xmlIP; xmlIPs.ToReader("IPAddress", &xmlIP);)
+		for(XMLReader xmlIP; xmlIPs.ToReader("IPAddress", &xmlIP);)
 		{
 			char sIP[SOCKETPOOLS_IPS_MAX_IP_LENGTH];
 			char sDescr[SOCKETPOOLS_IPS_MAX_DESCR_LENGTH];

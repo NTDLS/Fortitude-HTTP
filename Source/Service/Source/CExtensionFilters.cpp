@@ -52,7 +52,7 @@ CExtensionFilters::CExtensionFilters(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CExtensionFilters::CExtensionFilters(void *lpWebSites, CXMLReader *xmlConfig, CExtensionFilters *pDefaults)
+CExtensionFilters::CExtensionFilters(void *lpWebSites, XMLReader *xmlConfig, CExtensionFilters *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -67,7 +67,7 @@ bool CExtensionFilters::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -88,17 +88,17 @@ bool CExtensionFilters::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CExtensionFilters::ToXML(CXMLReader *lpXML)
+bool CExtensionFilters::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("ExtensionFilters");
+	XMLWriter xmlConfig("ExtensionFilters");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Filter");
+		XMLWriter Item("Filter");
 		Item.Add("Extension", this->Collection.Items[iItem].Extension);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.AddBool("Enable", this->Collection.Items[iItem].Enabled);
@@ -143,11 +143,11 @@ bool CExtensionFilters::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("ExtensionFilters", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -161,7 +161,7 @@ bool CExtensionFilters::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CExtensionFilters::Load(CXMLReader *xmlConfig, CExtensionFilters *pDefaults)
+bool CExtensionFilters::Load(XMLReader *xmlConfig, CExtensionFilters *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -175,7 +175,7 @@ bool CExtensionFilters::Load(CXMLReader *xmlConfig, CExtensionFilters *pDefaults
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPExtensionFilter;
+	XMLReader XPExtensionFilter;
 
 	while(xmlConfig->ToReader("Filter", &XPExtensionFilter))
 	{

@@ -10,9 +10,12 @@
 #define _Management_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CSocketServer/CSocketServer.H"
-#include "../../../../@Libraries/CXML/CXML.H"
-#include "../../../../@Libraries/CNASCCL (Stream)/CNASCCL.H"
+#include "../../../CSocketServer/CSocketServer.H"
+#include "../../../CService/CService.H"
+#include "../../../NASCCL/NASCCL.H"
+#include "../../../NSWFL/NSWFL.h"
+
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +46,7 @@ public:
 	bool Disconnect();
 
 	bool QueryChunk(LPBASICHUNK pReturnData, const char *sText, ...);
-	bool QueryXMLReader(CXMLReader *pXML, const char *sText, ...);
+	bool QueryXMLReader(XMLReader *pXML, const char *sText, ...);
 	bool QueryBoolean(bool *bValue, const char *sText, ...);
 
 	bool QueryChunk(LPBASICHUNK pReturnData);
@@ -51,7 +54,7 @@ public:
 
 	CSocketServer *Socket;
 	CSocketClient *Client;
-	CNASCCL Cytpto;
+	NASCCLStream Cytpto;
 	
 	MGMTCURRENTCONNECTIONINFO CurrentConnectioninfo;
 

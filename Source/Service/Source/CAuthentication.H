@@ -10,13 +10,12 @@
 #define _CAuthentication_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CXML/CXMLWriter.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/Authentication.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,22 +27,22 @@ private:
 	PROTECTEDPAGES Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	~CAuthentication(void);
 	CAuthentication(void *lpWebSites);
-	CAuthentication(void *lpWebSites, CXMLReader *xmlConfig, CAuthentication *pDefaults);
+	CAuthentication(void *lpWebSites, XMLReader *xmlConfig, CAuthentication *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool IsAuthorizationRequired(VOID *pClient);
 	bool IsAuthenticated(VOID *pClient);
 	bool Authenticate(VOID *pClient);
 
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CAuthentication *pDefaults);
+	bool Load(XMLReader *xmlConfig, CAuthentication *pDefaults);
 
 	bool Reload(void);
 

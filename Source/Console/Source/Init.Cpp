@@ -25,6 +25,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::Registry;
+using namespace NSWFL::Memory;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +40,7 @@ bool InitializeApp(void)
 		return false;
 	}
 
-	pMem = new CMemPool;
+	pMem = new MemoryPool;
 
 	LoadString(ghAppInstance, IDS_APPCOPYRIGHT, gsAppCopyRight, sizeof(gsAppCopyRight));
     LoadString(ghAppInstance, IDS_FILEVERSION, gsFileVersion, sizeof(gsFileVersion));

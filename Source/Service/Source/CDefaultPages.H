@@ -10,13 +10,12 @@
 #define _CDefaultPages_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CXML/CXMLWriter.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/DefaultPages.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,20 +27,20 @@ private:
 	DEFAULTPAGES Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	~CDefaultPages(void);
 	CDefaultPages(void *lpWebSites);
-	CDefaultPages(void *lpWebSites, CXMLReader *xmlConfig, CDefaultPages *pDefaults);
+	CDefaultPages(void *lpWebSites, XMLReader *xmlConfig, CDefaultPages *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool CheckPath(char *&sFullRequest);
 
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CDefaultPages *pDefaults);
+	bool Load(XMLReader *xmlConfig, CDefaultPages *pDefaults);
 
 	bool Reload(void);
 

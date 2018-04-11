@@ -53,7 +53,7 @@ CDefaultPages::CDefaultPages(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CDefaultPages::CDefaultPages(void *lpWebSites, CXMLReader *xmlConfig, CDefaultPages *pDefaults)
+CDefaultPages::CDefaultPages(void *lpWebSites, XMLReader *xmlConfig, CDefaultPages *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -68,7 +68,7 @@ bool CDefaultPages::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -89,17 +89,17 @@ bool CDefaultPages::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CDefaultPages::ToXML(CXMLReader *lpXML)
+bool CDefaultPages::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("DefaultPages");
+	XMLWriter xmlConfig("DefaultPages");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Page");
+		XMLWriter Item("Page");
 		Item.Add("File", this->Collection.Items[iItem].Page);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.AddBool("Enable", this->Collection.Items[iItem].Enabled);
@@ -144,10 +144,10 @@ bool CDefaultPages::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("DefaultPages", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -161,7 +161,7 @@ bool CDefaultPages::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CDefaultPages::Load(CXMLReader *xmlConfig, CDefaultPages *pDefaults)
+bool CDefaultPages::Load(XMLReader *xmlConfig, CDefaultPages *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -175,7 +175,7 @@ bool CDefaultPages::Load(CXMLReader *xmlConfig, CDefaultPages *pDefaults)
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPDefaultPage;
+	XMLReader XPDefaultPage;
 
 	while(xmlConfig->ToReader("Page", &XPDefaultPage))
 	{

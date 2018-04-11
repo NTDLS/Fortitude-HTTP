@@ -29,10 +29,12 @@
 
 #include "Config_WebsiteAdvanced.H"
 
-#include "../../../../@Libraries/CTabControl/CTabControl.h"
+#include "../../../CTabControl/CTabControl.h"
 #include "../../@Common/Cryptography.h"
-#include "../../../../@Libraries/Base64/Base64.h"
-#include "../../../../@Libraries/CNASCCL (Stream)/CNASCCL.H"
+#include "../../../NASCCL/NASCCL.H"
+
+#include "../../../NSWFL/NSWFL.h"
+using namespace NSWFL::Collections;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,7 +136,7 @@ INT_PTR CALLBACK Config_WebsiteAdvanced(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 		hKeepAliveTiemout	= GetDlgItem(hTabAdvanced, IDC_KEEPALIVETIMEOUT);
 		hLogPath			= GetDlgItem(hTabAdvanced, IDC_LOGPATH);
 
-		CXMLReader xml;
+		XMLReader xml;
 		if(gManage->QueryXMLReader(&xml, "::Configuration:WebsiteSettings|%d", gCI.iSite))
 		{
 			char sAdminEmail[MAX_ADMIN_EMAIL];
@@ -191,12 +193,12 @@ INT_PTR CALLBACK Config_WebsiteAdvanced(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 				int iRawPasswordLength = (int)Base64Decode((unsigned char *)sEncodedPassword, (int)strlen(sEncodedPassword), (unsigned char *)sPassword, (int)sizeof(sPassword));
 				if (iRawPasswordLength > 0)
 				{
-					CNASCCL nasccl;
+					NASCCLStream nasccl;
 					char sEncryptionKey[48];
 					MakeEncryptionKey(sEncryptionKey, sizeof(sEncryptionKey), "%s\\%s", sDomain, sUsername);
-					nasccl.InitializeCryptography(sEncryptionKey);
+					nasccl.Initialize(sEncryptionKey);
 					nasccl.Cipher(sPassword, iRawPasswordLength);
-					nasccl.DestroyCryptography();
+					nasccl.Destroy();
 
 					Set_Text(hNTPass, sPassword);
 				}
@@ -322,12 +324,12 @@ INT_PTR CALLBACK Config_WebsiteAdvanced(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 			//---(Begin Server Update)------------------------------------------------------------------
 			if(IsDlgButtonChecked(hWnd, IDC_USEGLOBAL) == FALSE)
 			{
-				CXMLWriter xml;
+				XMLWriter xml;
 				if(LoadNewWebsiteSettingsConfiguration(hWnd, gCI.hList, &xml, TabControl))
 				{
 					char *xmlText = xml.Text();
 
-					CXMLReader xml;
+					XMLReader xml;
 					if(gManage->QueryXMLReader(&xml, "::Update|%d:%s:%s", gCI.iSite, "WebsiteSettings", xmlText))
 					{
 						ProcessXMLResult(hWnd, &xml, NULL, "Failed to apply configuration!");
@@ -342,7 +344,7 @@ INT_PTR CALLBACK Config_WebsiteAdvanced(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 			else {
 				if(!gCI.bGlobal)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(gManage->QueryXMLReader(&xml, "::Update|%d:%s:%s", gCI.iSite, "WebsiteSettings", "~Global"))
 					{
 						ProcessXMLResult(hWnd, &xml, NULL, "Failed to apply configuration!");

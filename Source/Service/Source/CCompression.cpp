@@ -22,12 +22,9 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CCompression.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
-
-#include "../../../../@Libraries/Compression/zLib/ZLibEncapsulation.h"
+#include "../../../Compression/zLib/ZLibEncapsulation.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -56,7 +53,7 @@ CCompression::CCompression(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCompression::CCompression(void *lpWebSites, CXMLReader *xmlConfig, CCompression *pDefaults)
+CCompression::CCompression(void *lpWebSites, XMLReader *xmlConfig, CCompression *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -71,7 +68,7 @@ bool CCompression::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -92,11 +89,11 @@ bool CCompression::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CCompression::ToXML(CXMLReader *lpXML)
+bool CCompression::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("Compression");
+	XMLWriter xmlConfig("Compression");
 
   	xmlConfig.Add("CachePath", this->Cache.CachePath);
 	xmlConfig.Add("MaxCompressionSize", this->Collection.MaxCompressionSize);
@@ -109,7 +106,7 @@ bool CCompression::ToXML(CXMLReader *lpXML)
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("FileType");
+		XMLWriter Item("FileType");
 		Item.Add("Extension", this->Collection.Items[iItem].Extension);
 		Item.Add("CompressionLevel", this->Collection.Items[iItem].CompressionLevel);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
@@ -126,11 +123,11 @@ bool CCompression::ToXML(CXMLReader *lpXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CCompression::CacheToXML(CXMLReader *lpXML)
+bool CCompression::CacheToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("Cache");
+	XMLWriter xmlConfig("Cache");
 
 	char sFileName[MAX_PATH];
 
@@ -138,7 +135,7 @@ bool CCompression::CacheToXML(CXMLReader *lpXML)
 	{
 		GetFileName(this->Cache.Items[iItem].OriginalFile, sFileName, sizeof(sFileName));
 
-		CXMLWriter Item("Item");
+		XMLWriter Item("Item");
 		Item.Add("File", sFileName);
 		Item.Add("OriginalSize", this->Cache.Items[iItem].OriginalSize);
 		Item.Add("CachedSize", this->Cache.Items[iItem].CachedSize);
@@ -184,11 +181,11 @@ bool CCompression::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("Compression", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -202,7 +199,7 @@ bool CCompression::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CCompression::Load(CXMLReader *xmlConfig, CCompression *pDefaults)
+bool CCompression::Load(XMLReader *xmlConfig, CCompression *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -229,7 +226,7 @@ bool CCompression::Load(CXMLReader *xmlConfig, CCompression *pDefaults)
 	this->Cache.MaxCachedFiles = xmlConfig->ToInteger("MaxCompressionCache", 10000);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPCompType;
+	XMLReader XPCompType;
 
 	while(xmlConfig->ToReader("FileType", &XPCompType))
 	{

@@ -29,14 +29,14 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 #include "CWebSite.H"
 
 #include "../../@Common/Cryptography.h"
-#include "../../../../@Libraries/Base64/Base64.h"
-#include "../../../../@Libraries/CNASCCL (Stream)/CNASCCL.H"
+#include "../../../NASCCL/NASCCL.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::String;
 using namespace NSWFL::File;
 using namespace NSWFL::ListView;
+using namespace NSWFL::Conversion;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,7 +57,7 @@ CVirtualRoots::CVirtualRoots(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CVirtualRoots::CVirtualRoots(void *lpWebSites, CXMLReader *xmlConfig, CVirtualRoots *pDefaults)
+CVirtualRoots::CVirtualRoots(void *lpWebSites, XMLReader *xmlConfig, CVirtualRoots *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -72,7 +72,7 @@ bool CVirtualRoots::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -93,17 +93,17 @@ bool CVirtualRoots::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CVirtualRoots::ToXML(CXMLReader *lpXML)
+bool CVirtualRoots::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("VirtualRoots");
+	XMLWriter xmlConfig("VirtualRoots");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Root");
+		XMLWriter Item("Root");
 		Item.Add("URI", this->Collection.Items[iItem].Root);
 		Item.Add("Path", this->Collection.Items[iItem].Path);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
@@ -111,7 +111,7 @@ bool CVirtualRoots::ToXML(CXMLReader *lpXML)
 
 		if(this->Collection.Items[iItem].Username && strlen(this->Collection.Items[iItem].Username) > 0)
 		{
-			CXMLWriter xmlAuth("Login");
+			XMLWriter xmlAuth("Login");
 			xmlAuth.Add("Username", this->Collection.Items[iItem].Username);
 			xmlAuth.Add("Domain", this->Collection.Items[iItem].Domain);
 
@@ -123,12 +123,12 @@ bool CVirtualRoots::ToXML(CXMLReader *lpXML)
 				int iPasswordLength = (int)strlen(this->Collection.Items[iItem].Password);
 				strcpy_s(sEncryptedPassword, sizeof(sEncryptedPassword), this->Collection.Items[iItem].Password);
 
-				CNASCCL nasccl;
+				NASCCLStream nasccl;
 				char sEncryptionKey[48];
 				MakeEncryptionKey(sEncryptionKey, sizeof(sEncryptionKey), "%s\\%s", this->Collection.Items[iItem].Domain, this->Collection.Items[iItem].Username);
-				nasccl.InitializeCryptography(sEncryptionKey);
+				nasccl.Initialize(sEncryptionKey);
 				nasccl.Cipher(sEncryptedPassword, iPasswordLength);
-				nasccl.DestroyCryptography();
+				nasccl.Destroy();
 
 				if (Base64Encode((unsigned char *)sEncryptedPassword, iPasswordLength, (unsigned char *)sEncodedPassword, sizeof(sEncodedPassword)) < 0)
 				{
@@ -181,11 +181,11 @@ bool CVirtualRoots::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("VirtualRoots", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -199,7 +199,7 @@ bool CVirtualRoots::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CVirtualRoots::Load(CXMLReader *xmlConfig, CVirtualRoots *pDefaults)
+bool CVirtualRoots::Load(XMLReader *xmlConfig, CVirtualRoots *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -213,8 +213,8 @@ bool CVirtualRoots::Load(CXMLReader *xmlConfig, CVirtualRoots *pDefaults)
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPVirtualRoot;
-	CXMLReader xmlAuth;
+	XMLReader XPVirtualRoot;
+	XMLReader xmlAuth;
 
 	bool bDoesBuiltInErrorsExist = false;
 
@@ -273,12 +273,12 @@ bool CVirtualRoots::Load(CXMLReader *xmlConfig, CVirtualRoots *pDefaults)
 			int iRawPasswordLength = (int)Base64Decode((unsigned char *)sEncryptedPassword, (int)strlen(sEncryptedPassword), (unsigned char *)sPassword, (int)sizeof(sPassword));
 			if (iRawPasswordLength > 0)
 			{
-				CNASCCL nasccl;
+				NASCCLStream nasccl;
 				char sEncryptionKey[48];
 				MakeEncryptionKey(sEncryptionKey, sizeof(sEncryptionKey), "%s\\%s", sDomain, sUser);
-				nasccl.InitializeCryptography(sEncryptionKey);
+				nasccl.Initialize(sEncryptionKey);
 				nasccl.Cipher(sPassword, iRawPasswordLength);
-				nasccl.DestroyCryptography();
+				nasccl.Destroy();
 				p->Password = (char *)pMem->StrDup(sPassword);
 			}
 			else

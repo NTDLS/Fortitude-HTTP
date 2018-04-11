@@ -10,13 +10,13 @@
 #define _CSocketPools_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CSocketServer/CSocketServer.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
+#include "../../../CSocketServer/CSocketServer.H"
 
 #include "../../@Common/SocketPools.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,21 +27,21 @@ private:
 	void *pWebSites;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	SOCKETPOOLS Collection;
 
 	~CSocketPools(void);
 	CSocketPools(void *lpWebSites);
-	CSocketPools(void *lpWebSites, CXMLReader *xmlConfig, CServerSettings *pDefaults);
+	CSocketPools(void *lpWebSites, XMLReader *xmlConfig, CServerSettings *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
-	bool ToXML(CXMLReader *lpXML, bool bIncludeStats);
+	bool ToXML(XMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML, bool bIncludeStats);
 
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig);
+	bool Load(XMLReader *xmlConfig);
 	bool Reload(void);
 	bool Destroy(void);
 

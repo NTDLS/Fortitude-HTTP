@@ -18,7 +18,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "../../@Common/Cryptography.h"
-#include "../../../../@Libraries/Base64/Base64.h"
 
 #include "../Source/Entry.H"
 #include "../Source/ConfigTree.H"
@@ -169,7 +168,7 @@ void PopListeningIPsList_AddItem(HWND hList, LISTENIP *obj, int iInsertionIndex)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopListeningIPsList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopListeningIPsList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -212,15 +211,15 @@ void PopListeningIPsList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 		char sDescription[SOCKETPOOLS_IPS_MAX_DESCR_LENGTH];
 		bool bEnable = false;
 
-		CXMLReader xmlSubItem;
+		XMLReader xmlSubItem;
 		pXML->ToReader("IPAddresses", &xmlSubItem);
 
 		xmlSubItem.ScanPosition(0);
 		xmlSubItem.ProgressiveScan(true);
 
 		//Pop the list-view.
-		CXMLReader xml;
-		for(CXMLReader xml; xmlSubItem.ToReader("IPAddress", &xml);)
+		XMLReader xml;
+		for(XMLReader xml; xmlSubItem.ToReader("IPAddress", &xml);)
 		{
 			//Read XML.
 			xml.ToString("Address", sIP, sizeof(sIP));
@@ -246,7 +245,7 @@ void PopListeningIPsList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewListeningIPsConfiguration(HWND hWnd, HWND hGrid, bool bListenOnAll, CXMLWriter *pXML)
+bool LoadNewListeningIPsConfiguration(HWND hWnd, HWND hGrid, bool bListenOnAll, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -259,7 +258,7 @@ bool LoadNewListeningIPsConfiguration(HWND hWnd, HWND hGrid, bool bListenOnAll, 
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("IPAddress");
+		XMLWriter Item("IPAddress");
 
 		LVGetText(hGrid, iItem, SOCKETPOOLS_IPS_LIST_POS_IP, sIP, sizeof(sIP));
 		Item.Add("Address", sIP);
@@ -312,7 +311,7 @@ void PopCacheList_AddItem(HWND hList, COMPRESSIONCACHEITEM *obj)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopCacheList(HWND hList, CXMLReader *pXML)
+void PopCacheList(HWND hList, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -363,7 +362,7 @@ void PopCacheList(HWND hList, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Item", &xml);)
+	for(XMLReader xml; pXML->ToReader("Item", &xml);)
 	{
 		//Read XML.
 		xml.ToString("File", sFile, sizeof(sFile));
@@ -459,7 +458,7 @@ void PopWebsite_AddItem(HWND hList, const char *sAttribute, const char *sValue)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopWebsiteOverviewList(HWND hList, CXMLReader *pXML)
+void PopWebsiteOverviewList(HWND hList, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -495,7 +494,7 @@ void PopWebsiteOverviewList(HWND hList, CXMLReader *pXML)
 	int iPort;
 
 	//Pop the list-view.
-	CXMLReader xml;
+	XMLReader xml;
 	if(pXML->ToReader("Site", &xml))
 	{
 		//Read XML.
@@ -588,7 +587,7 @@ void PopWebsitesList_AddItem(HWND hList, WEBSITE *obj, int iInsertionIndex, cons
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewWebSitessConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewWebSitessConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = ListView_GetItemCount(hGrid);
 
@@ -601,7 +600,7 @@ bool LoadNewWebSitessConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Site");
+		XMLWriter Item("Site");
 
 		LVGetText(hGrid, iItem, WEBSITES_LIST_POS_INDEX, sIndex, sizeof(sIndex));
 		Item.Add("Index", sIndex);
@@ -616,9 +615,9 @@ bool LoadNewWebSitessConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 		const char *sXMLText = (char *)xmlParam;
 		if(sXMLText)
 		{
-			CXMLReader xmlWhole(sXMLText);
+			XMLReader xmlWhole(sXMLText);
 
-			CXMLReader xmlIPAddresses(sXMLText);
+			XMLReader xmlIPAddresses(sXMLText);
 			xmlIPAddresses.ToReader("IPAddresses", &xmlIPAddresses);
 
 			Item.Add("IPAddresses", &xmlIPAddresses);
@@ -632,7 +631,7 @@ bool LoadNewWebSitessConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopWebsitesList(HWND hList, bool bUseIcons, CXMLReader *pXML, bool bSaveXMLInLParam)
+void PopWebsitesList(HWND hList, bool bUseIcons, XMLReader *pXML, bool bSaveXMLInLParam)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -692,7 +691,7 @@ void PopWebsitesList(HWND hList, bool bUseIcons, CXMLReader *pXML, bool bSaveXML
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Site", &xml);)
+	for(XMLReader xml; pXML->ToReader("Site", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Name", sName, sizeof(sName));
@@ -787,7 +786,7 @@ void PopWebsiteSettingsList_AddItem(HWND hList, const char *sAttribute, int iVal
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopWebsiteSettingsList(HWND hList, CXMLReader *pXML)
+void PopWebsiteSettingsList(HWND hList, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -831,7 +830,7 @@ void PopWebsiteSettingsList(HWND hList, CXMLReader *pXML)
 	int iMaxReceiveSize;
 
 	//Pop the list-view.
-	CXMLReader xml;
+	XMLReader xml;
 	if(pXML->ToReader("WebsiteSettings", &xml))
 	{
 		//Read XML.
@@ -871,7 +870,7 @@ void PopWebsiteSettingsList(HWND hList, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewWebsiteSettingsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML, CTabControl *TabControl)
+bool LoadNewWebsiteSettingsConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML, CTabControl *TabControl)
 {
 	int iGridItems = LVItemCount(hGrid);
 	int iLength = 0;
@@ -899,18 +898,18 @@ bool LoadNewWebsiteSettingsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML
 
 		if ((iLength = Get_Text(GetDlgItem(hTabSecurity, IDC_NTUSERNAME), sUsername, sizeof(sUsername))) > 0)
 		{
-			CXMLWriter xmlAuth("Login");
+			XMLWriter xmlAuth("Login");
 			xmlAuth.Add("Username", sUsername);
 			Get_Text(GetDlgItem(hTabSecurity, IDC_NTDOMAIN), sDomain, sizeof(sDomain));
 			xmlAuth.Add("Domain", sDomain);
 			int iPasswordLength = Get_Text(GetDlgItem(hTabSecurity, IDC_NTPASSWORD), sPassword, sizeof(sPassword)); //Not in a listview - will not be obfucated.
 
-			CNASCCL nasccl;
+			NASCCLStream nasccl;
 			char sEncryptionKey[48];
 			MakeEncryptionKey(sEncryptionKey, sizeof(sEncryptionKey), "%s\\%s", sDomain, sUsername);
-			nasccl.InitializeCryptography(sEncryptionKey);
+			nasccl.Initialize(sEncryptionKey);
 			nasccl.Cipher(sPassword, iPasswordLength);
-			nasccl.DestroyCryptography();
+			nasccl.Destroy();
 
 			char sEncodedPassword[VIRTUALROOTS_MAX_PASS_LENGTH];
 
@@ -984,7 +983,7 @@ void PopCompressionList_AddItem(HWND hList, COMPRESSIBLEFILE *obj, int iInsertio
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopCompressionList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopCompressionList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -1038,7 +1037,7 @@ void PopCompressionList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("FileType", &xml);)
+	for(XMLReader xml; pXML->ToReader("FileType", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Extension", sExtension, sizeof(sExtension));
@@ -1066,7 +1065,7 @@ void PopCompressionList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewCompressionConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewCompressionConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -1088,7 +1087,7 @@ bool LoadNewCompressionConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("FileType");
+		XMLWriter Item("FileType");
 
 		LVGetText(hGrid, iItem, COMPRESSION_LIST_POS_EXT, sExt, sizeof(sExt));
 		Item.Add("Extension", sExt);
@@ -1153,7 +1152,7 @@ void PopErrorPagesList_AddItem(HWND hList, ERRORPAGE *obj, int iInsertionIndex)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopErrorPagesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopErrorPagesList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -1215,7 +1214,7 @@ void PopErrorPagesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Page", &xml);)
+	for(XMLReader xml; pXML->ToReader("Page", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Code", sCode, sizeof(sCode));
@@ -1245,7 +1244,7 @@ void PopErrorPagesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewErrorPagesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewErrorPagesConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -1265,7 +1264,7 @@ bool LoadNewErrorPagesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Page");
+		XMLWriter Item("Page");
 
 		LVGetText(hGrid, iItem, ERRORPAGES_LIST_POS_CODE, sCode, sizeof(sCode));
 		Item.Add("Code", sCode);
@@ -1320,7 +1319,7 @@ void PopCGIFoldersList_AddItem(HWND hList, CGIFOLDER *obj, int iInsertionIndex)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopCGIFoldersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopCGIFoldersList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -1366,7 +1365,7 @@ void PopCGIFoldersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Folder", &xml);)
+	for(XMLReader xml; pXML->ToReader("Folder", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Path", sPath, sizeof(sPath));
@@ -1392,7 +1391,7 @@ void PopCGIFoldersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewCGIFoldersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewCGIFoldersConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -1405,7 +1404,7 @@ bool LoadNewCGIFoldersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Folder");
+		XMLWriter Item("Folder");
 
 		LVGetText(hGrid, iItem, CGIFOLDERS_LIST_POS_PATH, sPath, sizeof(sPath));
 		Item.Add("Path", sPath);
@@ -1454,7 +1453,7 @@ void PopSSIFilesList_AddItem(HWND hList, SSIFILE *obj, int iInsertionIndex)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopSSIFilesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopSSIFilesList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -1500,7 +1499,7 @@ void PopSSIFilesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("File", &xml);)
+	for(XMLReader xml; pXML->ToReader("File", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Extension", sExtension, sizeof(sExtension));
@@ -1526,7 +1525,7 @@ void PopSSIFilesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewSSIFilesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewSSIFilesConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -1539,7 +1538,7 @@ bool LoadNewSSIFilesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("File");
+		XMLWriter Item("File");
 
 		LVGetText(hGrid, iItem, SSIFILES_LIST_POS_EXT, sExt, sizeof(sExt));
 		Item.Add("Extension", sExt);
@@ -1613,7 +1612,7 @@ void PopScriptingEnginesList_AddItem(HWND hList, SCRIPTENGINE *obj, int iInserti
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopScriptingEnginesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopScriptingEnginesList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -1692,7 +1691,7 @@ void PopScriptingEnginesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Engine", &xml);)
+	for(XMLReader xml; pXML->ToReader("Engine", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Extension", sExtension, sizeof(sExtension));
@@ -1726,7 +1725,7 @@ void PopScriptingEnginesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewScriptingEnginesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewScriptingEnginesConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -1741,7 +1740,7 @@ bool LoadNewScriptingEnginesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXM
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Engine");
+		XMLWriter Item("Engine");
 
 		LVGetText(hGrid, iItem, SCRIPTENGINES_LIST_POS_EXT, sExt, sizeof(sExt));
 		Item.Add("Extension", sExt);
@@ -1802,7 +1801,7 @@ void PopCustomFiltersList_AddItem(HWND hList, CUSTOMFILTER *obj, int iInsertionI
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopCustomFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopCustomFiltersList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -1848,7 +1847,7 @@ void PopCustomFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Filter", &xml);)
+	for(XMLReader xml; pXML->ToReader("Filter", &xml);)
 	{
 		//Read XML.
 		xml.ToString("DLL", sDLL, sizeof(sDLL));
@@ -1874,7 +1873,7 @@ void PopCustomFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewCustomFiltersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewCustomFiltersConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -1887,7 +1886,7 @@ bool LoadNewCustomFiltersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Filter");
+		XMLWriter Item("Filter");
 
 		LVGetText(hGrid, iItem, CUSTOMFILTERS_LIST_POS_DLL, sDLL, sizeof(sDLL));
 		Item.Add("DLL", sDLL);
@@ -1936,7 +1935,7 @@ void PopExtensionFiltersList_AddItem(HWND hList, EXTENSIONFILTER *obj, int iInse
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopExtensionFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopExtensionFiltersList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -1982,7 +1981,7 @@ void PopExtensionFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Filter", &xml);)
+	for(XMLReader xml; pXML->ToReader("Filter", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Extension", sExtension, sizeof(sExtension));
@@ -2008,7 +2007,7 @@ void PopExtensionFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewExtensionFiltersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewExtensionFiltersConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -2021,7 +2020,7 @@ bool LoadNewExtensionFiltersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXM
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Filter");
+		XMLWriter Item("Filter");
 
 		LVGetText(hGrid, iItem, EXTENSIONFILTERS_LIST_POS_EXT, sExt, sizeof(sExt));
 		Item.Add("Extension", sExt);
@@ -2070,7 +2069,7 @@ void PopIPFiltersList_AddItem(HWND hList, IPFILTER *obj, int iInsertionIndex)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopIPFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopIPFiltersList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -2116,7 +2115,7 @@ void PopIPFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Filter", &xml);)
+	for(XMLReader xml; pXML->ToReader("Filter", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Address", sIP, sizeof(sIP));
@@ -2142,7 +2141,7 @@ void PopIPFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewIPFiltersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewIPFiltersConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -2155,7 +2154,7 @@ bool LoadNewIPFiltersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Filter");
+		XMLWriter Item("Filter");
 
 		LVGetText(hGrid, iItem, IPFILTERS_LIST_POS_IP, sIP, sizeof(sIP));
 		Item.Add("Address", sIP);
@@ -2219,7 +2218,7 @@ void PopURLFiltersList_AddItem(HWND hList, URLFILTER *obj, int iInsertionIndex)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopURLFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopURLFiltersList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -2281,7 +2280,7 @@ void PopURLFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Filter", &xml);)
+	for(XMLReader xml; pXML->ToReader("Filter", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Sequence", sSequence, sizeof(sSequence));
@@ -2311,7 +2310,7 @@ void PopURLFiltersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewURLFiltersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewURLFiltersConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -2324,7 +2323,7 @@ bool LoadNewURLFiltersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Filter");
+		XMLWriter Item("Filter");
 
 		LVGetText(hGrid, iItem, URLFILTERS_LIST_POS_SEQ, sSequence, sizeof(sSequence));
 		Item.Add("Sequence", sSequence);
@@ -2385,7 +2384,7 @@ void PopMimeTypesList_AddItem(HWND hList, MIMETYPE *obj, int iInsertionIndex)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopMimeTypesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopMimeTypesList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -2439,7 +2438,7 @@ void PopMimeTypesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Type", &xml);)
+	for(XMLReader xml; pXML->ToReader("Type", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Extension", sExtension, sizeof(sExtension));
@@ -2467,7 +2466,7 @@ void PopMimeTypesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewMimeTypesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewMimeTypesConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -2481,7 +2480,7 @@ bool LoadNewMimeTypesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Type");
+		XMLWriter Item("Type");
 
 		LVGetText(hGrid, iItem, MIMETYPES_LIST_POS_EXTENSION, sExt, sizeof(sExt));
 		Item.Add("Extension", sExt);
@@ -2573,7 +2572,7 @@ void PopVirtualRootsList_AddItem(HWND hList, ROOT *obj, bool bSaveCopyOfPlainTex
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopVirtualRootsList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopVirtualRootsList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -2651,7 +2650,7 @@ void PopVirtualRootsList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Root", &xml);)
+	for(XMLReader xml; pXML->ToReader("Root", &xml);)
 	{
 		//Read XML.
 		xml.ToString("URI", sURI, sizeof(sURI));
@@ -2659,7 +2658,7 @@ void PopVirtualRootsList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 		xml.ToString("Description", sDescription, sizeof(sDescription));
 		bEnable = xml.ToBoolean("Enable");
 
-		CXMLReader xmlLogin;
+		XMLReader xmlLogin;
 		if(xml.ToReader("Login", &xmlLogin))
 		{
 			xmlLogin.ToString("Username", sUsername, sizeof(sUsername));
@@ -2696,7 +2695,7 @@ void PopVirtualRootsList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewVirtualRootsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewVirtualRootsConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -2713,7 +2712,7 @@ bool LoadNewVirtualRootsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Root");
+		XMLWriter Item("Root");
 
 		LVGetText(hGrid, iItem, VIRTUALROOTS_LIST_POS_ROOT, sURI, sizeof(sURI));
 		Item.Add("URI", sURI);
@@ -2734,12 +2733,12 @@ bool LoadNewVirtualRootsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 		int iPasswordLength = (int)strlen(sPassword);
 
-		CNASCCL nasccl;
+		NASCCLStream nasccl;
 		char sEncryptionKey[48];
 		MakeEncryptionKey(sEncryptionKey, sizeof(sEncryptionKey), "%s\\%s", sDomain, sUsername);
-		nasccl.InitializeCryptography(sEncryptionKey);
+		nasccl.Initialize(sEncryptionKey);
 		nasccl.Cipher(sPassword, iPasswordLength);
-		nasccl.DestroyCryptography();
+		nasccl.Destroy();
 
 		char sEncodedPassword[VIRTUALROOTS_MAX_PASS_LENGTH];
 		if (Base64Encode((unsigned char *)sPassword, iPasswordLength, (unsigned char *)sEncodedPassword, sizeof(sEncodedPassword)) < 0)
@@ -2750,7 +2749,7 @@ bool LoadNewVirtualRootsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 		if(strlen(sUsername) > 0)
 		{
-			CXMLWriter xmlAuth("Login");
+			XMLWriter xmlAuth("Login");
 			xmlAuth.Add("Username", sUsername);
 			xmlAuth.Add("Domain", sDomain);
 			xmlAuth.Add("Password", sEncodedPassword);
@@ -2798,7 +2797,7 @@ void PopDefaultPagesList_AddItem(HWND hList, DEFAULTPAGE *obj, int iInsertionInd
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopDefaultPagesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopDefaultPagesList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -2844,7 +2843,7 @@ void PopDefaultPagesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("Page", &xml);)
+	for(XMLReader xml; pXML->ToReader("Page", &xml);)
 	{
 		//Read XML.
 		xml.ToString("File", sFile, sizeof(sFile));
@@ -2869,7 +2868,7 @@ void PopDefaultPagesList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewDefaultPagesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewDefaultPagesConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -2882,7 +2881,7 @@ bool LoadNewDefaultPagesConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("Page");
+		XMLWriter Item("Page");
 
 		LVGetText(hGrid, iItem, DEFAULTPAGES_LIST_POS_PAGE, sPage, sizeof(sPage));
 		Item.Add("File", sPage);
@@ -2947,7 +2946,7 @@ void PopServerSettingsList_User_AddItem(HWND hList, SERVERUSER *obj, bool bSaveC
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopServerSettingsList_User(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopServerSettingsList_User(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -3001,7 +3000,7 @@ void PopServerSettingsList_User(HWND hList, bool bUseIcons, CXMLReader *pXML)
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("User", &xml);)
+	for(XMLReader xml; pXML->ToReader("User", &xml);)
 	{
 		//Read XML.
 		xml.ToString("Username", sUsername, sizeof(sUsername));
@@ -3029,7 +3028,7 @@ void PopServerSettingsList_User(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewServerSettings_User_Configuration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewServerSettings_User_Configuration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -3041,7 +3040,7 @@ bool LoadNewServerSettings_User_Configuration(HWND hWnd, HWND hGrid, CXMLWriter 
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("User");
+		XMLWriter Item("User");
 
 		LVGetText(hGrid, iItem, SERVERS_LIST_POS_USERNAME, sUsername, sizeof(sUsername));
 		Item.Add("Username", sUsername);
@@ -3063,7 +3062,7 @@ bool LoadNewServerSettings_User_Configuration(HWND hWnd, HWND hGrid, CXMLWriter 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void RefreshServerPerformanceList(HWND hList, CXMLReader *pXML)
+void RefreshServerPerformanceList(HWND hList, XMLReader *pXML)
 {
 	char sName[MAX_SITE_NAME];
 	char sText[255];
@@ -3076,7 +3075,7 @@ void RefreshServerPerformanceList(HWND hList, CXMLReader *pXML)
 
 	pXML->ProgressiveScan(true);
 
-	for(CXMLReader xml; pXML->ToReader("Site", &xml);)
+	for(XMLReader xml; pXML->ToReader("Site", &xml);)
 	{
 		if(xml.ToString("Name", sName, sizeof(sName)))
 		{
@@ -3145,7 +3144,7 @@ void RefreshServerPerformanceList(HWND hList, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopServerPerformanceList(HWND hList, CXMLReader *pXML)
+void PopServerPerformanceList(HWND hList, XMLReader *pXML)
 {
 	LV_COLUMN lvColumn;
     memset(&lvColumn, 0, sizeof(LV_COLUMN));
@@ -3273,7 +3272,7 @@ void PopSocketPoolsList_AddItem(HWND hList, SOCKETPOOL *obj, int iInsertionIndex
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopSocketPoolsList(HWND hList, bool bUseIcons, CXMLReader *pXML, bool bSaveXMLInLParam)
+void PopSocketPoolsList(HWND hList, bool bUseIcons, XMLReader *pXML, bool bSaveXMLInLParam)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -3364,7 +3363,7 @@ void PopSocketPoolsList(HWND hList, bool bUseIcons, CXMLReader *pXML, bool bSave
 	pXML->ProgressiveScan(true);
 
 	//Pop the list-view.
-	for(CXMLReader xml; pXML->ToReader("SocketPool", &xml);)
+	for(XMLReader xml; pXML->ToReader("SocketPool", &xml);)
 	{
 		//Read XML.
 		iPort = xml.ToInteger("Port");
@@ -3407,7 +3406,7 @@ void PopSocketPoolsList(HWND hList, bool bUseIcons, CXMLReader *pXML, bool bSave
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewSocketPoolsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewSocketPoolsConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -3418,7 +3417,7 @@ bool LoadNewSocketPoolsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("SocketPool");
+		XMLWriter Item("SocketPool");
 
 		LVGetText(hGrid, iItem, SOCKETPOOLS_LIST_POS_UID, sText, sizeof(sText));
 		Item.Add("UID", sText);
@@ -3447,7 +3446,7 @@ bool LoadNewSocketPoolsConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 		const char *sXMLText = (char *)xmlParam;
 		if(sXMLText)
 		{
-			CXMLReader xmlIPAddresses(sXMLText);
+			XMLReader xmlIPAddresses(sXMLText);
 			xmlIPAddresses.ToReader("IPAddresses", &xmlIPAddresses);
 
 			Item.Add("IPAddresses", &xmlIPAddresses);
@@ -3493,7 +3492,7 @@ void PopHostHeadersList_AddItem(HWND hList, HOSTHEADER *obj, int iInsertionIndex
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PopHostHeadersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
+void PopHostHeadersList(HWND hList, bool bUseIcons, XMLReader *pXML)
 {
 	SendMessage(hList, (UINT)WM_SETREDRAW , (WPARAM)FALSE, (LPARAM)0);
 
@@ -3536,15 +3535,15 @@ void PopHostHeadersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 		char sDescription[HOSTHEADERS_MAX_DESCR_LENGTH];
 		bool bEnable = false;
 
-		CXMLReader xmlSubItem;
+		XMLReader xmlSubItem;
 		pXML->ToReader("HostHeaders", &xmlSubItem);
 
 		xmlSubItem.ScanPosition(0);
 		xmlSubItem.ProgressiveScan(true);
 
 		//Pop the list-view.
-		CXMLReader xml;
-		for(CXMLReader xml; xmlSubItem.ToReader("HostHeader", &xml);)
+		XMLReader xml;
+		for(XMLReader xml; xmlSubItem.ToReader("HostHeader", &xml);)
 		{
 			//Read XML.
 			xml.ToString("Name", sName, sizeof(sName));
@@ -3570,7 +3569,7 @@ void PopHostHeadersList(HWND hList, bool bUseIcons, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadNewHostHeadersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
+bool LoadNewHostHeadersConfiguration(HWND hWnd, HWND hGrid, XMLWriter *pXML)
 {
 	int iGridItems = LVItemCount(hGrid);
 
@@ -3581,7 +3580,7 @@ bool LoadNewHostHeadersConfiguration(HWND hWnd, HWND hGrid, CXMLWriter *pXML)
 
 	for(int iItem = 0; iItem < iGridItems; iItem++)
 	{
-		CXMLWriter Item("HostHeader");
+		XMLWriter Item("HostHeader");
 
 		LVGetText(hGrid, iItem, HOSTHEADERS_LIST_POS_NAME, sName, sizeof(sName));
 		Item.Add("Name", sName);

@@ -115,7 +115,7 @@ bool PopDetailPane(int iPageType, int iSiteIndex)
 	}
 	else
 	{
-		CXMLReader xml;
+		XMLReader xml;
 		memset(&xml, 0, sizeof(xml));
 
 		//Site settings.

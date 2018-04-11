@@ -52,7 +52,8 @@
 #include "../../@Common/DefaultPages.h"
 #include "../../@Common/SocketPools.H"
 
-#include "../../../../@Libraries/CStack/CStack.H"
+using namespace NSWFL::XML;
+using namespace NSWFL::Collections;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -189,7 +190,7 @@ bool ConfigureTreeItem(int iSiteIndex, int iPageType)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ProcessXMLResult(HWND hWnd, CXMLReader *pXML, const char *sSuccessText, const char *sFailureText)
+bool ProcessXMLResult(HWND hWnd, XMLReader *pXML, const char *sSuccessText, const char *sFailureText)
 {
 	if(pXML->ToBoolean("Result"))
 	{
@@ -202,7 +203,7 @@ bool ProcessXMLResult(HWND hWnd, CXMLReader *pXML, const char *sSuccessText, con
 	else {
 		char sErrorText[MAX_TEXT_SIZE];
 
-		CStringBuilder errMsg(sFailureText);
+		StringBuilder errMsg(sFailureText);
 		if(pXML->ToString("Text", sErrorText, sizeof(sErrorText)))
 		{
 			errMsg.AppendF("\r\n\r\n%s", sErrorText);
@@ -215,7 +216,7 @@ bool ProcessXMLResult(HWND hWnd, CXMLReader *pXML, const char *sSuccessText, con
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CStack *bindingsStack = NULL;
+Stack *bindingsStack = NULL;
 
 LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -270,7 +271,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 					"\t3) Start sites based on their settings.\n",
 					gsTitleCaption, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(ProcessLengthyCommand(&xml, gMainDialog,
 						"Please wait while the websites are restarted. This process can take a long time depending on the number of connections.",
 						"::RestartWebSites|", iSiteIndex))
@@ -299,7 +300,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 					"\t3) Start sites based on their settings.\n",
 					gsTitleCaption, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(ProcessLengthyCommand(&xml, gMainDialog,
 						"Please wait while the server is restarted. This process can take a long time depending on the number of connections.",
 						"::RestartServer|", iSiteIndex))
@@ -320,7 +321,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 					"Persisting the configuration will cause all configured setting to be written to the disk. Continue?",
 					gsTitleCaption, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(ProcessLengthyCommand(&xml, gMainDialog,
 						"Please wait while the configuration is persisted. This process can take a long time depending on the number of connections.",
 						"::PersistConfiguration|", iSiteIndex))
@@ -337,7 +338,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			}
 			else if(LOWORD(wParam) == TREE_CMD_START_SITE)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(gManage->QueryXMLReader(&xml, "::Start|%d", iSiteIndex))
 				{
 					if(ProcessXMLResult(hWnd, &xml, NULL, "Failed to start the site!"))
@@ -364,7 +365,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 					"Are you sure you want to stop this site?",
 					gsTitleCaption, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(ProcessLengthyCommand(&xml, gMainDialog,
 						"Please wait while the website is stopped. This process can take a long time depending on the number of connections on the given website.",
 						"::Stop|%d", iSiteIndex))
@@ -394,7 +395,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 					"Are you sure you want to restart this site?",
 					gsTitleCaption, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(ProcessLengthyCommand(&xml, gMainDialog,
 						"Please wait while the website is restarted. This process can take a long time depending on the number of connections on the given website.",
 						"::RestartWebSite|%d", iSiteIndex))
@@ -431,7 +432,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			{
 				int iClickedIndex = HIWORD(wParam);
 
-				_CSTACKITEM *pStackItem = bindingsStack->Peek(iClickedIndex);
+				_STACKITEM *pStackItem = bindingsStack->Peek(iClickedIndex);
 				if(pStackItem)
 				{
 					ShellExecute(hWnd, "open", (char *)pStackItem->Value, NULL, NULL, SW_NORMAL);
@@ -481,7 +482,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 							AppendMenu(hChild, MF_STRING, TREE_CMD_RESTART_SITE, "Restart");
 							AppendMenu(hChild, MF_SEPARATOR, TREE_CMD_SEPERATOR, "");
 
-							CXMLReader xml;
+							XMLReader xml;
 							if(gManage->QueryXMLReader(&xml, "::Configuration:WebSiteBindings|%d", iSiteIndex))
 							{
 								if(hViewMenu)
@@ -494,7 +495,7 @@ LRESULT CALLBACK ConfigTreeProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 								}
 
 								hViewMenu = CreateMenu();
-								bindingsStack = new CStack(BEHAVIOR_FILO);
+								bindingsStack = new Stack(BEHAVIOR_FILO);
 
 								xml.ProgressiveScan(true);
 
@@ -708,7 +709,7 @@ HTREEITEM ATI(HTREEITEM hParent, char *sINText, int iImage, int lParam)
 
 void PopulateConfigTree(void)
 {
-	CXMLReader xml;
+	XMLReader xml;
 	memset(&xml, 0, sizeof(xml));
 	if(gManage->QueryXMLReader(&xml, "::Configuration:WebSites|"))
 	{
@@ -718,7 +719,7 @@ void PopulateConfigTree(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool PopulateConfigTree(CXMLReader *pSites)
+bool PopulateConfigTree(XMLReader *pSites)
 {
 	TreeView_DeleteAllItems(gTreeView);
 
@@ -733,7 +734,7 @@ bool PopulateConfigTree(CXMLReader *pSites)
 
 	//MAKELONG("SITE INDEX", "PAGE TYPE")
 
-	CXMLReader site;
+	XMLReader site;
 	pSites->ProgressiveScan(true);
 	while(pSites->ToReader("Site", &site))
 	{

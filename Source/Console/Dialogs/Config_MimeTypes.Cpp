@@ -65,7 +65,7 @@ INT_PTR CALLBACK Config_MimeTypes(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
 		ShowWindow(GetDlgItem(hWnd, IDC_EXPORT), SW_SHOW);
 
-		CXMLReader xml;
+		XMLReader xml;
 		if(gManage->QueryXMLReader(&xml, "::Configuration:MimeTypes|%d", gCI.iSite))
 		{
 			if(xml.ToBoolean("Enable"))
@@ -181,12 +181,12 @@ INT_PTR CALLBACK Config_MimeTypes(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 			//---(Begin Server Update)------------------------------------------------------------------
 			if(IsDlgButtonChecked(hWnd, IDC_USEGLOBAL) == FALSE)
 			{
-				CXMLWriter xml;
+				XMLWriter xml;
 				if(LoadNewMimeTypesConfiguration(hWnd, gCI.hList, &xml))
 				{
 					char *xmlText = xml.Text();
 
-					CXMLReader xml;
+					XMLReader xml;
 					if(gManage->QueryXMLReader(&xml, "::Update|%d:%s:%s", gCI.iSite, "MimeTypes", xmlText))
 					{
 						ProcessXMLResult(hWnd, &xml, NULL, "Failed to apply configuration!");
@@ -201,7 +201,7 @@ INT_PTR CALLBACK Config_MimeTypes(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 			else {
 				if(!gCI.bGlobal)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(gManage->QueryXMLReader(&xml, "::Update|%d:%s:%s", gCI.iSite, "MimeTypes", "~Global"))
 					{
 						ProcessXMLResult(hWnd, &xml, NULL, "Failed to apply configuration!");

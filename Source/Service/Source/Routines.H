@@ -10,11 +10,13 @@
 #define _ROUTINES_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
+#include "../../../NSWFL/NSWFL_StringBuilder.H"
+
+using namespace NSWFL::String;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool GetLastError(CStringBuilder *outError);
+bool GetLastError(StringBuilder *outError);
 bool GetLastError(char *sOutErrorMessage, int iMaxOutErrorMessage);
 bool GetLastError(char *sOutErrorMessage, int iMaxOutErrorMessage, const char *sPrefix);
 bool GetLastError(char *sOutErrorMessage, int iMaxOutErrorMessage, const char *sPrefix, const char *sSuffix);

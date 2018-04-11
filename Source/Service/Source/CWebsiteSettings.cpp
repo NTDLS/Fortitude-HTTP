@@ -28,8 +28,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 #include "CWebSites.H"
 
 #include "../../@Common/Cryptography.h"
-#include "../../../../@Libraries/Base64/Base64.h"
-#include "../../../../@Libraries/CNASCCL (Stream)/CNASCCL.H"
+#include "../../../NASCCL/NASCCL.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +37,7 @@ using namespace NSWFL::File;
 using namespace NSWFL::ListView;
 using namespace NSWFL::Conversion;
 using namespace NSWFL::Windows;
+using namespace NSWFL::Conversion;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,7 +58,7 @@ CWebsiteSettings::CWebsiteSettings(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CWebsiteSettings::CWebsiteSettings(void *lpWebSites, CXMLReader *xmlConfig, CWebsiteSettings *pDefaults)
+CWebsiteSettings::CWebsiteSettings(void *lpWebSites, XMLReader *xmlConfig, CWebsiteSettings *pDefaults)
 {
 	this->Initialized = true;
 	this->pWebSites = lpWebSites;
@@ -73,7 +73,7 @@ bool CWebsiteSettings::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -94,11 +94,11 @@ bool CWebsiteSettings::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebsiteSettings::ToXML(CXMLReader *lpXML)
+bool CWebsiteSettings::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("WebsiteSettings");
+	XMLWriter xmlConfig("WebsiteSettings");
 
 	xmlConfig.AddBool("AllowDirectoryIndexing", this->Collection.AllowDirectoryIndexing);
 	xmlConfig.AddBool("CacheLogFile", this->Collection.CacheLogFile);
@@ -116,12 +116,12 @@ bool CWebsiteSettings::ToXML(CXMLReader *lpXML)
 	char sEncryptedPassword[VIRTUALROOTS_MAX_PASS_LENGTH];
 	strcpy_s(sEncryptedPassword, sizeof(sEncryptedPassword), this->Collection.Password);
 
-	CNASCCL nasccl;
+	NASCCLStream nasccl;
 	char sEncryptionKey[48];
 	MakeEncryptionKey(sEncryptionKey, sizeof(sEncryptionKey), "%s\\%s", this->Collection.Domain, this->Collection.Username);
-	nasccl.InitializeCryptography(sEncryptionKey);
+	nasccl.Initialize(sEncryptionKey);
 	nasccl.Cipher(sEncryptedPassword, iPasswordLength);
-	nasccl.DestroyCryptography();
+	nasccl.Destroy();
 
 	char sEncodedPassword[VIRTUALROOTS_MAX_PASS_LENGTH];
 	if (Base64Encode((unsigned char *)sEncryptedPassword, iPasswordLength, (unsigned char *)sEncodedPassword, sizeof(sEncodedPassword)) < 0)
@@ -168,11 +168,11 @@ bool CWebsiteSettings::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("WebsiteSettings", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -186,7 +186,7 @@ bool CWebsiteSettings::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebsiteSettings::Load(CXMLReader *xmlConfig, CWebsiteSettings *pDefaults)
+bool CWebsiteSettings::Load(XMLReader *xmlConfig, CWebsiteSettings *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -217,12 +217,12 @@ bool CWebsiteSettings::Load(CXMLReader *xmlConfig, CWebsiteSettings *pDefaults)
 		int iRawPasswordLength = (int)Base64Decode((unsigned char *)sEncryptedPassword, (int)strlen(sEncryptedPassword), (unsigned char *)this->Collection.Password, (int)sizeof(this->Collection.Password));
 		if (iRawPasswordLength > 0)
 		{
-			CNASCCL nasccl;
+			NASCCLStream nasccl;
 			char sEncryptionKey[48];
 			MakeEncryptionKey(sEncryptionKey, sizeof(sEncryptionKey), "%s\\%s", this->Collection.Domain, this->Collection.Username);
-			nasccl.InitializeCryptography(sEncryptionKey);
+			nasccl.Initialize(sEncryptionKey);
 			nasccl.Cipher(this->Collection.Password, iRawPasswordLength);
-			nasccl.DestroyCryptography();
+			nasccl.Destroy();
 		}
 	}
 	else{
@@ -245,12 +245,12 @@ bool CWebsiteSettings::Load(CXMLReader *xmlConfig, CWebsiteSettings *pDefaults)
 		int iRawPasswordLength = (int)Base64Decode((unsigned char *)sEncryptedPassword, (int)strlen(sEncryptedPassword), (unsigned char *)this->Collection.Password, (int)sizeof(this->Collection.Password));
 		if (iRawPasswordLength > 0)
 		{
-			CNASCCL nasccl;
+			NASCCLStream nasccl;
 			char sEncryptionKey[48];
 			MakeEncryptionKey(sEncryptionKey, sizeof(sEncryptionKey), "%s\\%s", this->Collection.Domain, this->Collection.Username);
-			nasccl.InitializeCryptography(sEncryptionKey);
+			nasccl.Initialize(sEncryptionKey);
 			nasccl.Cipher(this->Collection.Password, iRawPasswordLength);
-			nasccl.DestroyCryptography();
+			nasccl.Destroy();
 		}
 
 	}

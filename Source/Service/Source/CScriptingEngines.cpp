@@ -16,18 +16,15 @@
 #include <ShlOBJ.H>
 #include <Stdlib.H>
 
-#include "../../../../@Libraries/CDuration/CDuration.h"
-
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CScriptingEngines.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
+#include "../../../NSWFL/NSWFL.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,6 +32,7 @@ using namespace NSWFL::String;
 using namespace NSWFL::File;
 using namespace NSWFL::ListView;
 using namespace NSWFL::System;
+using namespace NSWFL::HighPrecisionTimer;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +53,7 @@ CScriptingEngines::CScriptingEngines(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CScriptingEngines::CScriptingEngines(void *lpWebSites, CXMLReader *xmlConfig, CScriptingEngines *pDefaults)
+CScriptingEngines::CScriptingEngines(void *lpWebSites, XMLReader *xmlConfig, CScriptingEngines *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -70,7 +68,7 @@ bool CScriptingEngines::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -91,17 +89,17 @@ bool CScriptingEngines::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::ToXML(CXMLReader *lpXML)
+bool CScriptingEngines::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("ScriptingEngines");
+	XMLWriter xmlConfig("ScriptingEngines");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Engine");
+		XMLWriter Item("Engine");
 		Item.Add("Extension", this->Collection.Items[iItem].Extension);
 		Item.Add("Executable", this->Collection.Items[iItem].Engine);
 		Item.Add("SuccessCode", this->Collection.Items[iItem].SuccessCode);
@@ -150,11 +148,11 @@ bool CScriptingEngines::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("ScriptingEngines", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -168,7 +166,7 @@ bool CScriptingEngines::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::Load(CXMLReader *xmlConfig, CScriptingEngines *pDefaults)
+bool CScriptingEngines::Load(XMLReader *xmlConfig, CScriptingEngines *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -182,7 +180,7 @@ bool CScriptingEngines::Load(CXMLReader *xmlConfig, CScriptingEngines *pDefaults
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPEngine;
+	XMLReader XPEngine;
 
 	while(xmlConfig->ToReader("Engine", &XPEngine))
 	{
@@ -330,7 +328,7 @@ bool CScriptingEngines::IsScriptFile(const char *sFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::AddEnvVar(CStringBuilder *lpBuf, const char *sVarName, const int iVarData)
+bool CScriptingEngines::AddEnvVar(StringBuilder *lpBuf, const char *sVarName, const int iVarData)
 {
 	this->Locks.LockShared();
 	lpBuf->Append(sVarName);
@@ -342,7 +340,7 @@ bool CScriptingEngines::AddEnvVar(CStringBuilder *lpBuf, const char *sVarName, c
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::AddEnvVar(CStringBuilder *lpBuf, const char *sVarName, const char *sVarData, int iVarLength)
+bool CScriptingEngines::AddEnvVar(StringBuilder *lpBuf, const char *sVarName, const char *sVarData, int iVarLength)
 {
 	this->Locks.LockShared();
 	lpBuf->Append(sVarName);
@@ -354,7 +352,7 @@ bool CScriptingEngines::AddEnvVar(CStringBuilder *lpBuf, const char *sVarName, c
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::AddRawEnvVar(CStringBuilder *lpBuf, const char *sVarNameAndValue)
+bool CScriptingEngines::AddRawEnvVar(StringBuilder *lpBuf, const char *sVarNameAndValue)
 {
 	this->Locks.LockShared();
 	lpBuf->Append(sVarNameAndValue);
@@ -364,7 +362,7 @@ bool CScriptingEngines::AddRawEnvVar(CStringBuilder *lpBuf, const char *sVarName
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::AddRawEnvVar(CStringBuilder *lpBuf, const char *sVarNameAndValue, int iVarNameAndValueLength)
+bool CScriptingEngines::AddRawEnvVar(StringBuilder *lpBuf, const char *sVarNameAndValue, int iVarNameAndValueLength)
 {
 	this->Locks.LockShared();
 	lpBuf->Append(sVarNameAndValue, iVarNameAndValueLength);
@@ -374,7 +372,7 @@ bool CScriptingEngines::AddRawEnvVar(CStringBuilder *lpBuf, const char *sVarName
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::AddEnvVar(CStringBuilder *lpBuf, const char *sVarName, const char *sVarData)
+bool CScriptingEngines::AddEnvVar(StringBuilder *lpBuf, const char *sVarName, const char *sVarData)
 {
 //#if _DEBUG
 //	printf("%s = %s\n", sVarName, sVarData);
@@ -389,7 +387,7 @@ bool CScriptingEngines::AddEnvVar(CStringBuilder *lpBuf, const char *sVarName, c
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::CopyEnvVar(CStringBuilder *lpStr, const char *sVarName)
+bool CScriptingEngines::CopyEnvVar(StringBuilder *lpStr, const char *sVarName)
 {
 	this->Locks.LockShared();
 	DWORD dwAlloc = GetEnvironmentVariable(sVarName, NULL, 0);
@@ -408,7 +406,7 @@ bool CScriptingEngines::CopyEnvVar(CStringBuilder *lpStr, const char *sVarName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CScriptingEngines::AddEnvVars(VOID *pClient, CStringBuilder *lpStr, const char *sScriptFileName)
+bool CScriptingEngines::AddEnvVars(VOID *pClient, StringBuilder *lpStr, const char *sScriptFileName)
 {
 	this->Locks.LockShared();
 	char sTemp[MAX_URI_LEN];
@@ -466,7 +464,7 @@ bool CScriptingEngines::AddEnvVars(VOID *pClient, CStringBuilder *lpStr, const c
 		this->AddEnvVar(lpStr, "SCRIPT_FILENAME", pC->Header.FullRequest);
 	}
 
-	CStringBuilder requestURI(pC->Header.Request);
+	StringBuilder requestURI(pC->Header.Request);
 	if(pC->Header.Query[0] != 0)
 	{
 		requestURI.AppendF("?%s", pC->Header.Query);
@@ -666,7 +664,7 @@ int CScriptingEngines::ProcessScript(VOID *pClient)
 	CWebSite *pWebSite = (CWebSite *)pC->pWebSite;
 	CHttp *pHttp = (CHttp *)pWebSite->pHttp;
 	CWebSites *pWebSites = (CWebSites *)pWebSite->pWebSites;
-	CStringBuilder Content(SCRIPTINGENGINES_MAX_STDIO_BUFFER_SIZE);
+	StringBuilder Content(SCRIPTINGENGINES_MAX_STDIO_BUFFER_SIZE);
 
 	pC->PerRequestStore.IsDynamicContent = true;
 
@@ -805,7 +803,7 @@ int CScriptingEngines::ProcessScript(VOID *pClient)
 	Process script and return all data through lpOutput.
 	NOTE: DO NOT not send errors from here, just return an error code.
 */
-int CScriptingEngines::ProcessScript(VOID *pClient, CStringBuilder *lpOutput, const char *sScriptFile)
+int CScriptingEngines::ProcessScript(VOID *pClient, StringBuilder *lpOutput, const char *sScriptFile)
 {
 	this->Locks.LockShared();
 	if(!FileAccess(sScriptFile, FRead))
@@ -850,7 +848,7 @@ int CScriptingEngines::ProcessScript(VOID *pClient, CStringBuilder *lpOutput, co
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
 #ifdef _DEBUG
-void DumpCGIRequestInfo(VOID *pClient, const char *sCommandLine, DWORD dwExitCode, CStringBuilder *Environment, const char *sPostData, int PostDataSize, CStringBuilder *stdOut)
+void DumpCGIRequestInfo(VOID *pClient, const char *sCommandLine, DWORD dwExitCode, StringBuilder *Environment, const char *sPostData, int PostDataSize, StringBuilder *stdOut)
 {
 	PEER *pC = (PEER *)pClient;
 	CHttp *pHttp = (CHttp *)((CWebSite *)pC->pWebSite)->pHttp;
@@ -938,7 +936,7 @@ void DumpCGIRequestInfo(VOID *pClient, const char *sCommandLine, DWORD dwExitCod
 /*
 	NOTE: DO NOT not send errors from here, just return an error code.
 */
-int CScriptingEngines::ProcessCGI(VOID *pClient, CStringBuilder *lpOutput,  const char *sScriptFile,
+int CScriptingEngines::ProcessCGI(VOID *pClient, StringBuilder *lpOutput,  const char *sScriptFile,
 								  const char *sEngine, const char *sParams, bool bIsNativeExecutable, int iSuccessCode, bool bUseSuccessCode)
 {
 	PEER *pC = (PEER *)pClient;
@@ -993,14 +991,14 @@ int CScriptingEngines::ProcessCGI(VOID *pClient, CStringBuilder *lpOutput,  cons
 	SI.hStdError	= hNewSTDOut; //Set the new handles for the child process.
 	SI.hStdInput	= hNewSTDIN;  //Set the new handles for the child process.
 
-	CStringBuilder Environment;
+	StringBuilder Environment;
 	this->AddEnvVars(pC, &Environment, sScriptFile);
 
 	int iResult = EXEC_RESULT_OK;
 	char sCurrentDir[MAX_PATH];
 	GetFilePath(sScriptFile, sCurrentDir, sizeof(sCurrentDir));
 
-	CStringBuilder commandLine;
+	StringBuilder commandLine;
 
 	if(bIsNativeExecutable)
 	{
@@ -1052,7 +1050,7 @@ int CScriptingEngines::ProcessCGI(VOID *pClient, CStringBuilder *lpOutput,  cons
 	DWORD dwPipeMode = /*PIPE_READMODE_BYTE|*/PIPE_NOWAIT;
 	if(SetNamedPipeHandleState(hReadSTDOut, &dwPipeMode, NULL, NULL))
 	{
-		CStringBuilder stdCollector(pWebSite->pSocketPool->FileBufferSize);
+		StringBuilder stdCollector(pWebSite->pSocketPool->FileBufferSize);
 		DWORD dwStartTime = GetTickCount();
 		DWORD dwTimeout = (DWORD)((CWebSite*)pC->pWebSite)->pWebsiteSettings->ScriptTimeout() * 1000;
 
@@ -1102,7 +1100,7 @@ int CScriptingEngines::ProcessCGI(VOID *pClient, CStringBuilder *lpOutput,  cons
 	{
 		if(pWebSite->pSSIFiles->IsSSIFile(sScriptFile))
 		{
-			CStringBuilder SSIData(lpOutput);
+			StringBuilder SSIData(lpOutput);
 			lpOutput->Clear();
 			if(!pWebSite->pSSIFiles->ProcessServerSideInclude(pClient, SSIData.Buffer, SSIData.Length, false, lpOutput))
 			{
@@ -1131,7 +1129,7 @@ int CScriptingEngines::ProcessCGI(VOID *pClient, CStringBuilder *lpOutput,  cons
 //BOOL WINAPI TerminateExtension(DWORD dwFlags);
 //typedef BOOL (__stdcall *LPTerminateExtension)(DWORD dwFlags);
 
-int CScriptingEngines::ProcessFastCGI(VOID *pClient, CStringBuilder *lpOutput,
+int CScriptingEngines::ProcessFastCGI(VOID *pClient, StringBuilder *lpOutput,
 									  const char *sScriptFile, const char *sEngine, const char *sParams)
 {
 	//FIXFIX: Not implemented!

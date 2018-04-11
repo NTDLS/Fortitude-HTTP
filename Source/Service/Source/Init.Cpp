@@ -28,6 +28,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::Registry;
+using namespace NSWFL::Memory;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +39,7 @@ bool InitializeApp(void)
 	ccex.dwICC = ICC_TREEVIEW_CLASSES | ICC_PROGRESS_CLASS | ICC_BAR_CLASSES;
 	InitCommonControlsEx(&ccex);
 
-	pMem = new CMemPool;
+	pMem = new MemoryPool;
 	gWebSites = NULL;
 
 	LoadString(ghAppInstance, IDS_APPCOPYRIGHT, gsAppCopyRight, sizeof(gsAppCopyRight));

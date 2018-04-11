@@ -10,12 +10,12 @@
 #define _CCGIFolders_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/CGIFolders.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,21 +27,21 @@ private:
 	CGIFOLDERS Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	~CCGIFolders(void);
 	CCGIFolders(void *lpWebSites);
-	CCGIFolders(void *lpWebSites, CXMLReader *xmlConfig, CCGIFolders *pDefaults);
+	CCGIFolders(void *lpWebSites, XMLReader *xmlConfig, CCGIFolders *pDefaults);
 	bool Save(void);
 	
 	bool IsInCGIFolder(VOID *pClient);
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CCGIFolders *pDefaults);
+	bool Load(XMLReader *xmlConfig, CCGIFolders *pDefaults);
 	bool Reload(void);
 	bool Destroy(void);
 	bool Enabled(void);
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

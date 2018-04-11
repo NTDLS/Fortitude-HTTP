@@ -19,13 +19,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "../../@Common/Cryptography.h"
-#include "../../../../@Libraries/Base64/Base64.h"
-#include "../../../../@Libraries/CNASCCL (Stream)/CNASCCL.H"
+#include "../../../NSWFL/NSWFL.h"
+#include "../../../NASCCL/NASCCL.H"
 
 #include "Entry.H"
 #include "CHttp.H"
 #include "CWebSites.H"
-#include "../../../../@Libraries/URLEncoding/URLEncoding.H"
 #include "CDirectoryIndexing.H"
 #include "../../../Setup/Filters/Filter Example/Source/HTTPFilter.H"
 
@@ -35,6 +34,8 @@ using namespace NSWFL::String;
 using namespace NSWFL::File;
 using namespace NSWFL::ListView;
 using namespace NSWFL::DateTime;
+using namespace NSWFL::Hashing;
+using namespace NSWFL::Conversion;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -322,8 +323,8 @@ bool CHttp::SendFileWithHeader(PEER *pC, const char *sFileName)
 
 bool CHttp::ResponseRedirect(PEER *pC, const char *sURL, bool bPermanent)
 {
-	CStringBuilder body;
-	CStringBuilder location;
+	StringBuilder body;
+	StringBuilder location;
 
 	body.AppendF("<head><title>Document Moved</title></head>"
 		"<body><h1>Object have been %s moved</h1>This document may be found <a href=\"%s\">here</a></body>",
@@ -345,7 +346,7 @@ bool CHttp::ResponseRedirect(PEER *pC, const char *sURL, bool bPermanent)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CHttp::BuildHttpHeader(PEER *pC, CStringBuilder *sOutHeader, const char *sLastModified, const char *sErrCode,
+bool CHttp::BuildHttpHeader(PEER *pC, StringBuilder *sOutHeader, const char *sLastModified, const char *sErrCode,
 						   const char *sErrDesc, const char *sEncoding,
 						   const char *sMimeType, __int64 i64ContentLength, //Set i64ContentLength less than 0 to omit from the response header.
 						   const char *sExtraHeaders, bool bTerminateHeader)
@@ -520,7 +521,7 @@ bool CHttp::SendHttpHeader(PEER *pC, const char *sLastModified, const char *sErr
 						   __int64 i64ContentLength, //Set i64ContentLength less than 0 to omit from the response header.
 						   const char *sExtraHeaders, bool bTerminateHeader)
 {
-	CStringBuilder header;
+	StringBuilder header;
 
 	if(BuildHttpHeader(pC, &header, sLastModified, sErrCode, sErrDesc, sEncoding, sMimeType, i64ContentLength, sExtraHeaders, bTerminateHeader))
 	{
@@ -582,7 +583,7 @@ bool CHttp::SendOKHeader(PEER *pC, const char *sLastModified, const char *sMimeT
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CHttp::BufferDataToClient(PEER *pC, CStringBuilder *sData)
+bool CHttp::BufferDataToClient(PEER *pC, StringBuilder *sData)
 {
 	return this->BufferDataToClient(pC, sData->Buffer, sData->Length);
 }
@@ -872,7 +873,7 @@ bool CHttp::AssembleFullRequest(CWebSite *pWebSite, PEER *pC)
 {
 	ROOT *pVirtualRoot = pWebSite->pVirtualRoots->IsVirtualRoot(pC->Header.Request/*, pC->Header.FullRequest*/);
 
-	CStringBuilder FullRequest;
+	StringBuilder FullRequest;
 
 	if(pVirtualRoot)
 	{
@@ -1011,7 +1012,7 @@ bool CHttp::AssembleFullRequest(CWebSite *pWebSite, PEER *pC)
 			//Requests for directories musst end with a forward slash.
 			if(pC->Header.Request[iRequestLength - 1] != '/' && pC->Header.Request[iRequestLength - 1] != '\\')
 			{
-				CStringBuilder newLocation;
+				StringBuilder newLocation;
 				newLocation.AppendF("%s/%s%s", pC->Header.Request,  (pC->Header.Query[0] == '\0' ? "" : "?"), pC->Header.Query);
 				this->ResponseRedirect(pC, newLocation.Buffer, true);
 				return false;
@@ -1069,7 +1070,7 @@ bool CHttp::AssembleFullRequest(CWebSite *pWebSite, PEER *pC)
 
 void CHttp::FillInPathInfoEnvironment(CWebSite *pWebSite, PEER *pC, ROOT *pVirtualRoot)
 {
-	CStringBuilder buffer;
+	StringBuilder buffer;
 
 	//---------------------------------------------------------------------------------------------------------
 	//Fill in the script name.

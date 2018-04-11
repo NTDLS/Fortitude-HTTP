@@ -23,9 +23,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CCustomFilters.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,6 +33,7 @@ using namespace NSWFL::File;
 using namespace NSWFL::ListView;
 using namespace NSWFL::Windows;
 using namespace NSWFL::Conversion;
+using namespace NSWFL::Collections;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +54,7 @@ CCustomFilters::CCustomFilters(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCustomFilters::CCustomFilters(void *lpWebSites, CXMLReader *xmlConfig, CCustomFilters *pDefaults)
+CCustomFilters::CCustomFilters(void *lpWebSites, XMLReader *xmlConfig, CCustomFilters *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -70,7 +69,7 @@ bool CCustomFilters::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -91,17 +90,17 @@ bool CCustomFilters::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CCustomFilters::ToXML(CXMLReader *lpXML)
+bool CCustomFilters::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("CustomFilters");
+	XMLWriter xmlConfig("CustomFilters");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Filter");
+		XMLWriter Item("Filter");
 		Item.Add("DLL", this->Collection.Items[iItem].DLL);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.AddBool("Enable", this->Collection.Items[iItem].Enabled);
@@ -147,11 +146,11 @@ bool CCustomFilters::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("CustomFilters", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -165,7 +164,7 @@ bool CCustomFilters::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CCustomFilters::Load(CXMLReader *xmlConfig, CCustomFilters *pDefaults)
+bool CCustomFilters::Load(XMLReader *xmlConfig, CCustomFilters *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -180,7 +179,7 @@ bool CCustomFilters::Load(CXMLReader *xmlConfig, CCustomFilters *pDefaults)
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPCustomFilter;
+	XMLReader XPCustomFilter;
 
 	while(xmlConfig->ToReader("Filter", &XPCustomFilter))
 	{
@@ -377,7 +376,7 @@ void CCustomFilters::PopFilterHeader(FILTERHTTPHEADER *filterRequestHeader, void
 /*
 	Returns true if the filters passed, otherwise false.
 */
-FILTERESULT CCustomFilters::ProcessRawResponseHeader(void *pvPeer /*PEER *pC*/, CStringBuilder *sResponseHeader, FILTERACTION *pFilterAction)
+FILTERESULT CCustomFilters::ProcessRawResponseHeader(void *pvPeer /*PEER *pC*/, StringBuilder *sResponseHeader, FILTERACTION *pFilterAction)
 {
 	this->Locks.LockShared();
 	int iFilterResult = FILTER_EVENT_RESULT_CONTINUE;

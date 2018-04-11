@@ -11,9 +11,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
 
 #include "../Source/Entry.H"
@@ -23,7 +21,7 @@
 
 #include "../../@Common/WebSite.H"
 #include "../../@Common/ServerSettings.H"
-#include "../../../../@Libraries/CSHA1/CSHA1.h"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "MainDlg.H"
 #include "NetLogoDlg.H"
@@ -37,6 +35,7 @@ using namespace NSWFL::Windows;
 using namespace NSWFL::String;
 using namespace NSWFL::Conversion;
 using namespace NSWFL::ListView;
+using namespace NSWFL::Hashing;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

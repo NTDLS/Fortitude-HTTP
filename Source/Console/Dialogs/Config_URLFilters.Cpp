@@ -62,7 +62,7 @@ INT_PTR CALLBACK Config_URLFilters(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         gCI.hList = GetDlgItem(hWnd, IDC_LIST);
         hEnabled = GetDlgItem(hWnd, IDC_ENABLED);
 
-		CXMLReader xml;
+		XMLReader xml;
 		if(gManage->QueryXMLReader(&xml, "::Configuration:URLFilters|%d", gCI.iSite))
 		{
 			if(xml.ToBoolean("Enable"))
@@ -154,12 +154,12 @@ INT_PTR CALLBACK Config_URLFilters(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 			//---(Begin Server Update)------------------------------------------------------------------
 			if(IsDlgButtonChecked(hWnd, IDC_USEGLOBAL) == FALSE)
 			{
-				CXMLWriter xml;
+				XMLWriter xml;
 				if(LoadNewURLFiltersConfiguration(hWnd, gCI.hList, &xml))
 				{
 					char *xmlText = xml.Text();
 
-					CXMLReader xml;
+					XMLReader xml;
 					if(gManage->QueryXMLReader(&xml, "::Update|%d:%s:%s", gCI.iSite, "URLFilters", xmlText))
 					{
 						ProcessXMLResult(hWnd, &xml, NULL, "Failed to apply configuration!");
@@ -174,7 +174,7 @@ INT_PTR CALLBACK Config_URLFilters(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 			else {
 				if(!gCI.bGlobal)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(gManage->QueryXMLReader(&xml, "::Update|%d:%s:%s", gCI.iSite, "URLFilters", "~Global"))
 					{
 						ProcessXMLResult(hWnd, &xml, NULL, "Failed to apply configuration!");

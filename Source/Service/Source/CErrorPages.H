@@ -10,12 +10,12 @@
 #define _CErrorPages_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/ErrorPages.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,7 +27,7 @@ private:
 	ERRORPAGES Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 	DWORD dwErrorCount;
 	DWORD dwWarningCount;
@@ -35,14 +35,14 @@ private:
 public:
 	CErrorPages(void *lpWebSites);
 	~CErrorPages(void);
-	CErrorPages(void *lpWebSites, CXMLReader *xmlConfig, CErrorPages *pDefaults);
+	CErrorPages(void *lpWebSites, XMLReader *xmlConfig, CErrorPages *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool Reload(void);
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CErrorPages *pDefaults);
+	bool Load(XMLReader *xmlConfig, CErrorPages *pDefaults);
 	bool Destroy();
 
 	DWORD WarningCount(void);

@@ -124,13 +124,13 @@ bool CWebSites::SaveAll(void)
 
 bool CWebSites::Save(bool bOnlySaveReferencedSites)
 {
-	CXMLWriter xmlConfig("WebSites");
+	XMLWriter xmlConfig("WebSites");
 
 	if(this->pServerSettings->Save())
 	{
 		for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 		{
-			CXMLWriter Item;
+			XMLWriter Item;
 
 			if(bOnlySaveReferencedSites)
 			{
@@ -172,7 +172,7 @@ bool CWebSites::Save(bool bOnlySaveReferencedSites)
 
 bool CWebSites::LoadSites(char *sFile)
 {
-	CXMLReader xmlWebSites;
+	XMLReader xmlWebSites;
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sFile);
 
 	if(xmlWebSites.FromFile(this->sFileName))
@@ -184,10 +184,10 @@ bool CWebSites::LoadSites(char *sFile)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebSites::LoadSites(CXMLReader *pWebSites)
+bool CWebSites::LoadSites(XMLReader *pWebSites)
 {
 	pWebSites->ProgressiveScan(true);
-	CXMLReader xmlSite;
+	XMLReader xmlSite;
 
 	while(pWebSites->ToReader("Site", &xmlSite))
 	{
@@ -200,7 +200,7 @@ bool CWebSites::LoadSites(CXMLReader *pWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebSites::ReloadSites(CXMLReader *pWebSites)
+bool CWebSites::ReloadSites(XMLReader *pWebSites)
 {
 	this->DestroySites();
 	return this->LoadSites(pWebSites);
@@ -474,7 +474,7 @@ bool CWebSites::Destroy(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebSites::Add(CXMLReader *xmlSite, int *iOutIndex)
+bool CWebSites::Add(XMLReader *xmlSite, int *iOutIndex)
 {
 	this->Collection.WebSite = (CWebSite **)
 		pMem->ReAllocate(this->Collection.WebSite, sizeof(CWebSite), (this->Collection.Count + 1));
@@ -491,7 +491,7 @@ bool CWebSites::Add(CXMLReader *xmlSite, int *iOutIndex)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CWebSites::Add(CXMLReader *xmlSite)
+bool CWebSites::Add(XMLReader *xmlSite)
 {
 	return this->Add(xmlSite, NULL);
 }
@@ -506,7 +506,7 @@ void CWebSites::StartTrace(void)
 		InternalTrace.Stack->Clear();
 	}
 	else{
-		InternalTrace.Stack = (CStack *) pMem->TrackMemory(new CStack());
+		InternalTrace.Stack = (Stack *) pMem->TrackMemory(new Stack());
 		InternalTrace.bTracingEnabled = true;
 	}
 	LeaveCriticalSection(&this->InternalTrace.CS);
@@ -550,9 +550,9 @@ int CWebSites::StopTrace(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int CWebSites::StopTrace(CStringBuilder *pOutText)
+int CWebSites::StopTrace(StringBuilder *pOutText)
 {
-	CStringBuilder sLastResort;
+	StringBuilder sLastResort;
 
 	int iErrorCount = 0;
 	EnterCriticalSection(&this->InternalTrace.CS);
@@ -616,7 +616,7 @@ int CWebSites::StopTrace(CStringBuilder *pOutText)
 			}
 		}
 		InternalTrace.bTracingEnabled = false;
-		delete (CStack *)pMem->UnTrackMemory(this->InternalTrace.Stack);
+		delete (Stack *)pMem->UnTrackMemory(this->InternalTrace.Stack);
 	}
 	LeaveCriticalSection(&this->InternalTrace.CS);
 
@@ -679,9 +679,9 @@ void CWebSites::BindSocketPools(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CStack *CWebSites::RunningSites(void)
+Stack *CWebSites::RunningSites(void)
 {
-	CStack *runningSites = (CStack *) pMem->TrackMemory(new CStack());
+	Stack *runningSites = (Stack *) pMem->TrackMemory(new Stack());
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{

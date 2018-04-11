@@ -1,0 +1,18 @@
+[submodule "NSWFL"]
+	path = NSWFL
+	url = https://github.com/NTDLS/NSWFL
+[submodule "CSocketServer"]
+	path = CSocketServer
+	url = https://github.com/NTDLS/CSocketServer
+[submodule "Compression"]
+	path = Compression
+	url = https://github.com/NTDLS/Compression
+[submodule "CService"]
+	path = CService
+	url = https://github.com/NTDLS/CService
+[submodule "NASCCL"]
+	path = NASCCL
+	url = https://github.com/NTDLS/NASCCL
+[submodule "CTabControl"]
+	path = CTabControl
+	url = https://github.com/NTDLS/CTabControl

@@ -10,12 +10,12 @@
 #define _CMIMETYPES_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/MimeTypes.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,18 +27,18 @@ private:
 	MIMETYPES Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	~CMimeTypes(void);
 	CMimeTypes(void *lpWebSites);
-	CMimeTypes(void *lpWebSites, CXMLReader *xmlConfig, CMimeTypes *pDefaults);
+	CMimeTypes(void *lpWebSites, XMLReader *xmlConfig, CMimeTypes *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CMimeTypes *pDefaults);
+	bool Load(XMLReader *xmlConfig, CMimeTypes *pDefaults);
 	bool Destroy();
 	bool GetType(const char *sFileName, char *sMimeName, int iMaxMimeName);
 	bool Reload(void);

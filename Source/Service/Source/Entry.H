@@ -10,16 +10,14 @@
 #define _ENTRY_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CMemPool/CMemPool.H"
-#include "../../../../@Libraries/CCmdLine/CCmdLine.H"
-#include "../../../../@Libraries/CService/CService.H"
-
-#include "../../../../@Libraries/Debug/Debug.H"
-#include "../../../../@Libraries/NSWFL/NSWFL.H"
+#include "../../../CService/CService.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../Resources/Resource.H"
 
 #include "Routines.H"
+
+using namespace NSWFL::Memory;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,7 +40,7 @@ extern char gsPath[MAX_PATH];
 extern char gsDataPath[MAX_PATH];
 extern DWORD dwManagementPort;
 
-extern CMemPool *pMem;
+extern MemoryPool *pMem;
 extern CService gService;	//The global service.
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

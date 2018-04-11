@@ -21,9 +21,7 @@
 
 #include "Entry.H"
 #include "Routines.H"
-#include "../../../../@Libraries/CStack/CStack.H"
-#include "../../../../@Libraries/CSHA1/CSHA1.h"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
+#include "../../../NSWFL/NSWFL.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

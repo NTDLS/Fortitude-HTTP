@@ -10,15 +10,16 @@
 #define _CCustomFilters_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../../Setup/Filters/Filter Example/Source/HTTPFilter.H"
-#include "../../../../@Libraries/CSocketServer/CSocketServer.H"
+#include "../../../CService/CService.H"
+#include "../../../CSocketServer/CSocketServer.H"
 
 #include "../../@Common/CustomFilters.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,17 +34,17 @@ private:
 	void PopFilterHeader(FILTERHTTPHEADER *filterRequestHeader, void *pHTTPRequestHeader);
 	void PushFilterHeader(void *pHTTPRequestHeader, FILTERHTTPHEADER *filterRequestHeader);
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	~CCustomFilters(void);
 	CCustomFilters(void *lpWebSites);
-	CCustomFilters(void *lpWebSites, CXMLReader *xmlConfig, CCustomFilters *pDefaults);
+	CCustomFilters(void *lpWebSites, XMLReader *xmlConfig, CCustomFilters *pDefaults);
 	bool Save(void);
 	
 	void FreeFilterAction(FILTERACTION *filterAction);
-	bool ToXML(CXMLReader *lpXML);
-	FILTERESULT ProcessRawResponseHeader(void *pvPeer /*PEER *pC*/, CStringBuilder *sResponseHeader, FILTERACTION *pFilterAction);
+	bool ToXML(XMLReader *lpXML);
+	FILTERESULT ProcessRawResponseHeader(void *pvPeer /*PEER *pC*/, StringBuilder *sResponseHeader, FILTERACTION *pFilterAction);
 	FILTERESULT ProcessUrlMap(void *pvPeer /*PEER *pC*/, FILTERACTION *pFilterAction);
 	FILTERESULT ProcessRequestHeader(void *pvPeer /*PEER *pC*/, FILTERACTION *pFilterAction);
 	FILTENORESULT ProcessDisconnectFilters(void *pvClient /*CSocketClient *pClient*/);
@@ -57,7 +58,7 @@ public:
 	bool ContainsCompressionFilter();
 
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CCustomFilters *pDefaults);
+	bool Load(XMLReader *xmlConfig, CCustomFilters *pDefaults);
 	bool Reload(void);
 	bool Destroy();
 };

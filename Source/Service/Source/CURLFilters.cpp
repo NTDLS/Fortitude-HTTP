@@ -53,7 +53,7 @@ CURLFilters::CURLFilters(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CURLFilters::CURLFilters(void *lpWebSites, CXMLReader *xmlConfig, CURLFilters *pDefaults)
+CURLFilters::CURLFilters(void *lpWebSites, XMLReader *xmlConfig, CURLFilters *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -68,7 +68,7 @@ bool CURLFilters::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -89,17 +89,17 @@ bool CURLFilters::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CURLFilters::ToXML(CXMLReader *lpXML)
+bool CURLFilters::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("URLFilters");
+	XMLWriter xmlConfig("URLFilters");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Filter");
+		XMLWriter Item("Filter");
 		Item.Add("Sequence", this->Collection.Items[iItem].Sequence);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.Add("ScanRequest", this->Collection.Items[iItem].ScanRequest);
@@ -146,11 +146,11 @@ bool CURLFilters::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("URLFilters", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -164,7 +164,7 @@ bool CURLFilters::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CURLFilters::Load(CXMLReader *xmlConfig, CURLFilters *pDefaults)
+bool CURLFilters::Load(XMLReader *xmlConfig, CURLFilters *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -176,7 +176,7 @@ bool CURLFilters::Load(CXMLReader *xmlConfig, CURLFilters *pDefaults)
 	memset(&this->Collection, 0, sizeof(this->Collection));
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPURLFilter;
+	XMLReader XPURLFilter;
 	
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 

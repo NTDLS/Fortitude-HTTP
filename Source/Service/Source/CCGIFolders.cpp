@@ -54,7 +54,7 @@ CCGIFolders::CCGIFolders(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCGIFolders::CCGIFolders(void *lpWebSites, CXMLReader *xmlConfig, CCGIFolders *pDefaults)
+CCGIFolders::CCGIFolders(void *lpWebSites, XMLReader *xmlConfig, CCGIFolders *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -69,7 +69,7 @@ bool CCGIFolders::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -90,17 +90,17 @@ bool CCGIFolders::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CCGIFolders::ToXML(CXMLReader *lpXML)
+bool CCGIFolders::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("CGIFolders");
+	XMLWriter xmlConfig("CGIFolders");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Folder");
+		XMLWriter Item("Folder");
 		Item.Add("Path", this->Collection.Items[iItem].Path);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.AddBool("Enable", this->Collection.Items[iItem].Enabled);
@@ -145,11 +145,11 @@ bool CCGIFolders::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("CGIFolders", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -163,7 +163,7 @@ bool CCGIFolders::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CCGIFolders::Load(CXMLReader *xmlConfig, CCGIFolders *pDefaults)
+bool CCGIFolders::Load(XMLReader *xmlConfig, CCGIFolders *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -177,7 +177,7 @@ bool CCGIFolders::Load(CXMLReader *xmlConfig, CCGIFolders *pDefaults)
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", false);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPCGIFolder;
+	XMLReader XPCGIFolder;
 
 	while(xmlConfig->ToReader("Folder", &XPCGIFolder))
 	{

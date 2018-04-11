@@ -10,13 +10,13 @@
 #define _CWEBSITE_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CSocketServer/CSocketServer.H"
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../CSocketServer/CSocketServer.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/WebSite.h"
 #include "../../@Common/Constants.H"
+
+using namespace NSWFL::Collections;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -91,7 +91,7 @@ private:
 
 public:
 	CWebSite();
-	CWebSite(void *pWebSites, CXMLReader *pXMLSite);
+	CWebSite(void *pWebSites, XMLReader *pXMLSite);
 	~CWebSite();
 
 	friend void Socket_ClientHandler(CSocketServer *pSock, CSocketClient *pClient, LPBASICHUNK pChunk);
@@ -99,14 +99,14 @@ public:
 	int Index(void);
 
 	bool IsActive(void);
-	int SubItemsToXML(CXMLWriter *xmlConfig);
-	bool ToXML(CXMLWriter *pXMLSite);
-	bool ToXML(CXMLWriter *pXMLSite, bool bIncludeSubItems, bool bIncludeStatusInfo);
-	bool Overview(CXMLWriter *pXMLSite);
-	bool Bindings(CXMLWriter *pXMLSite);
+	int SubItemsToXML(XMLWriter *xmlConfig);
+	bool ToXML(XMLWriter *pXMLSite);
+	bool ToXML(XMLWriter *pXMLSite, bool bIncludeSubItems, bool bIncludeStatusInfo);
+	bool Overview(XMLWriter *pXMLSite);
+	bool Bindings(XMLWriter *pXMLSite);
 	bool Start(void);
 	bool Stop(void);
-	bool Reload(CXMLReader *xml);
+	bool Reload(XMLReader *xml);
 	void BindSocketPool(void);
 	int CurrentConnections(void);
 

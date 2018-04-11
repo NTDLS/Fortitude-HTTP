@@ -10,12 +10,12 @@
 #define _CURLFilters_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/URLFilters.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,20 +27,20 @@ private:
 	URLFILTERS Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	CURLFilters(void *lpWebSites);
 	~CURLFilters(void);
-	CURLFilters(void *lpWebSites, CXMLReader *xmlConfig, CURLFilters *pDefaults);
+	CURLFilters(void *lpWebSites, XMLReader *xmlConfig, CURLFilters *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool ScanHeader(VOID *pHeader);
 	bool Reload(void);
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CURLFilters *pDefaults);
+	bool Load(XMLReader *xmlConfig, CURLFilters *pDefaults);
 	bool Destroy(void);
 	bool Enabled(void);
 };

@@ -24,7 +24,7 @@
 #include "../../@Common/WebSite.H"
 #include "../../@Common/VirtualRoots.H"
 #include "../../@Common/Cryptography.h"
-#include "../../../../@Libraries/Base64/Base64.h"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "MainDlg.H"
 #include "NetLogoDlg.H"

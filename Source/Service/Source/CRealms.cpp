@@ -53,7 +53,7 @@ CRealms::CRealms(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CRealms::CRealms(void *lpWebSites, CXMLReader *xmlConfig, CRealms *pDefaults)
+CRealms::CRealms(void *lpWebSites, XMLReader *xmlConfig, CRealms *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -68,7 +68,7 @@ bool CRealms::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -89,17 +89,17 @@ bool CRealms::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CRealms::ToXML(CXMLReader *lpXML)
+bool CRealms::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("Authentication");
+	XMLWriter xmlConfig("Authentication");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Page");
+		XMLWriter Item("Page");
 		Item.Add("File", this->Collection.Items[iItem].Page);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.AddBool("Enable", this->Collection.Items[iItem].Enabled);
@@ -148,10 +148,10 @@ bool CRealms::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("Authentication", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -165,7 +165,7 @@ bool CRealms::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CRealms::Load(CXMLReader *xmlConfig, CRealms *pDefaults)
+bool CRealms::Load(XMLReader *xmlConfig, CRealms *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -179,7 +179,7 @@ bool CRealms::Load(CXMLReader *xmlConfig, CRealms *pDefaults)
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPDefaultPage;
+	XMLReader XPDefaultPage;
 
 	while(xmlConfig->ToReader("Page", &XPDefaultPage))
 	{

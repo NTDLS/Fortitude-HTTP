@@ -10,18 +10,18 @@
 #define _CWebSites_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CSocketServer/CSocketServer.H"
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../CSocketServer/CSocketServer.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "CWebSite.H"
 #include "CHttp.H"
 
+using namespace NSWFL::Collections;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef struct _tag_WSTrace { //FIXFIX: This needs to be a class with its own critical section.
-	CStack *Stack;
+	Stack *Stack;
 	bool bTracingEnabled;
 	CRITICAL_SECTION CS;
 } ERRORTRACING, LPERRORTRACING;
@@ -48,11 +48,11 @@ public:
 	void DeReferenceAllSites(void);
 	void BindSocketPools(void);
 
-	CStack *RunningSites(void);
+	Stack *RunningSites(void);
 
 	void StartTrace(void);
 	int StopTrace(void);
-	int StopTrace(CStringBuilder *pOutText);
+	int StopTrace(StringBuilder *pOutText);
 	void Trace(const char *sText);
 
 	typedef struct _tag_Web_Site_Collection{
@@ -91,13 +91,13 @@ public:
 	bool SaveAll(void);
 
 	void DestroySites(void);
-	bool Add(CXMLReader *xmlSite);
-	bool Add(CXMLReader *xmlSite, int *iOutIndex);
+	bool Add(XMLReader *xmlSite);
+	bool Add(XMLReader *xmlSite, int *iOutIndex);
 
 	bool Reload(void);
 	bool ReloadSites(void);
-	bool ReloadSites(CXMLReader *pWebSites);
-	bool LoadSites(CXMLReader *pWebSites);
+	bool ReloadSites(XMLReader *pWebSites);
+	bool LoadSites(XMLReader *pWebSites);
 	bool LoadSites(char *sFile);
 
 	CWebSite *Site(int iIndex);

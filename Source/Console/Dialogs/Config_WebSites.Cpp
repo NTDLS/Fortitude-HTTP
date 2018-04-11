@@ -63,7 +63,7 @@ INT_PTR CALLBACK Config_WebSites(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         gCI.hList = GetDlgItem(hWnd, IDC_LIST);
         hEnabled = GetDlgItem(hWnd, IDC_ENABLED);
 
-		CXMLReader xml;
+		XMLReader xml;
 		if(gManage->QueryXMLReader(&xml, "::Configuration:WebSites|"))
 		{
 			PopWebsitesList(gCI.hList, false, &xml, true);
@@ -121,13 +121,13 @@ INT_PTR CALLBACK Config_WebSites(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         {
 			//FIXFIX: Doest not except response.
 
-			CXMLWriter xml;
+			XMLWriter xml;
 			if(LoadNewWebSitessConfiguration(hWnd, gCI.hList, &xml))
 			{
 				bool bResult = false;
 				char *xmlText = xml.Text();
 
-				CXMLReader xml;
+				XMLReader xml;
 				if(ProcessLengthyCommand(&xml, hWnd,
 					"Please wait while the new websites configuration is applied. This process can take a long time"
 					" depending on the changes which were made and the number of connections to any modified sites.",

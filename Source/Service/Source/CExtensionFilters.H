@@ -10,12 +10,12 @@
 #define _CExtensionFilters_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/ExtentionFilters.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,19 +27,19 @@ private:
 	EXTENSIONFILTERS Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	~CExtensionFilters(void);
 	CExtensionFilters(void *lpWebSites);
-	CExtensionFilters(void *lpWebSites, CXMLReader *xmlConfig, CExtensionFilters *pDefaults);
+	CExtensionFilters(void *lpWebSites, XMLReader *xmlConfig, CExtensionFilters *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool CheckFile(const char *sString);
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CExtensionFilters *pDefaults);
+	bool Load(XMLReader *xmlConfig, CExtensionFilters *pDefaults);
 	bool Reload(void);
 
 	bool Destroy(void);

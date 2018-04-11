@@ -10,13 +10,12 @@
 #define _CRealms_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CXML/CXMLWriter.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/Realms.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,20 +27,20 @@ private:
 	REALMS Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	~CRealms(void);
 	CRealms(void *lpWebSites);
-	CRealms(void *lpWebSites, CXMLReader *xmlConfig, CRealms *pDefaults);
+	CRealms(void *lpWebSites, XMLReader *xmlConfig, CRealms *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool CheckPath(char *&sFullRequest);
 
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CRealms *pDefaults);
+	bool Load(XMLReader *xmlConfig, CRealms *pDefaults);
 
 	bool Reload(void);
 

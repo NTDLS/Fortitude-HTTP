@@ -21,7 +21,8 @@
 
 #include "Entry.H"
 #include "Routines.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
+using namespace NSWFL::Collections;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -106,7 +107,7 @@ bool GetLastError(char *sOutErrorMessage, int iMaxOutErrorMessage)
 	Retreives a textual error message from a threads GetLastError() call.
 	Returns TRUE if error information was received.
 */
-bool GetLastError(CStringBuilder *outError)
+bool GetLastError(StringBuilder *outError)
 {
 	DWORD dwLastError = GetLastError();
 	if(dwLastError)

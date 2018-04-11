@@ -26,11 +26,12 @@
 
 #include "../Dialogs/MainDlg.H"
 
-#include "../../../../@Libraries/CXML/CXML.H"
+#include "../../../NSWFL/NSWFL.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::Conversion;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -124,7 +125,7 @@ bool CManagement::QueryBoolean(bool *bValue, const char *sText, ...)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CManagement::QueryXMLReader(CXMLReader *pXML, const char *sText, ...)
+bool CManagement::QueryXMLReader(XMLReader *pXML, const char *sText, ...)
 {
 	bool bResult = false;
 
@@ -260,7 +261,7 @@ void MgMt_OnDisconnect(CSocketServer *pSock, CSocketClient *pClient)
 bool CManagement::ManagementInitialize()
 {
 	this->Socket = new CSocketServer();
-	this->Cytpto.InitializeCryptography(MGMT_INITIAL_KEY, MGMT_INITIAL_KEY_SZ, true);
+	this->Cytpto.Initialize(MGMT_INITIAL_KEY, MGMT_INITIAL_KEY_SZ, true);
 	this->Socket->pUserData = this;
 
 	memset(&this->CurrentConnectioninfo, 0, sizeof(this->CurrentConnectioninfo));
@@ -322,7 +323,7 @@ bool CManagement::ManagementDestroy()
 
 	memset(&this->CurrentConnectioninfo, 0, sizeof(this->CurrentConnectioninfo));
 
-	this->Cytpto.DestroyCryptography();
+	this->Cytpto.Destroy();
 
 	return true;
 }

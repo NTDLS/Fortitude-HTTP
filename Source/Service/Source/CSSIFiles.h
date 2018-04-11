@@ -10,12 +10,13 @@
 #define _CSSIFiles_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/SSIFiles.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
+using namespace NSWFL::String;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,44 +32,44 @@ private:
 		int NestingDepth;
 	} SSIINFO, *LPSSIINFO;
 
-	CLocks Locks;
+	IsolationLock Locks;
 
-	bool EchoSSIVar(VOID *pClient, CStringBuilder *lpBuf, char *sVarName);
-	bool GetSSITagEx(VOID *pClient, CStringBuilder *lpBuf, int iInitRPos, const char *sSSI,
+	bool EchoSSIVar(VOID *pClient, StringBuilder *lpBuf, char *sVarName);
+	bool GetSSITagEx(VOID *pClient, StringBuilder *lpBuf, int iInitRPos, const char *sSSI,
 				 const int iSSISz, char *sOutBuffer, int iOutBufMaxSz,
 				 const char *sOpt1, const char *sOpt2);
-	bool GetVirtualOrFileName(VOID *pClient, CStringBuilder *lpBuf, int iInitRPos,
+	bool GetVirtualOrFileName(VOID *pClient, StringBuilder *lpBuf, int iInitRPos,
 						   const char *sSSI, const int iSSISz, char *sOutFileName);
-	bool GetCGIOrCMDName(VOID *pClient, CStringBuilder *lpBuf, int iInitRPos,
+	bool GetCGIOrCMDName(VOID *pClient, StringBuilder *lpBuf, int iInitRPos,
 					  const char *sSSI, const int iSSISz, char *sOutFileName);
 
 	bool ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, const char *sFileName);
 
 	bool ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *sFileBuf,
-					int iFileBufSz, bool bSend, CStringBuilder *lpBuf);
+					int iFileBufSz, bool bSend, StringBuilder *lpBuf);
 
 	bool ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient,
-		const char *sFileName, bool bSend, CStringBuilder *pBuffer);
+		const char *sFileName, bool bSend, StringBuilder *pBuffer);
 
 public:
 	~CSSIFiles();
 	CSSIFiles(void *lpWebSites);
-	CSSIFiles(void *lpWebSites, CXMLReader *xmlConfig, CSSIFiles *pDefaults);
+	CSSIFiles(void *lpWebSites, XMLReader *xmlConfig, CSSIFiles *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool ProcessServerSideInclude(VOID *pClient, const char *sFileName);
 
 	bool ProcessServerSideInclude(VOID *pClient, char *sFileBuf,
-					int iFileBufSz, bool bSend, CStringBuilder *lpBuf);
+					int iFileBufSz, bool bSend, StringBuilder *lpBuf);
 
 	bool ProcessServerSideInclude(VOID *pClient,
-		const char *sFileName, bool bSend, CStringBuilder *pBuffer);
+		const char *sFileName, bool bSend, StringBuilder *pBuffer);
 
 	bool Load(const char *sXMLFileName);
 	bool Reload(void);
-	bool Load(CXMLReader *xmlConfig, CSSIFiles *pDefaults);
+	bool Load(XMLReader *xmlConfig, CSSIFiles *pDefaults);
 	bool Destroy();
 	bool IsSSIFile(const char *sFileName);
 	bool Enabled(void);

@@ -28,6 +28,7 @@
 
 using namespace NSWFL::String;
 using namespace NSWFL::KeyGeneration;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +39,7 @@ CManagement::CManagement()
 
 	this->Socket = (CSocketServer *) pMem->TrackMemory(new CSocketServer());
 
-	this->Cytpto.InitializeCryptography(MGMT_INITIAL_KEY, MGMT_INITIAL_KEY_SZ, true);
+	this->Cytpto.Initialize(MGMT_INITIAL_KEY, MGMT_INITIAL_KEY_SZ, true);
 	
 	if(this->Socket->Initialize(dwManagementPort, 2, Mgmt_Sock_ClientThread, Mgmt_Sock_OnSockError))
 	{
@@ -67,7 +68,7 @@ CManagement::~CManagement()
 		delete (CSocketServer *)pMem->UnTrackMemory(this->Socket);
 	}
 
-	this->Cytpto.DestroyCryptography();
+	this->Cytpto.Destroy();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +81,7 @@ bool CManagement::ProcessUrgentCommand(CSocketServer *pSock, CSocketClient *pCli
 	{
 		if(pSock->CompareCommandAndBreakData(pChunk, "::Login|", &CmdData))
 		{
-			CXMLReader xml((char *)CmdData.pBuffer, CmdData.iLength);
+			XMLReader xml((char *)CmdData.pBuffer, CmdData.iLength);
 			pSock->Free(&CmdData);
 
 			bool bResult = false;
@@ -129,10 +130,10 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 	//---------------------------------------------------------------------------------------------------------------------
 	if(pSock->CompareCommandAndBreakData(pChunk, "::Information:Server:Performance|", &CmdData))
 	{
-		CXMLWriter xml("Performance");
+		XMLWriter xml("Performance");
 		for(int iSite = 0; iSite < gWebSites->Count(); iSite++)
 		{
-			CXMLWriter site("Site");
+			XMLWriter site("Site");
 			CWebSite *pSite = gWebSites->Site(iSite);
 			site.Add("Index", pSite->Index());
 			site.Add("Name", pSite->Name);
@@ -159,12 +160,12 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		pSock->Free(&CmdData);
 
-		CStringBuilder errMsg;
+		StringBuilder errMsg;
 		bool bResult = gWebSites->ReloadSites();
 		bResult = gWebSites->StopTrace(&errMsg) == 0 && bResult;
 		gWebSites->StartTrace();
 
-		CXMLWriter resultXML("ResultInformation");
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -176,12 +177,12 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		pSock->Free(&CmdData);
 
-		CStringBuilder errMsg;
+		StringBuilder errMsg;
 		bool bResult = gWebSites->Reload();
 		bResult = gWebSites->StopTrace(&errMsg) == 0 && bResult;
 		gWebSites->StartTrace();
 
-		CXMLWriter resultXML("ResultInformation");
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -193,12 +194,12 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		pSock->Free(&CmdData);
 
-		CStringBuilder errMsg;
+		StringBuilder errMsg;
 		bool bResult = gWebSites->SaveAll();
 		bResult = gWebSites->StopTrace(&errMsg) == 0 && bResult;
 		gWebSites->StartTrace();
 
-		CXMLWriter resultXML("ResultInformation");
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -210,7 +211,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		CWebSite *pSite = gWebSites->Site(iSiteIndex);
 
-		CStringBuilder errMsg;
+		StringBuilder errMsg;
 		bool bResult = false;
 
 		if(pSite)
@@ -223,7 +224,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			errMsg.Append("The site does not exist on the server.");
 		}
 
-		CXMLWriter resultXML("ResultInformation");
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -236,7 +237,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		CWebSite *pSite = gWebSites->Site(iSiteIndex);
 
-		CStringBuilder errMsg;
+		StringBuilder errMsg;
 		bool bResult = false;
 
 		if(pSite)
@@ -249,7 +250,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			errMsg.Append("The site does not exist on the server.");
 		}
 
-		CXMLWriter resultXML("ResultInformation");
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -262,7 +263,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		CWebSite *pSite = gWebSites->Site(iSiteIndex);
 
-		CStringBuilder errMsg;
+		StringBuilder errMsg;
 		bool bResult = false;
 
 		if(pSite)
@@ -278,7 +279,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			errMsg.Append("The site does not exist on the server.");
 		}
 
-		CXMLWriter resultXML("ResultInformation");
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -302,7 +303,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 	//---------------------------------------------------------------------------------------------------------------------
 	else if(pSock->CompareCommandAndBreakData(pChunk, "::Configuration:SocketPoolsOverview|", &CmdData))
 	{
-		CXMLReader xml;
+		XMLReader xml;
 		if(gWebSites->pSocketPools->ToXML(&xml, true))
 		{
 			SendCommand(pClient, &xml);
@@ -312,7 +313,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 	//---------------------------------------------------------------------------------------------------------------------
 	else if(pSock->CompareCommandAndBreakData(pChunk, "::Configuration:SocketPools|", &CmdData))
 	{
-		CXMLReader xml;
+		XMLReader xml;
 		if(gWebSites->pSocketPools->ToXML(&xml))
 		{
 			SendCommand(pClient, &xml);
@@ -322,10 +323,10 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 	//---------------------------------------------------------------------------------------------------------------------
 	else if(pSock->CompareCommandAndBreakData(pChunk, "::Configuration:WebSites|", &CmdData))
 	{
-		CXMLWriter xml("WebSites");
+		XMLWriter xml("WebSites");
 		for(int iSite = 0; iSite < gWebSites->Count(); iSite++)
 		{
-			CXMLWriter xmlSite;
+			XMLWriter xmlSite;
 			if(gWebSites->Site(iSite)->ToXML(&xmlSite, false, true))
 			{
 				xml.Add(&xmlSite);
@@ -342,7 +343,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		CWebSite *pSite = gWebSites->Site(iSiteIndex);
 		if(pSite)
 		{
-			CXMLWriter xml;
+			XMLWriter xml;
 			if(pSite->Overview(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -357,7 +358,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		CWebSite *pSite = gWebSites->Site(iSiteIndex);
 		if(pSite)
 		{
-			CXMLWriter xml;
+			XMLWriter xml;
 			if(pSite->Bindings(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -372,7 +373,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		CWebSite *pSite = gWebSites->Site(iSiteIndex);
 		if(pSite)
 		{
-			CXMLWriter xml;
+			XMLWriter xml;
 			if(pSite->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -386,7 +387,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltWebsiteSettings->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -396,7 +397,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pWebsiteSettings->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -408,7 +409,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 	//---------------------------------------------------------------------------------------------------------------------
 	else if(pSock->CompareCommandAndBreakData(pChunk, "::Configuration:ServerSettings|", &CmdData))
 	{
-		CXMLReader xml;
+		XMLReader xml;
 		if(gWebSites->pServerSettings->ToXML(&xml))
 		{
 			SendCommand(pClient, &xml);
@@ -421,7 +422,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltDefaultPages->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -431,7 +432,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pDefaultPages->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -446,7 +447,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltVirtualRoots->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -456,7 +457,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pVirtualRoots->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -472,7 +473,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		CWebSite *pSite = gWebSites->Site(iSiteIndex);
 		if(pSite)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(pSite->pCompression->CacheToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -486,7 +487,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltCompression->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -496,7 +497,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pCompression->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -511,7 +512,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltMimeTypes->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -521,7 +522,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pMimeTypes->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -536,7 +537,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltIPFilters->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -546,7 +547,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pIPFilters->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -561,7 +562,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltURLFilters->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -571,7 +572,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pURLFilters->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -586,7 +587,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltExtensionFilters->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -596,7 +597,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pExtensionFilters->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -611,7 +612,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltCustomFilters->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -621,7 +622,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pCustomFilters->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -636,7 +637,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltScriptingEngines->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -646,7 +647,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pScriptingEngines->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -661,7 +662,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltSSIFiles->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -671,7 +672,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pSSIFiles->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -686,7 +687,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltCGIFolders->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -696,7 +697,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pCGIFolders->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -711,7 +712,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		int iSiteIndex = atoi((char *)CmdData.pBuffer);
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gWebSites->DfltErrorPages->ToXML(&xml))
 			{
 				SendCommand(pClient, &xml);
@@ -721,7 +722,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			CWebSite *pSite = gWebSites->Site(iSiteIndex);
 			if(pSite)
 			{
-				CXMLReader xml;
+				XMLReader xml;
 				if(pSite->pErrorPages->ToXML(&xml))
 				{
 					SendCommand(pClient, &xml);
@@ -802,7 +803,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 	else if(pSock->CompareCommandAndBreakData(pChunk, "::Update:Website|", &CmdData))
 	{
 		bool bResult = false;
-		CXMLReader xml((char *)CmdData.pBuffer, CmdData.iLength);
+		XMLReader xml((char *)CmdData.pBuffer, CmdData.iLength);
 
 		int iSiteIndex = xml.ToInteger("Index");
 
@@ -818,11 +819,11 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			bResult = false;
 		}
 
-		CStringBuilder errMsg;
+		StringBuilder errMsg;
 		bResult = gWebSites->StopTrace(&errMsg) == 0 && bResult;
 		gWebSites->StartTrace();
 
-		CXMLWriter resultXML("ResultInformation");
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -832,7 +833,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 	//---------------------------------------------------------------------------------------------------------------------
 	else if(pSock->CompareCommandAndBreakData(pChunk, "::Update:Websites|", &CmdData))
 	{
-		CXMLReader xml((char *)CmdData.pBuffer, CmdData.iLength);
+		XMLReader xml((char *)CmdData.pBuffer, CmdData.iLength);
 
 		bool bResult = true;
 
@@ -847,7 +848,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 		gWebSites->StopAllSites();
 		gWebSites->DeReferenceAllSites();
 
-		CXMLReader item;
+		XMLReader item;
 		while(xml.ToReader("Site", &item))
 		{
 			item.ToString("Name", sName, sizeof(sName));
@@ -884,11 +885,11 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 
 		gWebSites->ReloadSites();
 
-		CStringBuilder errMsg;
+		StringBuilder errMsg;
 		bResult = gWebSites->StopTrace(&errMsg) == 0 && bResult;
 		gWebSites->StartTrace();
 
-		CXMLWriter resultXML("ResultInformation");
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -918,7 +919,7 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			iRPos++;
 		}
 
-		CXMLReader xmlReader(((char *)CmdData.pBuffer) + iRPos, CmdData.iLength - iRPos);
+		XMLReader xmlReader(((char *)CmdData.pBuffer) + iRPos, CmdData.iLength - iRPos);
 
 		if(iSiteIndex == INVALID_SITE_INDEX)
 		{
@@ -1307,8 +1308,8 @@ bool CManagement::ProcessCommand(CSocketServer *pSock, CSocketClient *pClient, L
 			}
 		} //if(iSiteIndex != INVALID_SITE_INDEX)
 
-		CStringBuilder errMsg;
-		CXMLWriter resultXML("ResultInformation");
+		StringBuilder errMsg;
+		XMLWriter resultXML("ResultInformation");
 		resultXML.Add("Result", gWebSites->StopTrace(&errMsg) == 0 && bResult);
 		resultXML.Add("Text", errMsg.Buffer);
 		SendCommand(pClient, &resultXML);
@@ -1351,7 +1352,7 @@ bool CManagement::SendCommand(CSocketClient *pClient, const char *sText, ...)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CManagement::SendCommand(CSocketClient *pClient, CXMLReader *pXML)
+bool CManagement::SendCommand(CSocketClient *pClient, XMLReader *pXML)
 {
 	const char *sText = pXML->Text();
 	if(sText)
@@ -1366,7 +1367,7 @@ bool CManagement::SendCommand(CSocketClient *pClient, CXMLReader *pXML)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CManagement::SendCommand(CSocketClient *pClient, CXMLWriter *pXML)
+bool CManagement::SendCommand(CSocketClient *pClient, XMLWriter *pXML)
 {
 	char *sText = pXML->Text();
 	if(sText)

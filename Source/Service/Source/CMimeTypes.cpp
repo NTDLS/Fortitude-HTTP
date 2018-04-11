@@ -53,7 +53,7 @@ CMimeTypes::CMimeTypes(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CMimeTypes::CMimeTypes(void *lpWebSites, CXMLReader *xmlConfig, CMimeTypes *pDefaults)
+CMimeTypes::CMimeTypes(void *lpWebSites, XMLReader *xmlConfig, CMimeTypes *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -68,7 +68,7 @@ bool CMimeTypes::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -89,17 +89,17 @@ bool CMimeTypes::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CMimeTypes::ToXML(CXMLReader *lpXML)
+bool CMimeTypes::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("MimeTypes");
+	XMLWriter xmlConfig("MimeTypes");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Type");
+		XMLWriter Item("Type");
 		Item.Add("Extension", this->Collection.Items[iItem].Extension);
 		Item.Add("Mime", this->Collection.Items[iItem].Type);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
@@ -145,11 +145,11 @@ bool CMimeTypes::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("MimeTypes", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -163,7 +163,7 @@ bool CMimeTypes::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CMimeTypes::Load(CXMLReader *xmlConfig, CMimeTypes *pDefaults)
+bool CMimeTypes::Load(XMLReader *xmlConfig, CMimeTypes *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -177,7 +177,7 @@ bool CMimeTypes::Load(CXMLReader *xmlConfig, CMimeTypes *pDefaults)
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPMimeType;
+	XMLReader XPMimeType;
 
 	while(xmlConfig->ToReader("Type", &XPMimeType))
 	{

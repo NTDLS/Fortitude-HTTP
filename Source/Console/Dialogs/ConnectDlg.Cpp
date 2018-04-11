@@ -16,7 +16,7 @@
 #include <ShlOBJ.H>
 #include <Stdlib.H>
 
-#include "../../../../@Libraries/CSHA1/CSHA1.h"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../Source/Entry.H"
 #include "../Source/ConfigTree.H"
@@ -35,6 +35,8 @@ using namespace NSWFL::Conversion;
 using namespace NSWFL::ListView;
 using namespace NSWFL::File;
 using namespace NSWFL::Registry;
+using namespace NSWFL::Hashing;
+using namespace NSWFL::Conversion;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

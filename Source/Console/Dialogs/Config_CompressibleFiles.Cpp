@@ -75,7 +75,7 @@ INT_PTR CALLBACK Config_CompressibleFiles(HWND hWnd, UINT uMsg, WPARAM wParam, L
         hCachePath = GetDlgItem(hWnd, IDC_CACHEPATH);
         hCacheSize = GetDlgItem(hWnd, IDC_CACHESIZE);
 
-		CXMLReader xml;
+		XMLReader xml;
 		if(gManage->QueryXMLReader(&xml, "::Configuration:Compression|%d", gCI.iSite))
 		{
 			char sInt[64];
@@ -232,12 +232,12 @@ INT_PTR CALLBACK Config_CompressibleFiles(HWND hWnd, UINT uMsg, WPARAM wParam, L
 			//---(Begin Server Update)------------------------------------------------------------------
 			if(IsDlgButtonChecked(hWnd, IDC_USEGLOBAL) == FALSE)
 			{
-				CXMLWriter xml;
+				XMLWriter xml;
 				if(LoadNewCompressionConfiguration(hWnd, gCI.hList, &xml))
 				{
 					char *xmlText = xml.Text();
 
-					CXMLReader xml;
+					XMLReader xml;
 					if(gManage->QueryXMLReader(&xml, "::Update|%d:%s:%s", gCI.iSite, "Compression", xmlText))
 					{
 						ProcessXMLResult(hWnd, &xml, NULL, "Failed to apply configuration!");
@@ -252,7 +252,7 @@ INT_PTR CALLBACK Config_CompressibleFiles(HWND hWnd, UINT uMsg, WPARAM wParam, L
 			else {
 				if(!gCI.bGlobal)
 				{
-					CXMLReader xml;
+					XMLReader xml;
 					if(gManage->QueryXMLReader(&xml, "::Update|%d:%s:%s", gCI.iSite, "Compression", "~Global"))
 					{
 						ProcessXMLResult(hWnd, &xml, NULL, "Failed to apply configuration!");

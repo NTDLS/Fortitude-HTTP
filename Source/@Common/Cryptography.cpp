@@ -22,10 +22,11 @@
 #include "../Console/Source/Entry.H"
 #endif
 
-#include "../../../@Libraries/NSWFL/NSWFL.h"
-#include "../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../@Libraries/CSHA1/CSHA1.h"
+#include "../../../NSWFL/NSWFL.h"
+
 #include "Cryptography.h"
+
+using namespace NSWFL::Hashing;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,7 +58,7 @@ bool MakeEncryptionKey(char *sNewKey, int iNewKeySz, const char *sFormat, ...)
 	if(Get_MachineName(sHostName, sizeof(sHostName)))
 	{
 		UCase(sHostName);
-		CStringBuilder localKey;
+		StringBuilder localKey;
 		localKey.AppendF("%s\\%s\\%s", sSuppliedKey, GLOBAL_CRPYO_KEY, sHostName);
 		bResult = SimpleSHA1(localKey.Buffer, localKey.Length, sNewKey, iNewKeySz);
 	}

@@ -23,12 +23,8 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/URLEncoding/URLEncoding.H"
-
 #include "CSSIFiles.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +34,7 @@ using namespace NSWFL::File;
 using namespace NSWFL::ListView;
 using namespace NSWFL::Registry;
 using namespace NSWFL::System;
+using namespace NSWFL::Conversion;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,7 +55,7 @@ CSSIFiles::CSSIFiles(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CSSIFiles::CSSIFiles(void *lpWebSites, CXMLReader *xmlConfig, CSSIFiles *pDefaults)
+CSSIFiles::CSSIFiles(void *lpWebSites, XMLReader *xmlConfig, CSSIFiles *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -73,7 +70,7 @@ bool CSSIFiles::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -94,17 +91,17 @@ bool CSSIFiles::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSSIFiles::ToXML(CXMLReader *lpXML)
+bool CSSIFiles::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("SSIFiles");
+	XMLWriter xmlConfig("SSIFiles");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("File");
+		XMLWriter Item("File");
 		Item.Add("Extension", this->Collection.Items[iItem].Extension);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.AddBool("Enable", this->Collection.Items[iItem].Enabled);
@@ -150,11 +147,11 @@ bool CSSIFiles::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("SSIFiles", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -168,7 +165,7 @@ bool CSSIFiles::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSSIFiles::Load(CXMLReader *xmlConfig, CSSIFiles *pDefaults)
+bool CSSIFiles::Load(XMLReader *xmlConfig, CSSIFiles *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -182,7 +179,7 @@ bool CSSIFiles::Load(CXMLReader *xmlConfig, CSSIFiles *pDefaults)
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", false);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPSSIFile;
+	XMLReader XPSSIFile;
 
 	while(xmlConfig->ToReader("File", &XPSSIFile))
 	{
@@ -280,7 +277,7 @@ bool CSSIFiles::ProcessServerSideInclude(VOID *pClient, const char *sFileName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool CSSIFiles::ProcessServerSideInclude(VOID *pClient, char *sFileBuf,
-				int iFileBufSz, bool bSend, CStringBuilder *lpBuf)
+				int iFileBufSz, bool bSend, StringBuilder *lpBuf)
 {
 	SSIINFO SSII;
 	memset(&SSII, 0, sizeof(SSII));
@@ -290,7 +287,7 @@ bool CSSIFiles::ProcessServerSideInclude(VOID *pClient, char *sFileBuf,
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool CSSIFiles::ProcessServerSideInclude(VOID *pClient,
-	const char *sFileName, bool bSend, CStringBuilder *pBuffer)
+	const char *sFileName, bool bSend, StringBuilder *pBuffer)
 {
 	SSIINFO SSII;
 	memset(&SSII, 0, sizeof(SSII));
@@ -302,13 +299,13 @@ bool CSSIFiles::ProcessServerSideInclude(VOID *pClient,
 bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, const char *sFileName)
 {
 	this->Locks.LockShared();
-	CStringBuilder Buffer;
+	StringBuilder Buffer;
 	return this->Locks.UnlockShared(ProcessServerSideIncludeEx(pSSII, pClient, sFileName, true, &Buffer));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, const char *sFileName, bool bSend, CStringBuilder *pBuffer)
+bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, const char *sFileName, bool bSend, StringBuilder *pBuffer)
 {
 	this->Locks.LockShared();
 	PEER *pC = (PEER *)pClient;
@@ -325,7 +322,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, const 
 	//Get the size of the RAW SSI file.
 	if(!FileSize(sFileName, &ulFileBufSz))
 	{
-		CStringBuilder errorMessage;
+		StringBuilder errorMessage;
 		GetLastError(&errorMessage);
 		pWebSite->pErrorPages->SendError(pC, "500", "SSI Error->FileSize->%s", errorMessage.Buffer);
 		return this->Locks.UnlockShared(false);
@@ -339,7 +336,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, const 
 	//Open the RAW SSI file.
 	if(fopen_s(&fSource, sFileName, "rb") != 0)
 	{
-		CStringBuilder errorMessage;
+		StringBuilder errorMessage;
 		GetLastError(&errorMessage);
 		pWebSite->pErrorPages->SendError(pC, "500", "SSI Error->fopen_s->%s", errorMessage.Buffer);
 		return this->Locks.UnlockShared(false);
@@ -363,7 +360,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, const 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *sFileBuf,
-	int iFileBufSz, bool bSend, CStringBuilder *lpBuf)
+	int iFileBufSz, bool bSend, StringBuilder *lpBuf)
 {
 	this->Locks.LockShared();
 	PEER *pC = (PEER *)pClient;
@@ -578,7 +575,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *
 			{
 				if(this->IsSSIFile(sFileName))
 				{
-					CStringBuilder RecursiveBuffer;
+					StringBuilder RecursiveBuffer;
 					if(this->ProcessServerSideIncludeEx(pSSII, pC, sFileName, false, &RecursiveBuffer))
 					{
 						lpBuf->Append(&RecursiveBuffer);
@@ -600,7 +597,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *
 			if(strlen(sFileName) > 0)
 			{
 				int iResult = 0;
-				CStringBuilder Str;
+				StringBuilder Str;
 				if((iResult = ((CWebSite*)pC->pWebSite)->pScriptingEngines->ProcessScript(pC, &Str, sFileName)) == EXEC_RESULT_OK)
 				{
 					lpBuf->Append(Str.Buffer, Str.Length);
@@ -662,7 +659,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *
 					if(!((CWebSite*)pC->pWebSite)->pCompression->GetUniqueFileName(
 						sUncompressed, sizeof(sUncompressed), ((PEER*)pC)->Header.FullRequest))
 					{
-						CStringBuilder errorMessage;
+						StringBuilder errorMessage;
 						GetLastError(&errorMessage);
 						pWebSite->pErrorPages->SendError(pC, "500", "SSI Error->GetUniqueFileName->%s", errorMessage.Buffer);
 						return this->Locks.UnlockShared(false);
@@ -670,7 +667,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *
 					if(!((CWebSite*)pC->pWebSite)->pCompression->GetUniqueFileName(
 						sCompressed, sizeof(sCompressed)))
 					{
-						CStringBuilder errorMessage;
+						StringBuilder errorMessage;
 						GetLastError(&errorMessage);
 						pWebSite->pErrorPages->SendError(pC, "500", "SSI Error->GetUniqueFileName->%s", errorMessage.Buffer);
 						return this->Locks.UnlockShared(false);
@@ -685,7 +682,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *
 							//Get the size of the compressed SSI file.
 							if(!FileSize(sCompressed, &ulCompressedSize))
 							{
-								CStringBuilder errorMessage;
+								StringBuilder errorMessage;
 								GetLastError(&errorMessage);
 								pWebSite->pErrorPages->SendError(pC, "500", "SSI Error->FileSize->%s", errorMessage.Buffer);
 							}
@@ -713,13 +710,13 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *
 							}
 						}
 						else{
-							CStringBuilder errorMessage;
+							StringBuilder errorMessage;
 							GetLastError(&errorMessage);
 							pWebSite->pErrorPages->SendError(pC, "500", "SSI Error->Deflate->%s", errorMessage.Buffer);
 						}
 					}
 					else{
-						CStringBuilder errorMessage;
+						StringBuilder errorMessage;
 						GetLastError(&errorMessage);
 						pWebSite->pErrorPages->SendError(pC, "500", "SSI Error->BufferDataToFile->%s [%s]", errorMessage.Buffer, sUncompressed);
 					}
@@ -769,7 +766,7 @@ bool CSSIFiles::ProcessServerSideIncludeEx(SSIINFO *pSSII, VOID *pClient, char *
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSSIFiles::GetSSITagEx(VOID *pClient, CStringBuilder *lpBuf, int iInitRPos, const char *sSSI,
+bool CSSIFiles::GetSSITagEx(VOID *pClient, StringBuilder *lpBuf, int iInitRPos, const char *sSSI,
 				 const int iSSISz, char *sOutBuffer, int iOutBufMaxSz,
 				 const char *sOpt1, const char *sOpt2)
 {
@@ -878,7 +875,7 @@ bool CSSIFiles::GetSSITagEx(VOID *pClient, CStringBuilder *lpBuf, int iInitRPos,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSSIFiles::GetVirtualOrFileName(VOID *pClient, CStringBuilder *lpBuf, int iInitRPos,
+bool CSSIFiles::GetVirtualOrFileName(VOID *pClient, StringBuilder *lpBuf, int iInitRPos,
 						   const char *sSSI, const int iSSISz, char *sOutFileName)
 {
 	this->Locks.LockShared();
@@ -888,7 +885,7 @@ bool CSSIFiles::GetVirtualOrFileName(VOID *pClient, CStringBuilder *lpBuf, int i
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSSIFiles::GetCGIOrCMDName(VOID *pClient, CStringBuilder *lpBuf, int iInitRPos,
+bool CSSIFiles::GetCGIOrCMDName(VOID *pClient, StringBuilder *lpBuf, int iInitRPos,
 					  const char *sSSI, const int iSSISz, char *sOutFileName)
 {
 	this->Locks.LockShared();
@@ -898,7 +895,7 @@ bool CSSIFiles::GetCGIOrCMDName(VOID *pClient, CStringBuilder *lpBuf, int iInitR
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CSSIFiles::EchoSSIVar(VOID *pClient, CStringBuilder *lpBuf, char *sVarName)
+bool CSSIFiles::EchoSSIVar(VOID *pClient, StringBuilder *lpBuf, char *sVarName)
 {
 	this->Locks.LockShared();
 	PEER *pC = (PEER *)pClient;
@@ -920,7 +917,7 @@ bool CSSIFiles::EchoSSIVar(VOID *pClient, CStringBuilder *lpBuf, char *sVarName)
 		}
 	}
 	else if(_strcmpi(sVarName, "QUERY_STRING_UNESCAPED") == 0){
-		CStringBuilder queryString(pC->Header.Query);
+		StringBuilder queryString(pC->Header.Query);
 		int iLength = URLDecode(queryString.Buffer);
 		if(iLength >= 0)
 		{

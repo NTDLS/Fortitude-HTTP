@@ -130,7 +130,7 @@ INT_PTR CALLBACK Config_ErrorPages_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 
 			for(int iItem = 0; iItem < iGridItems; iItem++)
 			{
-				CXMLWriter Item("Page");
+				XMLWriter Item("Page");
 
 				LVGetText(gCI.hList, iItem, ERRORPAGES_LIST_POS_CODE, sCode, sizeof(sCode));
 				if(_strcmpi(sCode, sReturnCode) == 0)

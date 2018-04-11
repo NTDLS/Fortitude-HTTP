@@ -36,7 +36,7 @@ char gsPath[MAX_PATH];
 char gsDataPath[MAX_PATH];
 DWORD gdwManagementPort = 0;
 
-CMemPool *pMem; //The global memory object.
+MemoryPool *pMem; //The global memory object.
 CService gService;	//The global service.
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

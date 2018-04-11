@@ -12,7 +12,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------(Function Prototypes)
 INT_PTR CALLBACK CommandWaitDialog(HWND hHwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-bool ProcessLengthyCommand(CXMLReader *pXML, HWND hOwner, const char *sText, const char *sCommandText, ...);
+bool ProcessLengthyCommand(XMLReader *pXML, HWND hOwner, const char *sText, const char *sCommandText, ...);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif

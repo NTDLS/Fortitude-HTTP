@@ -39,7 +39,7 @@ public:
 	bool SendHttpHeader(PEER *pC, const char *sLastModified, const char *sErrCode, const char *sErrDesc,
 		const char *sEncoding, const char *sMimeType, __int64 i64ContentLength,
 		const char *sExtraHeaders, bool bTerminateHeader);
-	bool BuildHttpHeader(PEER *pC, CStringBuilder *sOutHeader, const char *sLastModified, const char *sErrCode, const char *sErrDesc,
+	bool BuildHttpHeader(PEER *pC, StringBuilder *sOutHeader, const char *sLastModified, const char *sErrCode, const char *sErrDesc,
 		const char *sEncoding, const char *sMimeType, __int64 i64ContentLength,
 		const char *sExtraHeaders, bool bTerminateHeader);
 
@@ -49,7 +49,7 @@ public:
 	bool SendOKHeader(PEER *pC, const char *sLastModified, const char *sMimeType, __int64 i64FileSize);
 
 	bool BufferDataToClient(PEER *pC, const char *sData, unsigned int iDataLength);
-	bool BufferDataToClient(PEER *pC, CStringBuilder *sData);
+	bool BufferDataToClient(PEER *pC, StringBuilder *sData);
 	bool FreeClientHeader(PEER *pC);
 	bool ParseHTTPHeader(CWebSite *pWebSite, PEER *pC, const char *sBuf, const int iBufLen);
 	bool GetHeaderRequestRange(CWebSite *pWebSite, PEER *pC, const char *sBuf, const int iBufLen);

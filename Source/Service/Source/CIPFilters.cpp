@@ -52,7 +52,7 @@ CIPFilters::CIPFilters(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CIPFilters::CIPFilters(void *lpWebSites, CXMLReader *xmlConfig, CIPFilters *pDefaults)
+CIPFilters::CIPFilters(void *lpWebSites, XMLReader *xmlConfig, CIPFilters *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -67,7 +67,7 @@ bool CIPFilters::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -88,17 +88,17 @@ bool CIPFilters::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CIPFilters::ToXML(CXMLReader *lpXML)
+bool CIPFilters::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("IPFilters");
+	XMLWriter xmlConfig("IPFilters");
 
 	xmlConfig.AddBool("Enable", this->Collection.Enabled);
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Filter");
+		XMLWriter Item("Filter");
 		Item.Add("Address", this->Collection.Items[iItem].IP);
 		Item.Add("Description", this->Collection.Items[iItem].Description);
 		Item.AddBool("Enable", this->Collection.Items[iItem].Enabled);
@@ -143,11 +143,11 @@ bool CIPFilters::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("IPFilters", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -161,7 +161,7 @@ bool CIPFilters::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CIPFilters::Load(CXMLReader *xmlConfig, CIPFilters *pDefaults)
+bool CIPFilters::Load(XMLReader *xmlConfig, CIPFilters *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -175,7 +175,7 @@ bool CIPFilters::Load(CXMLReader *xmlConfig, CIPFilters *pDefaults)
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader xmlItem;
+	XMLReader xmlItem;
 
 	while(xmlConfig->ToReader("Filter", &xmlItem))
 	{

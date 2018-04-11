@@ -10,15 +10,18 @@
 #define _Management_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CSocketServer/CSocketServer.H"
-#include "../../../../@Libraries/CNASCCL (Stream)/CNASCCL.H"
-#include "../../../../@Libraries/CXML/CXML.H"
-
+#include "../../../CSocketServer/CSocketServer.H"
+#include "../../../NASCCL/NASCCL.H"
+#include "../../../NSWFL/NSWFL.h"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define MAX_TEXT_SIZE		2048
 #define MGMT_INITIAL_KEY	"Vq5qt61oVnUrs5My9ix9RUC56u82OiOW0jsO6WvnNXVNx14Ax624Oqdu6i4v"
 #define MGMT_INITIAL_KEY_SZ	20
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,8 +33,8 @@ public:
 
 	bool SendCommand(CSocketClient *pClient, const char *sText, ...);
 	bool SendCommand(CSocketClient *pClient, LPBASICHUNK pReturnData, const char *sText, ...);
-	bool SendCommand(CSocketClient *pClient, CXMLWriter *pXML);
-	bool SendCommand(CSocketClient *pClient, CXMLReader *pXML);
+	bool SendCommand(CSocketClient *pClient, XMLWriter *pXML);
+	bool SendCommand(CSocketClient *pClient, XMLReader *pXML);
 
 	bool IsInitialized(void)
 	{
@@ -40,7 +43,7 @@ public:
 
 protected:
 	CSocketServer *Socket;
-	CNASCCL Cytpto;
+	NASCCLStream Cytpto;
 	bool bIsAuthorized;
 	bool bInitialized;
 

@@ -33,7 +33,7 @@
 #include "Config_SocketPools_Item.H"
 #include "Config_ListenIPs_Item.H"
 
-#include "../../../../@Libraries/CTabControl/CTabControl.h"
+#include "../../../CTabControl/CTabControl.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,7 +134,7 @@ INT_PTR CALLBACK Config_SocketPools_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 			const char *sXMLText = (char *)xmlParam;
 			if(sXMLText)
 			{
-				CXMLReader xml(sXMLText);
+				XMLReader xml(sXMLText);
 
 				PopListeningIPsList(hIPList, false, &xml);
 
@@ -237,7 +237,7 @@ INT_PTR CALLBACK Config_SocketPools_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 
 			if(gCI.iListIndex != INVALID_LIST_INDEX) //Editing / Adding
 			{
-				CXMLWriter xmlIPAddresses;
+				XMLWriter xmlIPAddresses;
 				LoadNewListeningIPsConfiguration(hWnd, hIPList,
 					IsDlgButtonChecked(hTabIPs, IDC_LISTENALLIPS) == BST_CHECKED, &xmlIPAddresses);
 
@@ -253,7 +253,7 @@ INT_PTR CALLBACK Config_SocketPools_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 				}
 			}
 			else {
-					CXMLWriter xmlIPAddresses;
+				XMLWriter xmlIPAddresses;
 					LoadNewListeningIPsConfiguration(hWnd, hIPList,
 						IsDlgButtonChecked(hTabIPs, IDC_LISTENALLIPS) == BST_CHECKED, &xmlIPAddresses);
 

@@ -10,12 +10,12 @@
 #define _CVirtualRoots_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/VirtualRoots.h"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,20 +27,20 @@ private:
 	ROOTS Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	CVirtualRoots(void *lpWebSites);
-	CVirtualRoots(void *lpWebSites, CXMLReader *xmlConfig, CVirtualRoots *pDefaults);
+	CVirtualRoots(void *lpWebSites, XMLReader *xmlConfig, CVirtualRoots *pDefaults);
 	~CVirtualRoots(void);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	ROOT *IsVirtualRoot(const char *sRequest/*, char *&sFullRequest*/);
 	bool Reload(void);
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CVirtualRoots *pDefaults);
+	bool Load(XMLReader *xmlConfig, CVirtualRoots *pDefaults);
 	bool Destroy();
 };
 

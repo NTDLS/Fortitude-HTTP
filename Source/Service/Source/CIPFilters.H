@@ -10,12 +10,12 @@
 #define _CIPFilters_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/IPFilters.H"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,19 +27,19 @@ private:
 	IPFILTERS Collection;
 	char sFileName[MAX_PATH];
 
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	~CIPFilters(void);
 	CIPFilters(void *lpWebSites);
-	CIPFilters(void *lpWebSites, CXMLReader *xmlConfig, CIPFilters *pDefaults);
+	CIPFilters(void *lpWebSites, XMLReader *xmlConfig, CIPFilters *pDefaults);
 	bool Save(void);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	bool IsIPAllowed(const char *sIP);
 	bool Load(const char *sXMLFileName);
-	bool Load(CXMLReader *xmlConfig, CIPFilters *pDefaults);
+	bool Load(XMLReader *xmlConfig, CIPFilters *pDefaults);
 	bool Reload(void);
 	bool Destroy(void);
 	bool Enabled(void);

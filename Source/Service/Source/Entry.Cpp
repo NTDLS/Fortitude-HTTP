@@ -27,6 +27,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::Registry;
+using namespace NSWFL::Memory;
+using namespace NSWFL::CommandLine;
+using namespace NSWFL::Debug;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +46,7 @@ char gsDataPath[MAX_PATH];
 DWORD dwManagementPort = 0;
 bool gbLoadManagementInterface = true;
 
-CMemPool *pMem; //The global memory object.
+MemoryPool *pMem; //The global memory object.
 CService gService;	//The global service.
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +128,7 @@ bool ServiceProcedure(LPVOID lpVoid)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int ProcessCommandLine(CCmdLine *cmdLine)
+int ProcessCommandLine(CommandLineParser *cmdLine)
 {
 	for(int iCommand = 1; iCommand < cmdLine->Count(); iCommand++)
 	{
@@ -183,7 +186,7 @@ int ProcessCommandLine(CCmdLine *cmdLine)
 					char sCaption[sizeof(gsTitleCaption) + sizeof(gsFileVersion)];
 					sprintf_s(sCaption, "%s - %s", gsTitleCaption, gsFileVersion);
 
-					CStringBuilder debugText;
+					StringBuilder debugText;
 
 					debugText.AppendF("%s (Standalone Debug Mode)\n", sCaption);
 					debugText.Append("Type \"?\" or \"Help\" for a list of available commands.\n\n");
@@ -399,7 +402,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevious, LPSTR sCmdLine, int
 
 	if(true)
 	{
-		CCmdLine cmdLine;
+		CommandLineParser cmdLine;
 
 		gService.Initialize(gsServiceName, &ServiceProcedure, NULL);
 

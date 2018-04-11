@@ -10,10 +10,10 @@
 #define _CDirectoryIndexing_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 #include "CWebSites.H"
+
+using namespace NSWFL::Collections;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,7 @@ private:
 public:
 	bool IndexDirectory(const char *sDirectory);
 	bool Destroy(void);
-	bool ToHTML(const char *sCurrentFolder, CStringBuilder *lpStr);
+	bool ToHTML(const char *sCurrentFolder, StringBuilder *lpStr);
 	bool SendContents(PEER *pC, const char *sDirectory);
 	bool GetFileIcon(const char *sFileNameAndPath, char *sIconURL, int iMaxIconURL);
 

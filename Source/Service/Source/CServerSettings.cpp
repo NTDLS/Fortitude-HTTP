@@ -21,8 +21,6 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CSHA1/CSHA1.h"
-
 #include "CServerSettings.H"
 #include "Entry.H"
 #include "CWebSites.H"
@@ -32,6 +30,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 using namespace NSWFL::String;
 using namespace NSWFL::File;
 using namespace NSWFL::ListView;
+using namespace NSWFL::Hashing;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -52,7 +51,7 @@ CServerSettings::CServerSettings(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CServerSettings::CServerSettings(void *lpWebSites, CXMLReader *xmlConfig, CServerSettings *pDefaults)
+CServerSettings::CServerSettings(void *lpWebSites, XMLReader *xmlConfig, CServerSettings *pDefaults)
 {
 	this->Initialized = true;
 	this->pWebSites = lpWebSites;
@@ -67,7 +66,7 @@ bool CServerSettings::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -88,18 +87,18 @@ bool CServerSettings::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CServerSettings::ToXML(CXMLReader *lpXML)
+bool CServerSettings::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("ServerSettings");
+	XMLWriter xmlConfig("ServerSettings");
 
-	CXMLWriter xmlUsers("Users");
+	XMLWriter xmlUsers("Users");
 	xmlUsers.AddBool("AllowRemoteManagement", this->Settings.Users.AllowRemoteManagement);
 
 	for(int iItem = 0; iItem < this->Settings.Users.Count; iItem++)
 	{
-		CXMLWriter Item("User");
+		XMLWriter Item("User");
 		Item.Add("Username", this->Settings.Users.Items[iItem].Username);
 		Item.Add("Password", this->Settings.Users.Items[iItem].Password);
 		Item.Add("Description", this->Settings.Users.Items[iItem].Description);
@@ -108,13 +107,13 @@ bool CServerSettings::ToXML(CXMLReader *lpXML)
 	}
 	xmlConfig.Add(&xmlUsers);
 
-	CXMLWriter xmlProcessors("Processors");
+	XMLWriter xmlProcessors("Processors");
 	xmlProcessors.Add("AffinityMask", this->Settings.Processor.AffinityMask);
 	xmlProcessors.AddBool("ProcessBoost", this->Settings.Processor.ProcessBoost);
 	xmlProcessors.AddBool("ThreadBoost", this->Settings.Processor.ThreadBoost);
 	xmlConfig.Add(&xmlProcessors);
 
-	CXMLWriter xmlAdvanced("Advanced");
+	XMLWriter xmlAdvanced("Advanced");
 	xmlAdvanced.AddBool("OptimizeForThroughput", this->Settings.Advanced.OptimizeForThroughput);
 	xmlAdvanced.AddBool("ForceSocketReuse", this->Settings.Advanced.ForceSocketReuse);
 	xmlConfig.Add(&xmlAdvanced);
@@ -157,11 +156,11 @@ bool CServerSettings::Load(const char *sXMLFileName)
 
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("ServerSettings", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -175,7 +174,7 @@ bool CServerSettings::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CServerSettings::Load(CXMLReader *xmlConfig, CServerSettings *pDefaults)
+bool CServerSettings::Load(XMLReader *xmlConfig, CServerSettings *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -186,9 +185,9 @@ bool CServerSettings::Load(CXMLReader *xmlConfig, CServerSettings *pDefaults)
 	int iLength = 0;
 	memset(&this->Settings, 0, sizeof(this->Settings));
 
-	CXMLReader xml;
+	XMLReader xml;
 
-	CXMLReader xmlUsers;
+	XMLReader xmlUsers;
 	if(xmlConfig->ToReader("Users", &xmlUsers))
 	{
 		this->Settings.Users.AllowRemoteManagement = xmlUsers.ToBoolean("AllowRemoteManagement");
@@ -229,7 +228,7 @@ bool CServerSettings::Load(CXMLReader *xmlConfig, CServerSettings *pDefaults)
 		xmlUsers.Destroy();
 	}
 
-	CXMLReader xmlProcessors;
+	XMLReader xmlProcessors;
 	if(xmlConfig->ToReader("Processors", &xmlProcessors))
 	{
 #if defined(WIN64) || defined(_WIN64) || defined(_AMD64)
@@ -249,7 +248,7 @@ bool CServerSettings::Load(CXMLReader *xmlConfig, CServerSettings *pDefaults)
 		xmlProcessors.Destroy();
 	}
 
-	CXMLReader xmlAdvanced;
+	XMLReader xmlAdvanced;
 	if(xmlConfig->ToReader("Advanced", &xmlAdvanced))
 	{
 		this->Settings.Advanced.OptimizeForThroughput = xmlAdvanced.ToBoolean("OptimizeForThroughput");

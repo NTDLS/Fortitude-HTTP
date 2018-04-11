@@ -22,8 +22,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "../../@Common/Cryptography.h"
-#include "../../../../@Libraries/Base64/Base64.h"
-#include "../../../../@Libraries/CNASCCL (Stream)/CNASCCL.H"
+#include "../../../NASCCL/NASCCL.H"
 
 #include "CErrorPages.H"
 #include "Entry.H"
@@ -35,6 +34,7 @@ using namespace NSWFL::String;
 using namespace NSWFL::File;
 using namespace NSWFL::ListView;
 using namespace NSWFL::Windows;
+using namespace NSWFL::Conversion;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +55,7 @@ CErrorPages::CErrorPages(void *lpWebSites)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CErrorPages::CErrorPages(void *lpWebSites, CXMLReader *xmlConfig, CErrorPages *pDefaults)
+CErrorPages::CErrorPages(void *lpWebSites, XMLReader *xmlConfig, CErrorPages *pDefaults)
 {
 	this->Initialized = false;
 	this->pWebSites = lpWebSites;
@@ -69,7 +69,7 @@ bool CErrorPages::Save(void)
 {
 	this->Locks.LockShared();
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 	if(this->ToXML(&xmlConfig))
 	{
 		bool bResult = xmlConfig.ToFile(this->sFileName);
@@ -90,11 +90,11 @@ bool CErrorPages::Save(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CErrorPages::ToXML(CXMLReader *lpXML)
+bool CErrorPages::ToXML(XMLReader *lpXML)
 {
 	this->Locks.LockShared();
 
-	CXMLWriter xmlConfig("ErrorPages");
+	XMLWriter xmlConfig("ErrorPages");
 
 	if(strlen(this->Collection.DefaultFile) == 0)
 	{
@@ -105,7 +105,7 @@ bool CErrorPages::ToXML(CXMLReader *lpXML)
 
 	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		CXMLWriter Item("Page");
+		XMLWriter Item("Page");
 		Item.Add("Code", this->Collection.Items[iItem].Code);
 		Item.Add("ReturnCode", this->Collection.Items[iItem].ReturnCode);
 		Item.Add("File", this->Collection.Items[iItem].File);
@@ -153,11 +153,11 @@ bool CErrorPages::Load(const char *sXMLFileName)
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sXMLFileName);
 	strcpy_s(this->Collection.DefaultFile, sizeof(this->Collection.DefaultFile), "");
 
-	CXMLReader xmlConfig;
+	XMLReader xmlConfig;
 
 	if(xmlConfig.FromFile(sXMLFileName))
 	{
-		CXMLReader xmlEntity;
+		XMLReader xmlEntity;
 		if(xmlConfig.ToReader("ErrorPages", &xmlEntity))
 		{
 			this->Initialized = this->Load(&xmlEntity, NULL);
@@ -171,7 +171,7 @@ bool CErrorPages::Load(const char *sXMLFileName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CErrorPages::Load(CXMLReader *xmlConfig, CErrorPages *pDefaults)
+bool CErrorPages::Load(XMLReader *xmlConfig, CErrorPages *pDefaults)
 {
 	this->Locks.LockExclusive();
 	if(this->Initialized)
@@ -201,7 +201,7 @@ bool CErrorPages::Load(CXMLReader *xmlConfig, CErrorPages *pDefaults)
 	}
 
 	xmlConfig->ProgressiveScan(true);
-	CXMLReader XPVirtualPage;
+	XMLReader XPVirtualPage;
 
 	while(xmlConfig->ToReader("Page", &XPVirtualPage))
 	{
@@ -292,7 +292,7 @@ DWORD CErrorPages::ErrorCount(void)
 bool CErrorPages::AuthorizationRequired(VOID *pClient)
 {
 	/*
-	CStringBuilder XtraHdrs;
+	StringBuilder XtraHdrs;
 
 	XtraHdrs.Append("WWW-Authenticate: Basic");
 	XtraHdrs.Append(" realm=Secure Area #1");
@@ -370,7 +370,7 @@ bool CErrorPages::SendErrorEx(VOID *pClient, ERRORPAGE *pErrorPage, const char *
 	}
 	pC->PerRequestStore.HTTPErrorOccured = true;
 
-	CStringBuilder errorFileName;
+	StringBuilder errorFileName;
 
 	ROOT *pVirtualRoot = pWebSite->pVirtualRoots->IsVirtualRoot(pErrorPage->File);
 
@@ -464,7 +464,7 @@ bool CErrorPages::SendErrorEx(VOID *pClient, ERRORPAGE *pErrorPage, const char *
 		}
 	}
 
-	CStringBuilder Str(1000);
+	StringBuilder Str(1000);
 
 	if(pWebSite->pScriptingEngines->IsScriptFile(errorFileName.Buffer))
 	{
@@ -573,7 +573,7 @@ bool CErrorPages::SendFailsafeError(VOID *pClient, const char *sErrCode, const c
 	CWebSite *pWebSite = (CWebSite *)pC->pWebSite;
 	CHttp *pHttp = (CHttp *)pWebSite->pHttp;
 
-	CStringBuilder genericError;
+	StringBuilder genericError;
 
 	genericError.AppendF(
 			"<html><head><title>An error has occured</title></head><body><strong>Error %s: %s</strong><br /><br />%s<br /><br /><i>NetworkDLS - %s v%s</i></body></html>",

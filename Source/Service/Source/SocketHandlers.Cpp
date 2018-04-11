@@ -22,12 +22,11 @@
 #include "CWebSites.H"
 #include "SocketHandlers.H"
 
-#include "../../../../@Libraries/CDuration/CDuration.h"
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::DateTime;
 using namespace NSWFL::String;
+using namespace NSWFL::HighPrecisionTimer;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -90,7 +89,7 @@ void Socket_ClientHandler(CSocketServer *pSock, CSocketClient *pClient, LPBASICH
 
 	SetThreadPriorityBoost(GetCurrentThread(), !pWebSites->pServerSettings->Settings.Processor.ThreadBoost);
 
-	CDuration duration;
+	HighPrecisionTimer duration;
 	bool bProcessedARequest = false;
 
 	while(pClient->IsConnected())
@@ -116,7 +115,7 @@ void Socket_ClientHandler(CSocketServer *pSock, CSocketClient *pClient, LPBASICH
 			Get_ShortDate(LFE.sDate, sizeof(LFE.sDate));
 			Get_Time(LFE.sTime, sizeof(LFE.sTime), 0);
 
-			CStringBuilder header((const char *)pChunk->pBuffer, pChunk->iLength);
+			StringBuilder header((const char *)pChunk->pBuffer, pChunk->iLength);
 			
 			if(bIsInitialConnection)
 			{

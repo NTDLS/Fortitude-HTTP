@@ -48,7 +48,7 @@ void PopListenSocketsComboBox(HWND hCombo)
 	SendMessage(hCombo, (UINT)CB_RESETCONTENT, (WPARAM)0, (LPARAM)0);
 
 	char sText[MAX_TEXT_SIZE];
-	CXMLReader xml;
+	XMLReader xml;
 	if(gManage->QueryXMLReader(&xml, "::Configuration:SocketPools|"))
 	{
 		int iPort = 0;
@@ -60,7 +60,7 @@ void PopListenSocketsComboBox(HWND hCombo)
 		xml.ProgressiveScan(true);
 
 		//Pop the list-view.
-		for(CXMLReader item; xml.ToReader("SocketPool", &item);)
+		for(XMLReader item; xml.ToReader("SocketPool", &item);)
 		{
 			//Read XML.
 			iPort = item.ToInteger("Port");
@@ -133,7 +133,7 @@ INT_PTR CALLBACK Config_WebSites_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 			const char *sXMLText = (char *)xmlParam;
 			if(sXMLText)
 			{
-				CXMLReader xml(sXMLText);
+				XMLReader xml(sXMLText);
 
 				char sSocketPool[SOCKETPOOLS_MAX_UID_LENGTH];
 
@@ -150,7 +150,7 @@ INT_PTR CALLBACK Config_WebSites_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 		}
 		else if(gCI.iSite != INVALID_SITE_INDEX)
 		{
-			CXMLReader xml;
+			XMLReader xml;
 			if(gManage->QueryXMLReader(&xml, "::Configuration:WebSite|%d", gCI.iSite))
 			{
 				PopHostHeadersList(hHostList, false, &xml);
@@ -252,14 +252,14 @@ INT_PTR CALLBACK Config_WebSites_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 			Item.Index = gCI.iSite;
 			Item.SocketPoolID = sSelectedSocketPoolID;
 
-			CXMLWriter siteXML("Site");
+			XMLWriter siteXML("Site");
 			siteXML.Add("Index", gCI.iSite);
 			siteXML.Add("Name", sName);
 			siteXML.Add("Description", sDescription);
 			siteXML.Add("Root", sRoot);
 			siteXML.Add("SocketPoolID", sSelectedSocketPoolID);
 					
-			CXMLWriter xmlHostHeaders;
+			XMLWriter xmlHostHeaders;
 			LoadNewHostHeadersConfiguration(hWnd, hHostList, &xmlHostHeaders);
 			siteXML.Add(&xmlHostHeaders);
 
@@ -296,7 +296,7 @@ INT_PTR CALLBACK Config_WebSites_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 					bool bResult = false;
 					char *xmlText = siteXML.Text();
 
-					CXMLReader xml;
+					XMLReader xml;
 					if(ProcessLengthyCommand(&xml, hWnd,
 						"Please wait while the new website configuration is applied. This process can take a long"
 						" time depending on the changes which were made and the number of connections to the given site.",

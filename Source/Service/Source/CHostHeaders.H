@@ -10,12 +10,12 @@
 #define _CHostHeaders_H
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../../../@Libraries/CXML/CXMLReader.H"
-#include "../../../../@Libraries/CStringBuilder/CStringBuilder.H"
-#include "../../../../@Libraries/CLocks/CLocks.H"
-#include "../../../../@Libraries/CStack/CStack.H"
+#include "../../../NSWFL/NSWFL.h"
 
 #include "../../@Common/HostHeaders.H"
+
+using namespace NSWFL::Isolation;
+using namespace NSWFL::XML;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,20 +24,20 @@ class CHostHeaders{
 private:
 	bool Initialized;
 	void *pWebSites;
-	CLocks Locks;
+	IsolationLock Locks;
 
 public:
 	HOSTHEADERS Collection;
 
 	~CHostHeaders(void);
-	CHostHeaders(void *lpWebSites, CXMLReader *xmlConfig);
+	CHostHeaders(void *lpWebSites, XMLReader *xmlConfig);
 	CHostHeaders(void *lpWebSites);
 
-	bool ToXML(CXMLReader *lpXML);
+	bool ToXML(XMLReader *lpXML);
 
 	int ActiveCount(void);
 
-	bool Load(CXMLReader *xmlConfig);
+	bool Load(XMLReader *xmlConfig);
 	bool Destroy(void);
 };
 
