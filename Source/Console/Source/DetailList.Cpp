@@ -11,9 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3214,7 +3214,7 @@ void PopSocketPoolsList_AddItem(HWND hList, SOCKETPOOL *obj, int iInsertionIndex
 
 	if(sXML)
 	{
-		ListItem.lParam = (LPARAM)pMem->StrDup(sXML); //Allocate RAM to LPARAM. MUST CLEAN UP!!
+		ListItem.lParam = (LPARAM)pMem->CloneString(sXML); //Allocate RAM to LPARAM. MUST CLEAN UP!!
 	}
 
 	ListItem.pszText = (char *) FormatInteger(sNumber, sizeof(sNumber), obj->Port);

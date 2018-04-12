@@ -14,7 +14,6 @@
 #include <PrSht.H>
 #include <Stdio.H>
 #include <CommCtrl.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
 
 #include "../Source/Entry.H"

@@ -222,7 +222,7 @@ bool CSocketPools::Load(XMLReader *xmlConfig)
 		p->FileBufferSize = xml.ToInteger("FileBufferSize", 10240);
 
 		xml.ToString("Description", sDescription, sizeof(sDescription), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescription);
+		p->Description = (char *) pMem->CloneString(sDescription);
 		
 		//---(Load IP Addresses)--
 
@@ -245,10 +245,10 @@ bool CSocketPools::Load(XMLReader *xmlConfig)
 			memset(pIP, 0, sizeof(LISTENIP));
 
 			xmlIP.ToString("Address", sIP, sizeof(sIP), &iLength);
-			pIP->IP = (char *) pMem->StrDup(sIP);
+			pIP->IP = (char *) pMem->CloneString(sIP);
 
 			xmlIP.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-			pIP->Description = (char *) pMem->StrDup(sDescr);
+			pIP->Description = (char *) pMem->CloneString(sDescr);
 
 			pIP->Enabled = xmlIP.ToBoolean("Enable", true);
 

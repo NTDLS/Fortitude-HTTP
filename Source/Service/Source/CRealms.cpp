@@ -11,11 +11,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
 #include <ShellAPI.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -23,9 +22,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CRealms.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,11 +189,11 @@ bool CRealms::Load(XMLReader *xmlConfig, CRealms *pDefaults)
 		REALM *p = &this->Collection.Items[this->Collection.Count++];
 
 		XPDefaultPage.ToString("File", sPage, sizeof(sPage), &iLength);
-		p->Page = (char *) pMem->StrDup(LCase(sPage, iLength));
+		p->Page = (char *) pMem->CloneString(LCase(sPage, iLength));
 		p->PageLength = (int) strlen(sPage);
 
 		XPDefaultPage.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPDefaultPage.ToBoolean("Enable", true);
 

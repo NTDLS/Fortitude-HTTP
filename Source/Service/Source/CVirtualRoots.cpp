@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -22,9 +21,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CVirtualRoots.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 #include "CWebSite.H"
 
@@ -248,25 +245,25 @@ bool CVirtualRoots::Load(XMLReader *xmlConfig, CVirtualRoots *pDefaults)
 
 		bDoesBuiltInErrorsExist = bDoesBuiltInErrorsExist || (InStrI("/BuiltInErrors", sURI) >= 0);
 
-		p->Root = (char *) pMem->StrDup(sURI);
+		p->Root = (char *) pMem->CloneString(sURI);
 		p->RootLength = (int) strlen(sURI);
 
 		XPVirtualRoot.ToString("Path", sPath, sizeof(sPath), &iLength);
-		p->Path = (char *) pMem->StrDup(sPath);
+		p->Path = (char *) pMem->CloneString(sPath);
 		p->PathLength = (int) strlen(sPath);
 
 		XPVirtualRoot.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPVirtualRoot.ToBoolean("Enable", false);
 		
 		if(XPVirtualRoot.ToReader("Login", &xmlAuth))
 		{
 			xmlAuth.ToString("Username", sUser, sizeof(sUser), &iLength);
-			p->Username = (char *) pMem->StrDup(sUser);
+			p->Username = (char *) pMem->CloneString(sUser);
 
 			xmlAuth.ToString("Domain", sDomain, sizeof(sDomain), &iLength);
-			p->Domain = (char *) pMem->StrDup(sDomain);
+			p->Domain = (char *) pMem->CloneString(sDomain);
 	
 			xmlAuth.ToString("Password", sEncryptedPassword, sizeof(sEncryptedPassword), &iLength);
 
@@ -279,7 +276,7 @@ bool CVirtualRoots::Load(XMLReader *xmlConfig, CVirtualRoots *pDefaults)
 				nasccl.Initialize(sEncryptionKey);
 				nasccl.Cipher(sPassword, iRawPasswordLength);
 				nasccl.Destroy();
-				p->Password = (char *)pMem->StrDup(sPassword);
+				p->Password = (char *)pMem->CloneString(sPassword);
 			}
 			else
 			{
@@ -310,11 +307,11 @@ bool CVirtualRoots::Load(XMLReader *xmlConfig, CVirtualRoots *pDefaults)
 		sprintf_s(sPath, sizeof(sPath), "%s\\Messages", gsPath);
 		CorrectForwardPath(sPath, sizeof(sPath));
 
-		p->Root = (char *) pMem->StrDup("/BuiltInErrors/");
+		p->Root = (char *) pMem->CloneString("/BuiltInErrors/");
 		p->RootLength = (int) strlen(p->Root);
-		p->Path = (char *) pMem->StrDup(sPath);
+		p->Path = (char *) pMem->CloneString(sPath);
 		p->PathLength = (int) strlen(sPath);
-		p->Description = (char *) pMem->StrDup("Used built-in global error messages. You must reconfigure your error messages if this virtual root is removed or is not present under each web-site.");
+		p->Description = (char *) pMem->CloneString("Used built-in global error messages. You must reconfigure your error messages if this virtual root is removed or is not present under each web-site.");
 		p->Enabled = true;
 		p->Username = NULL;
 		p->Domain = NULL;

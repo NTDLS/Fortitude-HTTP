@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -22,9 +21,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CMimeTypes.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 #include "CWebSite.H"
 
@@ -191,13 +188,13 @@ bool CMimeTypes::Load(XMLReader *xmlConfig, CMimeTypes *pDefaults)
 		MIMETYPE *p = &this->Collection.Items[Collection.Count++];
 
 		XPMimeType.ToString("Extension", sExt, sizeof(sExt), &iLength);
-		p->Extension = (char *) pMem->StrDup(LCase(sExt, iLength));
+		p->Extension = (char *) pMem->CloneString(LCase(sExt, iLength));
 
 		XPMimeType.ToString("Mime", sType, sizeof(sType), &iLength);
-		p->Type = (char *) pMem->StrDup(sType);
+		p->Type = (char *) pMem->CloneString(sType);
 
 		XPMimeType.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPMimeType.ToBoolean("Enable", true);
 

@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -22,9 +21,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CExtensionFilters.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,11 +185,11 @@ bool CExtensionFilters::Load(XMLReader *xmlConfig, CExtensionFilters *pDefaults)
 		EXTENSIONFILTER *p = &this->Collection.Items[this->Collection.Count++];
 
 		XPExtensionFilter.ToString("Extension", sExt, sizeof(sExt), &iLength);
-		p->Extension = (char *) pMem->StrDup(LCase(sExt, iLength));
+		p->Extension = (char *) pMem->CloneString(LCase(sExt, iLength));
 		p->ExtensionLength = (int) strlen(sExt);
 
 		XPExtensionFilter.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPExtensionFilter.ToBoolean("Enable", true);
 

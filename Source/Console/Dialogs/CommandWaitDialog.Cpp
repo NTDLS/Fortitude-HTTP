@@ -11,11 +11,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
 #include <Process.H>
+#include <shlobj.h>
 
 #include "../Source/Entry.H"
 #include "../Source/ConfigTree.H"

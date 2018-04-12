@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 #include "../Source/Entry.H"
 #include "../Source/ConfigTree.H"
@@ -77,7 +76,7 @@ void PopListenSocketsComboBox(HWND hCombo)
 			}
 
 			int iItemIndex = (int)SendMessage(hCombo, (UINT)CB_ADDSTRING, (WPARAM)0, (LPARAM)sText);
-			SendMessage(hCombo, (UINT)CB_SETITEMDATA, (WPARAM)iItemIndex, (LPARAM)pMem->StrDup(sUID));
+			SendMessage(hCombo, (UINT)CB_SETITEMDATA, (WPARAM)iItemIndex, (LPARAM)pMem->CloneString(sUID));
 
 			item.Destroy();
 		}
@@ -205,7 +204,7 @@ INT_PTR CALLBACK Config_WebSites_Item(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 			
 			if(sSelectedSocketPoolID)
 			{
-				sDuplicatedSocketPoolID = pMem->StrDup(sSelectedSocketPoolID);
+				sDuplicatedSocketPoolID = pMem->CloneString(sSelectedSocketPoolID);
 			}
 
 			if(DialogBox(ghAppInstance, MAKEINTRESOURCE(IDD_CONFIG_GENERICLIST), hWnd, Config_SocketPools) > 0)

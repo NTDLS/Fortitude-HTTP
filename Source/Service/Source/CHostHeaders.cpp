@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -22,9 +21,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CHostHeaders.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,10 +107,10 @@ bool CHostHeaders::Load(XMLReader *xmlConfig)
 		HOSTHEADER *p = &this->Collection.Items[this->Collection.Count++];
 
 		xmlItem.ToString("Name", sName, sizeof(sName), &iLength);
-		p->Name = pMem->StrDup(sName);
+		p->Name = pMem->CloneString(sName);
 
 		xmlItem.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = pMem->StrDup(sDescr);
+		p->Description = pMem->CloneString(sDescr);
 
 		p->Enabled = xmlItem.ToBoolean("Enable", true);
 

@@ -11,11 +11,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
 #include <ShellAPI.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -193,10 +192,10 @@ bool CCustomFilters::Load(XMLReader *xmlConfig, CCustomFilters *pDefaults)
 		memset(p, 0, sizeof(CUSTOMFILTER));
 
 		XPCustomFilter.ToString("DLL", sDLL, sizeof(sDLL), &iLength);
-		p->DLL = (char *) pMem->StrDup(sDLL);
+		p->DLL = (char *) pMem->CloneString(sDLL);
 
 		XPCustomFilter.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPCustomFilter.ToBoolean("Enable", true);
 
@@ -331,25 +330,25 @@ void CCustomFilters::PopFilterHeader(FILTERHTTPHEADER *filterRequestHeader, void
 		if(httpRequestHeader->PostData) pMem->Free(httpRequestHeader->PostData);
 
 		//Replace the old HTTP header with the Filter Header.
-		httpRequestHeader->Method = pMem->StrDup(filterRequestHeader->Method);
-		httpRequestHeader->Request = pMem->StrDup(filterRequestHeader->Request);
-		httpRequestHeader->FullRequest = pMem->StrDup(filterRequestHeader->FullRequest);
-		httpRequestHeader->Version = pMem->StrDup(filterRequestHeader->Version);
-		httpRequestHeader->Query = pMem->StrDup(filterRequestHeader->Query);
-		httpRequestHeader->ContentType = pMem->StrDup(filterRequestHeader->ContentType);
-		httpRequestHeader->Accept = pMem->StrDup(filterRequestHeader->Accept);
-		httpRequestHeader->AcceptLanguage = pMem->StrDup(filterRequestHeader->AcceptLanguage);
-		httpRequestHeader->AcceptEncoding = pMem->StrDup(filterRequestHeader->AcceptEncoding);
-		httpRequestHeader->UserAgent = pMem->StrDup(filterRequestHeader->UserAgent);
-		httpRequestHeader->Host = pMem->StrDup(filterRequestHeader->Host);
-		httpRequestHeader->Connection = pMem->StrDup(filterRequestHeader->Connection);
-		httpRequestHeader->CacheControl = pMem->StrDup(filterRequestHeader->CacheControl);
-		httpRequestHeader->Referer = pMem->StrDup(filterRequestHeader->Referer);
-		httpRequestHeader->Cookie = pMem->StrDup(filterRequestHeader->Cookie);
-		httpRequestHeader->ContentRange = pMem->StrDup(filterRequestHeader->ContentRange);
+		httpRequestHeader->Method = pMem->CloneString(filterRequestHeader->Method);
+		httpRequestHeader->Request = pMem->CloneString(filterRequestHeader->Request);
+		httpRequestHeader->FullRequest = pMem->CloneString(filterRequestHeader->FullRequest);
+		httpRequestHeader->Version = pMem->CloneString(filterRequestHeader->Version);
+		httpRequestHeader->Query = pMem->CloneString(filterRequestHeader->Query);
+		httpRequestHeader->ContentType = pMem->CloneString(filterRequestHeader->ContentType);
+		httpRequestHeader->Accept = pMem->CloneString(filterRequestHeader->Accept);
+		httpRequestHeader->AcceptLanguage = pMem->CloneString(filterRequestHeader->AcceptLanguage);
+		httpRequestHeader->AcceptEncoding = pMem->CloneString(filterRequestHeader->AcceptEncoding);
+		httpRequestHeader->UserAgent = pMem->CloneString(filterRequestHeader->UserAgent);
+		httpRequestHeader->Host = pMem->CloneString(filterRequestHeader->Host);
+		httpRequestHeader->Connection = pMem->CloneString(filterRequestHeader->Connection);
+		httpRequestHeader->CacheControl = pMem->CloneString(filterRequestHeader->CacheControl);
+		httpRequestHeader->Referer = pMem->CloneString(filterRequestHeader->Referer);
+		httpRequestHeader->Cookie = pMem->CloneString(filterRequestHeader->Cookie);
+		httpRequestHeader->ContentRange = pMem->CloneString(filterRequestHeader->ContentRange);
 		httpRequestHeader->ContentBegin = filterRequestHeader->ContentBegin;
 		httpRequestHeader->ContentEnd = filterRequestHeader->ContentEnd;
-		httpRequestHeader->PostData = pMem->StrDup(filterRequestHeader->PostData);
+		httpRequestHeader->PostData = pMem->CloneString(filterRequestHeader->PostData);
 		httpRequestHeader->PostDataSize = filterRequestHeader->PostDataSize;
 	}
 

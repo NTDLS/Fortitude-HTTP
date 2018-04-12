@@ -756,11 +756,11 @@ bool CHttp::ParseHTTPHeader(CWebSite *pWebSite, PEER *pC, const char *sBuf, cons
 	{
 		iQueryIndex++; //Skip the question mark;
 
-		pMem->StrDupnSafe(pC->Header.Query, pC->Header.Request + iQueryIndex, (iRequestLength - iQueryIndex));
+		pMem->CloneStringNSafe(pC->Header.Query, pC->Header.Request + iQueryIndex, (iRequestLength - iQueryIndex));
 		pC->Header.Request[iQueryIndex - 1] = '\0';
 	}
 	else{
-		pMem->StrDupSafe(pC->Header.Query, "");
+		pMem->CloneStringSafe(pC->Header.Query, "");
 	}
 
 	URLDecode(pC->Header.Request);
@@ -951,7 +951,7 @@ bool CHttp::AssembleFullRequest(CWebSite *pWebSite, PEER *pC)
 			int iPathInfoLength = iRequestLength - iTokPos;
 			if(iPathInfoLength > 0)
 			{
-				pMem->StrDupnSafe(pC->Header.PathInfo, pC->Header.Request + iTokPos, iPathInfoLength);
+				pMem->CloneStringNSafe(pC->Header.PathInfo, pC->Header.Request + iTokPos, iPathInfoLength);
 
 				CorrectForwardPath(pC->Header.PathInfo, iPathInfoLength + 1);
 				if(strcmp(pC->Header.PathInfo, "/") == 0)
@@ -977,7 +977,7 @@ bool CHttp::AssembleFullRequest(CWebSite *pWebSite, PEER *pC)
 		FullRequest.AppendF("\\%s", pC->Header.Request + iTokPos);
 	}
 
-	pMem->StrDupnSafe(pC->Header.FullRequest, FullRequest.Buffer, FullRequest.Length);
+	pMem->CloneStringNSafe(pC->Header.FullRequest, FullRequest.Buffer, FullRequest.Length);
 	CorrectReversePath(pC->Header.FullRequest, FullRequest.Length + 1, true);
 
 	DWORD dwAttributes = GetFileAttributes(pC->Header.FullRequest);
@@ -1092,7 +1092,7 @@ void CHttp::FillInPathInfoEnvironment(CWebSite *pWebSite, PEER *pC, ROOT *pVirtu
 		{
 			iRootLength--;
 		}
-		pMem->StrDupSafe(pC->Header.ScriptName, pC->Header.FullRequest + iRootLength);
+		pMem->CloneStringSafe(pC->Header.ScriptName, pC->Header.FullRequest + iRootLength);
 		CorrectForwardPath(pC->Header.ScriptName, (int)strlen(pC->Header.ScriptName) + 1);
 	}
 
@@ -1105,7 +1105,7 @@ void CHttp::FillInPathInfoEnvironment(CWebSite *pWebSite, PEER *pC, ROOT *pVirtu
 	{
 		buffer.Append(pC->Header.PathInfo);
 	}
-	pMem->StrDupSafe(pC->Header.PathTranslated, buffer.Buffer);
+	pMem->CloneStringSafe(pC->Header.PathTranslated, buffer.Buffer);
 	CorrectReversePath(pC->Header.PathTranslated, (int)strlen(pC->Header.PathTranslated) + 1);
 
 	//---------------------------------------------------------------------------------------------------------
@@ -1118,7 +1118,7 @@ void CHttp::FillInPathInfoEnvironment(CWebSite *pWebSite, PEER *pC, ROOT *pVirtu
 		buffer.Append(pC->Header.PathInfo);
 		pMem->Free(pC->Header.PathInfo);
 	}
-	pMem->StrDupSafe(pC->Header.PathInfo, buffer.Buffer);
+	pMem->CloneStringSafe(pC->Header.PathInfo, buffer.Buffer);
 
 	//---------------------------------------------------------------------------------------------------------
 }
@@ -1184,13 +1184,13 @@ int CHttp::GetHttpHeaderTag(const char *sHeader, const int iHeaderLen, const cha
 				}
 
 				int iLength = iEndPos - iRPos;
-				pMem->StrDupnSafe(sBuf, sHeader + iRPos, iLength);
+				pMem->CloneStringNSafe(sBuf, sHeader + iRPos, iLength);
 				return Trim(sBuf, iLength);
 			}
 		}
 	}
 
-	pMem->StrDupSafe(sBuf, "");
+	pMem->CloneStringSafe(sBuf, "");
 
 	return 0;
 }

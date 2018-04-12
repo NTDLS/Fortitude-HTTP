@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -32,7 +31,7 @@ using namespace NSWFL::String;
 using namespace NSWFL::File;
 using namespace NSWFL::ListView;
 using namespace NSWFL::System;
-using namespace NSWFL::HighPrecisionTimer;
+using namespace NSWFL::DateTime;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -196,20 +195,20 @@ bool CScriptingEngines::Load(XMLReader *xmlConfig, CScriptingEngines *pDefaults)
 		SCRIPTENGINE *p = &this->Collection.Items[this->Collection.Count++];
 
 		XPEngine.ToString("Extension", sExt, sizeof(sExt), &iLength);
-		p->Extension = (char *) pMem->StrDup(LCase(sExt, iLength));
+		p->Extension = (char *) pMem->CloneString(LCase(sExt, iLength));
 
 		XPEngine.ToString("Executable", sEngine, sizeof(sEngine), &iLength);
-		p->Engine = (char *) pMem->StrDup(sEngine);
+		p->Engine = (char *) pMem->CloneString(sEngine);
 
 		p->SuccessCode = XPEngine.ToInteger("SuccessCode", 0);
 		p->UseSuccessCode = XPEngine.ToBoolean("UseSuccessCode", true);
 
 		XPEngine.ToString("Parameters", sParams, sizeof(sParams), &iLength);
 		ReplaceStrings(sParams, "%s", "%1", sParams2, sizeof(sParams2)); //For backwards compatibility.
-		p->Parameters = (char *) pMem->StrDup(sParams2);
+		p->Parameters = (char *) pMem->CloneString(sParams2);
 
 		XPEngine.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPEngine.ToBoolean("Enable", true);
 

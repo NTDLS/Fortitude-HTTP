@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 #include "../Source/Entry.H"
 #include "../Source/ConfigTree.H"
@@ -28,7 +27,6 @@
 #include "NetLogoDlg.H"
 
 #include "Config_SocketPools.H"
-
 #include "Config_SocketPools.H"
 #include "Config_SocketPools_Item.H"
 #include "Config_ListenIPs_Item.H"

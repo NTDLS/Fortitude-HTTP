@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -205,7 +204,7 @@ bool CServerSettings::Load(XMLReader *xmlConfig, CServerSettings *pDefaults)
 			SERVERUSER *p = &this->Settings.Users.Items[this->Settings.Users.Count++];
 
 			xml.ToString("Username", sUsername, sizeof(sUsername), &iLength);
-			p->Username = (char *) pMem->StrDup(sUsername);
+			p->Username = (char *) pMem->CloneString(sUsername);
 
 			xml.ToString("Password", sPassword, sizeof(sPassword), &iLength);
 			//For backwards compatibility, we need to hash the passwords in the
@@ -216,10 +215,10 @@ bool CServerSettings::Load(XMLReader *xmlConfig, CServerSettings *pDefaults)
 				SimpleSHA1(sPassword, sSHA1, sizeof(sSHA1));
 				strcpy_s(sPassword, sizeof(sPassword), sSHA1);
 			}
-			p->Password = (char *) pMem->StrDup(sPassword);
+			p->Password = (char *) pMem->CloneString(sPassword);
 
 			xml.ToString("Description", sDescription, sizeof(sDescription), &iLength);
-			p->Description = (char *) pMem->StrDup(sDescription);
+			p->Description = (char *) pMem->CloneString(sDescription);
 
 			p->Enabled = xml.ToBoolean("Enable", true);
 

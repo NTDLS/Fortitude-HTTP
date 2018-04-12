@@ -16,3 +16,9 @@
 [submodule "CTabControl"]
 	path = CTabControl
 	url = https://github.com/NTDLS/CTabControl
+[submodule "SetupResources"]
+	path = SetupResources
+	url = https://github.com/NTDLS/SetupResources
+[submodule "AutoUpdate"]
+	path = AutoUpdate
+	url = https://github.com/NTDLS/AutoUpdate

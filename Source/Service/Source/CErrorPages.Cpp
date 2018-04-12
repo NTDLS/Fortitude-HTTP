@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -216,13 +215,13 @@ bool CErrorPages::Load(XMLReader *xmlConfig, CErrorPages *pDefaults)
 		ERRORPAGE *p = &this->Collection.Items[this->Collection.Count++];
 
 		XPVirtualPage.ToString("Code", sCode, sizeof(sCode), &iLength);
-		p->Code = (char *) pMem->StrDup(sCode);
+		p->Code = (char *) pMem->CloneString(sCode);
 
 		XPVirtualPage.ToString("ReturnCode", sReturnCode, sizeof(sReturnCode), sCode, &iLength);
-		p->ReturnCode = (char *) pMem->StrDup(sReturnCode);
+		p->ReturnCode = (char *) pMem->CloneString(sReturnCode);
 
 		XPVirtualPage.ToString("File", sFile, sizeof(sFile), &iLength);
-		p->File = (char *) pMem->StrDup(sFile);
+		p->File = (char *) pMem->CloneString(sFile);
 
 		//The pre version 1.0.3.8 used physical paths but the new version uses realitive - so do some backwards compatibility magic:
 		const char *sBackawardCompatStr = "\\NetworkDLS\\Fortitude HTTP\\Messages\\";
@@ -233,7 +232,7 @@ bool CErrorPages::Load(XMLReader *xmlConfig, CErrorPages *pDefaults)
 		}
 
 		XPVirtualPage.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPVirtualPage.ToBoolean("Enable", false);
 

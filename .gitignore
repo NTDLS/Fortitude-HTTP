@@ -8,3 +8,7 @@
 *.pdb
 *.exe
 *.ilk
+*.user
+*.db-shm
+*.db-wal
+*.res

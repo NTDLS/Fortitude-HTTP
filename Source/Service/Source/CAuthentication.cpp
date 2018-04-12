@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 #include <ShellAPI.H>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
@@ -188,11 +187,11 @@ bool CAuthentication::Load(XMLReader *xmlConfig, CAuthentication *pDefaults)
 		PROTECTEDPAGE *p = &this->Collection.Items[this->Collection.Count++];
 
 		XPDefaultPage.ToString("File", sPage, sizeof(sPage), &iLength);
-		p->Page = (char *) pMem->StrDup(LCase(sPage, iLength));
+		p->Page = (char *) pMem->CloneString(LCase(sPage, iLength));
 		p->PageLength = (int) strlen(p->Page);
 
 		XPDefaultPage.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPDefaultPage.ToBoolean("Enable", true);
 

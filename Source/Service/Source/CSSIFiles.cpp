@@ -11,12 +11,11 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
 #include <ShellAPI.H>
 #include <Psapi.h>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -192,10 +191,10 @@ bool CSSIFiles::Load(XMLReader *xmlConfig, CSSIFiles *pDefaults)
 		SSIFILE *p = &this->Collection.Items[this->Collection.Count++];
 
 		XPSSIFile.ToString("Extension", sExt, sizeof(sExt), &iLength);
-		p->Extension = (char *) pMem->StrDup(LCase(sExt, iLength));
+		p->Extension = (char *) pMem->CloneString(LCase(sExt, iLength));
 
 		XPSSIFile.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPSSIFile.ToBoolean("Enable", false);
 

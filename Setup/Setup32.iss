@@ -6,11 +6,11 @@
  DefaultDirName                  = {pf}\NetworkDLS\Fortitude HTTP
  DefaultGroupName                = NetworkDLS\Fortitude HTTP
  UninstallDisplayIcon            = {app}\Bin\FortitudeMgt.Exe
- WizardImageFile                 = ..\..\@Resources\Setup\LgSetup.bmp
- WizardSmallImageFile            = ..\..\@Resources\Setup\SmSetup.bmp
+ WizardImageFile                 = ..\SetupResources\Setup\LgSetup.bmp
+ WizardSmallImageFile            = ..\SetupResources\Setup\SmSetup.bmp
  PrivilegesRequired              = PowerUser
  Uninstallable                   = Yes
- LicenseFile                     = ..\..\@Resources\Setup\License\EULA.txt
+ LicenseFile                     = ..\SetupResources\Setup\License\EULA.txt
  Compression                     = ZIP/9
  OutputBaseFilename              = HTTPServer32
  MinVersion                      = 0.0,5.0
@@ -34,8 +34,8 @@
  Name: Server\CustomErrors;  Description: "Custom Errors";             Types: full compact custom;
  
 [Files]
- Source: "..\..\@Resources\Setup\License\EULA.txt";           DestDir: "{app}";             Components: Base;
- Source: "..\..\@AutoUpdate\Win32\Release\AutoUpdate.Exe";    DestDir: "{app}\Bin";         Components: Base\AutoUpdate;      Flags: RestartReplace;
+ Source: "..\SetupResources\Setup\License\EULA.txt";          DestDir: "{app}";             Components: Base;
+ Source: "..\AutoUpdate\Win32\Release\AutoUpdate.Exe";        DestDir: "{app}\Bin";         Components: Base\AutoUpdate;      Flags: RestartReplace;
  Source: "AutoUpdate.xml";                                    DestDir: "{app}\Bin";         Components: Base\AutoUpdate;      Flags: IgnoreVersion;
  Source: "..\Source\Console\Release\Win32\FortitudeMgt.exe";  DestDir: "{app}\Bin";         Components: Base\Management;      Flags: IgnoreVersion;
  Source: "..\Source\Service\Release\Win32\FortitudeSvc.exe";  DestDir: "{app}\Bin";         Components: Server;               Flags: IgnoreVersion;

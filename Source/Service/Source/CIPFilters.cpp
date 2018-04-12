@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -22,9 +21,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CIPFilters.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,10 +185,10 @@ bool CIPFilters::Load(XMLReader *xmlConfig, CIPFilters *pDefaults)
 		IPFILTER *p = &this->Collection.Items[this->Collection.Count++];
 
 		xmlItem.ToString("Address", sIP, sizeof(sIP), &iLength);
-		p->IP = (char *) pMem->StrDup(sIP);
+		p->IP = (char *) pMem->CloneString(sIP);
 
 		xmlItem.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = xmlItem.ToBoolean("Enable", true);
 

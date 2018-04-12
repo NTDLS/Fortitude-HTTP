@@ -11,9 +11,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
+#include <shlobj.h>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
@@ -215,7 +214,7 @@ bool CCompression::Load(XMLReader *xmlConfig, CCompression *pDefaults)
 
 	char sCachePath[MAX_PATH];
 	iLength = xmlConfig->ToString("CachePath", sCachePath, sizeof(sCachePath));
-	this->Cache.CachePath = (char *) pMem->StrDup(sCachePath);
+	this->Cache.CachePath = (char *) pMem->CloneString(sCachePath);
 
 	this->Collection.CompressDynamicContent = xmlConfig->ToBoolean("CompressDynamicContent", true);
 	this->Collection.Enabled = xmlConfig->ToBoolean("Enable", true);
@@ -240,10 +239,10 @@ bool CCompression::Load(XMLReader *xmlConfig, CCompression *pDefaults)
 		COMPRESSIBLEFILE *p = &this->Collection.Items[this->Collection.Count++];
 
 		XPCompType.ToString("Extension", sExt, sizeof(sExt), &iLength);
-		p->Extension = (char *) pMem->StrDup(LCase(sExt, iLength));
+		p->Extension = (char *) pMem->CloneString(LCase(sExt, iLength));
 
 		XPCompType.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->CompressionLevel =
 			XPCompType.ToInteger("CompressionLevel", this->Collection.CompressionLevel);
@@ -718,8 +717,8 @@ bool CCompression::CompressFile(PEER *pC, const char *sSource, char *sTarget, in
 		char sCacheName[MAX_PATH];
 		if(this->GetUniqueFileName(sCacheName, sizeof(sCacheName), sSource))
 		{
-			this->Cache.Items[iItem].OriginalFile = (char *) pMem->StrDup(sSource);
-			this->Cache.Items[iItem].CachedFile = (char *) pMem->StrDup(sCacheName);
+			this->Cache.Items[iItem].OriginalFile = (char *) pMem->CloneString(sSource);
+			this->Cache.Items[iItem].CachedFile = (char *) pMem->CloneString(sCacheName);
 
 			if(FileSize(sSource, &this->Cache.Items[iItem].OriginalSize))
 			{

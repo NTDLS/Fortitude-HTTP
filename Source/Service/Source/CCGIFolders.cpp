@@ -11,10 +11,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.H>
-#include <ShlObj.H>
 #include <Stdio.H>
-#include <ShlOBJ.H>
 #include <Stdlib.H>
+#include <shlobj.h>
 
 extern HIMAGELIST hEnableDisableImageList; //Declared in MainDialog.cpp
 extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
@@ -22,9 +21,7 @@ extern HIMAGELIST hOnePixilImageList; //Declared in MainDialog.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "CCGIFolders.H"
-
 #include "Entry.H"
-
 #include "CWebSites.H"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,7 +187,7 @@ bool CCGIFolders::Load(XMLReader *xmlConfig, CCGIFolders *pDefaults)
 		CGIFOLDER *p = &this->Collection.Items[this->Collection.Count++];
 
 		XPCGIFolder.ToString("Path", sPath, sizeof(sPath), &iLength);
-		p->Path = (char *) pMem->StrDup(sPath);
+		p->Path = (char *) pMem->CloneString(sPath);
 		p->PathLength = (int)strlen(sPath);
 
 		CorrectForwardPath(p->Path, p->PathLength + 1);
@@ -201,7 +198,7 @@ bool CCGIFolders::Load(XMLReader *xmlConfig, CCGIFolders *pDefaults)
 		}
 
 		XPCGIFolder.ToString("Description", sDescr, sizeof(sDescr), &iLength);
-		p->Description = (char *) pMem->StrDup(sDescr);
+		p->Description = (char *) pMem->CloneString(sDescr);
 
 		p->Enabled = XPCGIFolder.ToBoolean("Enable", false);
 
