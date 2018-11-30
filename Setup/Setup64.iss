@@ -1,7 +1,7 @@
 [Setup]
 ;-- Main Setup Information
  AppName                         = Fortitude HTTP
- AppVerName                      = Fortitude HTTP 1.0.4.1
+ AppVerName                      = Fortitude HTTP 1.0.4.2
  AppCopyright                    = Copyright © 1995-2018 NetworkDLS.
  DefaultDirName                  = {pf}\NetworkDLS\Fortitude HTTP
  DefaultGroupName                = NetworkDLS\Fortitude HTTP
@@ -21,7 +21,7 @@
  AppPublisher    = NetworkDLS
  AppPublisherURL = http://www.NetworkDLS.com/
  AppUpdatesURL   = http://www.NetworkDLS.com/
- AppVersion      = 1.0.4.1
+ AppVersion      = 1.0.4.2
 
 [Components]
  Name: Base;                 Description: "Base Install";              Types: full compact custom; Flags: Fixed;

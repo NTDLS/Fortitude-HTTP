@@ -6,7 +6,6 @@
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A 
 // PARTICULAR PURPOSE.
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#ifdef _DEBUG
 #ifndef _DebugHandler_Cpp
 #define _DebugHandler_Cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,8 +74,10 @@ bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 		printf("Restart         Restarts all sites, starts ones configured to auto start.\n");
 		printf("Start           Starts all sites configured to auto start.\n");
 		printf("FlushBuffers    Flushes all file buffers to disk.\n");
+#ifdef _DEBUG
 		printf("Memory          Displays internal memory manager state.\n");
 		printf("  .Allocations  Details each memory allocation. Can be saved to file.\n");
+#endif
 		printf("Cls             Clears the console window.\n");
 		printf("Exit            Gracefully shuts down the server.\n");
 	}
@@ -189,6 +190,7 @@ bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 			}
 		}
 	}
+#if _DEBUG
 	else if(_strcmpi(sText, "Memory") == 0)
 	{
 		printf("Total Allocated Buffers: %zd\n", pMem->GetSlotAllocationCount());
@@ -254,8 +256,9 @@ bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 		{
 			fclose(hFile);
 		}
-
 	}
+#endif
+
 	else if(_strcmpi(sText, "Cls") == 0)
 	{
 		system("cls");
@@ -281,5 +284,4 @@ bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#endif
 #endif

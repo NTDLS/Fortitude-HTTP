@@ -38,7 +38,7 @@ extern char gsRegistryKey[255];
 
 extern char gsPath[MAX_PATH];
 extern char gsDataPath[MAX_PATH];
-extern DWORD dwManagementPort;
+extern DWORD gdwManagementPort;
 
 extern MemoryPool *pMem;
 extern CService gService;	//The global service.

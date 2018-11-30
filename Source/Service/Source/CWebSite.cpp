@@ -93,6 +93,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 	this->Reload(pXMLSite);
 
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [WebsiteSettings].\n", this->Name);
 	if(pXMLSite->ToReader("WebsiteSettings", &xmlConfig))
 	{
 		this->pWebsiteSettings = (CWebsiteSettings *) pMem->TrackMemory(new CWebsiteSettings(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltWebsiteSettings));
@@ -102,6 +103,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pWebsiteSettings = ((CWebSites *)pWebSites)->DfltWebsiteSettings;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [CGIFolders].\n", this->Name);
 	if(pXMLSite->ToReader("CGIFolders", &xmlConfig))
 	{
 		this->pCGIFolders = (CCGIFolders *) pMem->TrackMemory(new CCGIFolders(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltCGIFolders));
@@ -111,6 +113,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pCGIFolders = ((CWebSites *)pWebSites)->DfltCGIFolders;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [Compression].\n", this->Name);
 	if(pXMLSite->ToReader("Compression", &xmlConfig))
 	{
 		this->pCompression = (CCompression *) pMem->TrackMemory(new CCompression(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltCompression));
@@ -120,6 +123,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pCompression = ((CWebSites *)pWebSites)->DfltCompression;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [CustomFilters].\n", this->Name);
 	if(pXMLSite->ToReader("CustomFilters", &xmlConfig))
 	{
 		this->pCustomFilters = (CCustomFilters *) pMem->TrackMemory(new CCustomFilters(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltCustomFilters));
@@ -129,6 +133,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pCustomFilters = ((CWebSites *)pWebSites)->DfltCustomFilters;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [DefaultPages].\n", this->Name);
 	if(pXMLSite->ToReader("DefaultPages", &xmlConfig))
 	{
 		this->pDefaultPages = (CDefaultPages *) pMem->TrackMemory(new CDefaultPages(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltDefaultPages));
@@ -138,6 +143,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pDefaultPages = ((CWebSites *)pWebSites)->DfltDefaultPages;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [ExtensionFilters].\n", this->Name);
 	if(pXMLSite->ToReader("ExtensionFilters", &xmlConfig))
 	{
 		this->pExtensionFilters = (CExtensionFilters *) pMem->TrackMemory(new CExtensionFilters(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltExtensionFilters));
@@ -147,6 +153,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pExtensionFilters = ((CWebSites *)pWebSites)->DfltExtensionFilters;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [IPFilters].\n", this->Name);
 	if(pXMLSite->ToReader("IPFilters", &xmlConfig))
 	{
 		this->pIPFilters = (CIPFilters *) pMem->TrackMemory(new CIPFilters(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltIPFilters));
@@ -156,6 +163,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pIPFilters = ((CWebSites *)pWebSites)->DfltIPFilters;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [MimeTypes].\n", this->Name);
 	if(pXMLSite->ToReader("MimeTypes", &xmlConfig))
 	{
 		this->pMimeTypes = (CMimeTypes *) pMem->TrackMemory(new CMimeTypes(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltMimeTypes));
@@ -165,6 +173,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pMimeTypes = ((CWebSites *)pWebSites)->DfltMimeTypes;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [ScriptingEngines].\n", this->Name);
 	if(pXMLSite->ToReader("ScriptingEngines", &xmlConfig))
 	{
 		this->pScriptingEngines = (CScriptingEngines *) pMem->TrackMemory(new CScriptingEngines(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltScriptingEngines));
@@ -174,6 +183,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pScriptingEngines = ((CWebSites *)pWebSites)->DfltScriptingEngines;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [Realms].\n", this->Name);
 	if(pXMLSite->ToReader("Realms", &xmlConfig))
 	{
 		this->pRealms = (CRealms *) pMem->TrackMemory(new CRealms(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltRealms));
@@ -183,6 +193,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pRealms = ((CWebSites *)pWebSites)->DfltRealms;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [Authentication].\n", this->Name);
 	if(pXMLSite->ToReader("Authentication", &xmlConfig))
 	{
 		this->pAuthentication = (CAuthentication *) pMem->TrackMemory(new CAuthentication(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltAuthentication));
@@ -192,6 +203,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pAuthentication = ((CWebSites *)pWebSites)->DfltAuthentication;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [SSIFiles].\n", this->Name);
 	if(pXMLSite->ToReader("SSIFiles", &xmlConfig))
 	{
 		this->pSSIFiles = (CSSIFiles *) pMem->TrackMemory(new CSSIFiles(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltSSIFiles));
@@ -201,6 +213,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pSSIFiles = ((CWebSites *)pWebSites)->DfltSSIFiles;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [URLFilters].\n", this->Name);
 	if(pXMLSite->ToReader("URLFilters", &xmlConfig))
 	{
 		this->pURLFilters = (CURLFilters *) pMem->TrackMemory(new CURLFilters(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltURLFilters));
@@ -210,6 +223,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pURLFilters = ((CWebSites *)pWebSites)->DfltURLFilters;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [VirtualRoots].\n", this->Name);
 	if(pXMLSite->ToReader("VirtualRoots", &xmlConfig))
 	{
 		this->pVirtualRoots = (CVirtualRoots *) pMem->TrackMemory(new CVirtualRoots(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltVirtualRoots));
@@ -219,6 +233,7 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 		this->pVirtualRoots = ((CWebSites *)pWebSites)->DfltVirtualRoots;
 	}
 	//----------------------------------------------------------------------
+	//printf("Loading site [%s] [ErrorPages].\n", this->Name);
 	if(pXMLSite->ToReader("ErrorPages", &xmlConfig))
 	{
 		this->pErrorPages = (CErrorPages *) pMem->TrackMemory(new CErrorPages(this->pWebSites, &xmlConfig, ((CWebSites *)pWebSites)->DfltErrorPages));
@@ -231,8 +246,10 @@ CWebSite::CWebSite(void *lpWebSites, XMLReader *pXMLSite)
 
 	if(this->CycleLog())
 	{
+		//printf("Cycling log for site [%s].\n", this->Name);
 		if(this->pSocketPool && this->pWebsiteSettings->AutoStart())
 		{
+			//printf("Starting site [%s].\n", this->Name);
 			this->Start();
 		}
 	}
@@ -269,6 +286,8 @@ bool CWebSite::Reload(XMLReader *xml)
 	xml->ToString("Root", this->Root, sizeof(this->Root));
 	xml->ToString("SocketPoolID", this->SocketPoolID, sizeof(this->SocketPoolID));
 	CorrectReversePath(this->Root, sizeof(this->Root), true);
+
+	//printf("Loading site [%s].\n", this->Name);
 
 	this->BindSocketPool();
 

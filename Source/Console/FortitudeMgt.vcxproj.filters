@@ -715,6 +715,9 @@
     <ClInclude Include="..\..\NASCCL\NASCCLStream.H">
       <Filter>Classes &amp; Libraries\NASCCL</Filter>
     </ClInclude>
+    <ClInclude Include="..\%40Common\Constants.H">
+      <Filter>Shared</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Cache.bmp">

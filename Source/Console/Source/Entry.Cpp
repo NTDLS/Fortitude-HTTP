@@ -21,6 +21,8 @@
 
 #include "../Dialogs/MainDlg.H"
 
+#include "../../@Common/Constants.H"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 HINSTANCE ghAppInstance = NULL;
@@ -32,7 +34,7 @@ char gsRegistryKey[255];
 
 char gsPath[MAX_PATH];
 char gsDataPath[MAX_PATH];
-DWORD gdwManagementPort = 0;
+DWORD gdwManagementPort = DFLT_MANAGEMENT_PORT;
 
 MemoryPool *pMem; //The global memory object.
 CService gService;	//The global service.

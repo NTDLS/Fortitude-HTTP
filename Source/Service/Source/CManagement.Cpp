@@ -41,7 +41,7 @@ CManagement::CManagement()
 
 	this->Cytpto.Initialize(MGMT_INITIAL_KEY, MGMT_INITIAL_KEY_SZ, true);
 	
-	if(this->Socket->Initialize(dwManagementPort, 2, Mgmt_Sock_ClientThread, Mgmt_Sock_OnSockError))
+	if(this->Socket->Initialize(gdwManagementPort, 2, Mgmt_Sock_ClientThread, Mgmt_Sock_OnSockError))
 	{
 		this->Socket->pUserData = this;
 		this->Socket->SetOnBeginClientThread(MgMt_OnBeginClientThread);

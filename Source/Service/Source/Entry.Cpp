@@ -22,6 +22,8 @@
 #include "CManagement.H"
 #include "CWebSites.H"
 
+#include "../../@Common/Constants.H"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::Registry;
@@ -41,7 +43,7 @@ char gsRegistryKey[255];
 
 char gsPath[MAX_PATH];
 char gsDataPath[MAX_PATH];
-DWORD dwManagementPort = 0;
+DWORD gdwManagementPort = DFLT_MANAGEMENT_PORT;
 bool gbLoadManagementInterface = true;
 
 MemoryPool *pMem; //The global memory object.
@@ -104,6 +106,7 @@ bool ServiceProcedure(LPVOID lpVoid)
 	SA.lpSecurityDescriptor = &SD;
 	SA.bInheritHandle		= FALSE;
 
+	/*
 	if((MutexHandle = CreateMutex(&SA, FALSE, gsTitleCaption)) != NULL)
 	{
 		if(GetLastError() == ERROR_ALREADY_EXISTS)
@@ -113,6 +116,7 @@ bool ServiceProcedure(LPVOID lpVoid)
 			return false;
 		}
 	}
+	*/
 
 	if(pMem->TrackMemory(new CWebSites))
 	{
@@ -128,6 +132,10 @@ bool ServiceProcedure(LPVOID lpVoid)
 
 int ProcessCommandLine(CommandLineParser *cmdLine)
 {
+	bool bOpenConsole = false;
+	bool bRunService = false;
+	bool bRunStandalone = false;
+
 	for(int iCommand = 1; iCommand < cmdLine->Count(); iCommand++)
 	{
 		const char *sCmdLine = cmdLine->Item(iCommand);
@@ -142,66 +150,27 @@ int ProcessCommandLine(CommandLineParser *cmdLine)
 		{
 			sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\Data", gsPath);
 		}
-		else if(cmdLine->IsCommand(iCommand, "/NoManage"))
+		else if (cmdLine->IsCommand(iCommand, "/NoManage"))
 		{
 			gbLoadManagementInterface = false;
 		}
+		else if (cmdLine->IsCommand(iCommand, "/Console"))
+		{
+			bOpenConsole = true;
+		}
 		else if(cmdLine->IsCommand(iCommand, "/ManagePort:", sCmdBuf, sizeof(sCmdBuf)))
 		{
-			dwManagementPort = atol(sCmdBuf);
+			gdwManagementPort = atol(sCmdBuf);
 		}
-		else if(_strcmpi(sCmdLine, "/RunService") == 0 || _strcmpi(sCmdLine, "/Standalone") == 0)
+		else if (_strcmpi(sCmdLine, "/RunService") == 0)
 		{
-			int iResult = 0;
-
-			CManagement *manage = NULL;
-
-			if(gbLoadManagementInterface)
-			{
-				manage = (CManagement *) pMem->TrackMemory(new CManagement());
-				if(!manage->IsInitialized())
-				{
-					delete (CManagement *)pMem->UnTrackMemory(manage);
-					MessageBox(NULL, "Failed to initialize the management interface, is the service already running?", gsTitleCaption, MB_ICONERROR);
-					return 1;
-				}
-			}
-
-			if(!IsApplicationRunning() && gService.IsActive() == _SVC_NO_)
-			{
-				if(_strcmpi(sCmdLine, "/RunService") == 0 )
-				{
-					if(gService.RunAsService() == _SVC_SUCCESS_)
-					{
-						iResult = 0;
-					}
-					else{
-						iResult = 1;
-					}
-				}
-				else {
-					#ifdef _DEBUG
-					char sCaption[sizeof(gsTitleCaption) + sizeof(gsFileVersion)];
-					sprintf_s(sCaption, "%s - %s", gsTitleCaption, gsFileVersion);
-
-					StringBuilder debugText;
-
-					debugText.AppendF("%s (Standalone Debug Mode)\n", sCaption);
-					debugText.Append("Type \"?\" or \"Help\" for a list of available commands.\n\n");
-
-					OpenDebugConsole(sCaption, &Fortitude_DebugConsoleHandler, debugText.Buffer);
-					#endif
-
-					gService.RunAsStandAlone();
-				}
-			}
-
-			if(manage)
-			{
-				delete (CManagement *)pMem->UnTrackMemory(manage);
-			}
-
-			return iResult;
+			bRunService = true;
+			bRunStandalone = false;
+		}
+		else if (_strcmpi(sCmdLine, "/Standalone") == 0)
+		{
+			bRunService = false;
+			bRunStandalone = true;
 		}
 		//------------------------------------------------------------------------------------------
 		else if(_strcmpi(sCmdLine, "/Install") == 0 )
@@ -380,6 +349,74 @@ int ProcessCommandLine(CommandLineParser *cmdLine)
 			}
 			return 0;
 		}
+	}
+
+	if (bRunStandalone || bRunService)
+	{
+		int iResult = 0;
+
+		CManagement *manage = NULL;
+
+		if (gbLoadManagementInterface)
+		{
+			manage = (CManagement *)pMem->TrackMemory(new CManagement());
+			if (!manage->IsInitialized())
+			{
+				delete (CManagement *)pMem->UnTrackMemory(manage);
+				MessageBox(NULL, "Failed to initialize the management interface, is the service already running?", gsTitleCaption, MB_ICONERROR);
+				return 1;
+			}
+		}
+
+		if (!IsApplicationRunning() && gService.IsActive() == _SVC_NO_)
+		{
+			if (bRunService)
+			{
+				if (gService.RunAsService() == _SVC_SUCCESS_)
+				{
+					iResult = 0;
+				}
+				else {
+					iResult = 1;
+				}
+			}
+			else {
+#ifdef _DEBUG
+				bOpenConsole = true;
+#endif
+
+				if (bOpenConsole)
+				{
+					char sCaption[sizeof(gsTitleCaption) + sizeof(gsFileVersion)];
+					sprintf_s(sCaption, "%s - %s", gsTitleCaption, gsFileVersion);
+
+					StringBuilder debugText;
+
+#ifdef _DEBUG
+					debugText.AppendF("%s (Standalone Debug Mode)\n", sCaption);
+#else
+					debugText.AppendF("%s (Standalone Console Mode)\n", sCaption);
+#endif
+					debugText.Append("Type \"?\" or \"Help\" for a list of available commands.\n\n");
+
+					OpenDebugConsole(sCaption, &Fortitude_DebugConsoleHandler, debugText.Buffer);
+
+					if (gbLoadManagementInterface)
+					{
+						printf("Management interface on port %d.\n", gdwManagementPort);
+					}
+				}
+
+				gService.RunAsStandAlone();
+			}
+		}
+
+		if (manage)
+		{
+			delete (CManagement *)pMem->UnTrackMemory(manage);
+		}
+
+		return iResult;
 	}
 
 	return 0;

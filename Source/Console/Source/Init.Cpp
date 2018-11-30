@@ -22,10 +22,13 @@
 #include "Init.H"
 #include "Entry.H"
 
+#include "../../@Common/Constants.H"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace NSWFL::Registry;
 using namespace NSWFL::Memory;
+using namespace NSWFL::File;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,8 +52,8 @@ bool InitializeApp(void)
 
 	if(!LoadRegistry())
 	{
-		MessageBox(NULL, "Failed to load registry values.", gsTitleCaption, MB_ICONERROR);
-		return false;
+		//MessageBox(NULL, "Failed to load registry values.", gsTitleCaption, MB_ICONERROR);
+		//return false;
 	}
 	
 	gManage = new CManagement();
@@ -74,7 +77,7 @@ bool UninitializeApp(void)
 
 	if(!SaveRegistry())
 	{
-		MessageBox(NULL, "Failed to load registry values.", gsTitleCaption, MB_ICONERROR);
+		MessageBox(NULL, "Failed to save registry values.", gsTitleCaption, MB_ICONERROR);
 		return false;
 	}
 
@@ -88,18 +91,27 @@ bool UninitializeApp(void)
 bool LoadRegistry(void)
 {
 	DWORD dwSize = 0;
+	DWORD dwBuffer = 0;
 
 	dwSize = sizeof(gsPath);
 	memset(gsPath, 0, dwSize);
-	Get_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "Path", gsPath, dwSize);
 
-	dwSize = sizeof(gsDataPath);
-	memset(gsDataPath, 0, dwSize);
-	Get_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "DataPath", gsDataPath, dwSize);
-
-	if(!Get_DWORDRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "ManagementPort", gdwManagementPort))
+	//Get the path and data path from the registry, if they cant be found - use the application path as a hint.
+	if (!Get_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "Path", gsPath, dwSize))
 	{
-		return false;
+		GetModuleFilePath(gsPath, sizeof(gsPath));
+		sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\..\\Data", gsPath);
+		CorrectReversePath(gsPath, sizeof(gsPath));
+		CorrectReversePath(gsDataPath, sizeof(gsDataPath));
+	}
+	else
+	{
+		sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\Data", gsPath);
+	}
+
+	if (!Get_DWORDRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "ManagementPort", gdwManagementPort))
+	{
+		gdwManagementPort = DFLT_MANAGEMENT_PORT;
 	}
 
 	return true;

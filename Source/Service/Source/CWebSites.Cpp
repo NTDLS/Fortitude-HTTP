@@ -83,6 +83,7 @@ CWebSites::CWebSites()
 
 	//Trace is "on" to begin with.
 	//-------------------------------------------------------------------
+	//printf("Starting initilization trace.\n");
 	this->StartTrace(); //Must stop the trace after construction.
 	//-------------------------------------------------------------------
 
@@ -251,6 +252,7 @@ bool CWebSites::Initialize(void)
 	memset(&this->Collection, 0, sizeof(this->Collection));
 	this->dwTotalConnections = 0;
 
+	//printf("Initializing memory tracker.\n");
 	this->pServerSettings = (CServerSettings *) pMem->TrackMemory(new CServerSettings(this));
 	this->pSocketPools = (CSocketPools *) pMem->TrackMemory(new CSocketPools(this));
 
@@ -270,6 +272,7 @@ bool CWebSites::Initialize(void)
 	this->DfltAuthentication = (CAuthentication *) pMem->TrackMemory(new CAuthentication(this));
 	this->DfltRealms = (CRealms *) pMem->TrackMemory(new CRealms(this));
 
+	//printf("Initializing global [SocketPools].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\SocketPools.xml", gsDataPath);
 	if(!this->pSocketPools->Load(sConfigFile))
 	{
@@ -278,6 +281,7 @@ bool CWebSites::Initialize(void)
 		return false;
 	}
 
+	//printf("Initializing global [WebsiteSettings].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\WebsiteSettings.xml", gsDataPath);
 	if(!this->DfltWebsiteSettings->Load(sConfigFile))
 	{
@@ -285,6 +289,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [MimeTypes].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\MimeTypes.xml", gsDataPath);
 	if(!this->DfltMimeTypes->Load(sConfigFile))
 	{
@@ -292,6 +298,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [URLFilters].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\URLFilters.xml", gsDataPath);
 	if(!this->DfltURLFilters->Load(sConfigFile))
 	{
@@ -299,6 +307,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [ExtensionFilters].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\ExtensionFilters.xml", gsDataPath);
 	if(!this->DfltExtensionFilters->Load(sConfigFile))
 	{
@@ -306,6 +316,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [DefaultPages].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\DefaultPages.xml", gsDataPath);
 	if(!this->DfltDefaultPages->Load(sConfigFile))
 	{
@@ -313,6 +325,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [VirtualRoots].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\VirtualRoots.xml", gsDataPath);
 	if(!this->DfltVirtualRoots->Load(sConfigFile))
 	{
@@ -320,6 +334,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [SSIFiles].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\SSIFiles.xml", gsDataPath);
 	if(!this->DfltSSIFiles->Load(sConfigFile))
 	{
@@ -327,6 +343,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [IPFilters].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\IPFilters.xml", gsDataPath);
 	if(!this->DfltIPFilters->Load(sConfigFile))
 	{
@@ -334,6 +352,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [CGIFolders].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\CGIFolders.xml", gsDataPath);
 	if(!this->DfltCGIFolders->Load(sConfigFile))
 	{
@@ -341,6 +361,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [Compression].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\Compression.xml", gsDataPath);
 	if(!this->DfltCompression->Load(sConfigFile))
 	{
@@ -348,6 +370,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [CustomFilters].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\CustomFilters.xml", gsDataPath);
 	if(!this->DfltCustomFilters->Load(sConfigFile))
 	{
@@ -355,6 +379,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [ScriptingEngines].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\ScriptingEngines.xml", gsDataPath);
 	if(!this->DfltScriptingEngines->Load(sConfigFile))
 	{
@@ -362,6 +388,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [ErrorPages].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\ErrorPages.xml", gsDataPath);
 	if(!this->DfltErrorPages->Load(sConfigFile))
 	{
@@ -369,6 +397,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [ServerSettings].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\ServerSettings.xml", gsDataPath);
 	if(!this->pServerSettings->Load(sConfigFile))
 	{
@@ -376,6 +406,8 @@ bool CWebSites::Initialize(void)
 		this->Trace(sMissingFiles);
 		return false;
 	}
+
+	//printf("Initializing global [WebSites].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\WebSites.xml", gsDataPath);
 	if(!this->LoadSites(sConfigFile))
 	{
@@ -384,6 +416,7 @@ bool CWebSites::Initialize(void)
 		return false;
 	}
 
+	//printf("Starting HTTP Server.\n");
 	pHttp = (CHttp *) pMem->TrackMemory(new CHttp(this));
 
 	return true;

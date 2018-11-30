@@ -29,6 +29,7 @@
 
 using namespace NSWFL::Registry;
 using namespace NSWFL::Memory;
+using namespace NSWFL::File;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -82,15 +83,23 @@ bool LoadRegistry(void)
 
 	dwSize = sizeof(gsPath);
 	memset(gsPath, 0, dwSize);
+
+	//Get the path and data path from the registry, if they cant be found - use the application path as a hint.
 	if(!Get_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "Path", gsPath, dwSize))
 	{
-		return false;
+		GetModuleFilePath(gsPath, sizeof(gsPath));
+		sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\..\\Data", gsPath);
+		CorrectReversePath(gsPath, sizeof(gsPath));
+		CorrectReversePath(gsDataPath, sizeof(gsDataPath));
 	}
-	sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\Data", gsPath);
-
-	if(!Get_DWORDRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "ManagementPort", dwManagementPort))
+	else
 	{
-		return false;
+		sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\Data", gsPath);
+	}
+
+	if(!Get_DWORDRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "ManagementPort", gdwManagementPort))
+	{
+		gdwManagementPort = DFLT_MANAGEMENT_PORT;
 	}
 
 	return true;
@@ -105,7 +114,7 @@ bool SaveRegistry(void)
 	//None of this needs to be saved:
 	//bResult = bResult && Set_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "Path", gsPath);
 	//bResult = bResult && Set_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "DataPath", gsDataPath);
-	//bResult = bResult && Set_DWORDRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "ManagementPort", dwManagementPort);
+	//bResult = bResult && Set_DWORDRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "ManagementPort", gdwManagementPort);
 
 	return bResult;
 }
