@@ -50,10 +50,9 @@ bool InitializeApp(void)
     LoadString(ghAppInstance, IDS_TITLECAPTION, gsTitleCaption, sizeof(gsTitleCaption));
     LoadString(ghAppInstance, IDS_REGISTRYKEY, gsRegistryKey, sizeof(gsRegistryKey));
 
-	if(!LoadRegistry())
+	if(!LoadSettings())
 	{
-		//MessageBox(NULL, "Failed to load registry values.", gsTitleCaption, MB_ICONERROR);
-		//return false;
+		MessageBox(NULL, "Failed to load settings.", gsTitleCaption, MB_ICONERROR);
 	}
 	
 	gManage = new CManagement();
@@ -75,9 +74,9 @@ bool UninitializeApp(void)
 	gManage->ManagementDestroy();
 	delete gManage;
 
-	if(!SaveRegistry())
+	if(!SaveSettings())
 	{
-		MessageBox(NULL, "Failed to save registry values.", gsTitleCaption, MB_ICONERROR);
+		MessageBox(NULL, "Failed to save settings.", gsTitleCaption, MB_ICONERROR);
 		return false;
 	}
 
@@ -88,7 +87,7 @@ bool UninitializeApp(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LoadRegistry(void)
+bool LoadSettings(void)
 {
 	DWORD dwSize = 0;
 	DWORD dwBuffer = 0;
@@ -96,37 +95,19 @@ bool LoadRegistry(void)
 	dwSize = sizeof(gsPath);
 	memset(gsPath, 0, dwSize);
 
-	//Get the path and data path from the registry, if they cant be found - use the application path as a hint.
-	if (!Get_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "Path", gsPath, dwSize))
-	{
-		GetModuleFilePath(gsPath, sizeof(gsPath));
-		sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\..\\Data", gsPath);
-		CorrectReversePath(gsPath, sizeof(gsPath));
-		CorrectReversePath(gsDataPath, sizeof(gsDataPath));
-	}
-	else
-	{
-		sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\Data", gsPath);
-	}
-
-	if (!Get_DWORDRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "ManagementPort", gdwManagementPort))
-	{
-		gdwManagementPort = DFLT_MANAGEMENT_PORT;
-	}
+	GetModuleFilePath(gsPath, sizeof(gsPath));
+	sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\Data", gsPath);
+	CorrectReversePath(gsPath, sizeof(gsPath));
+	CorrectReversePath(gsDataPath, sizeof(gsDataPath));
 
 	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SaveRegistry(void)
+bool SaveSettings(void)
 {
 	bool bResult = true;
-
-	//None of this needs to be saved:
-	//bResult = bResult && Set_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "Path", gsPath);
-	//bResult = bResult && Set_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "DataPath", gsDataPath);
-	//bResult = bResult && Set_DWORDRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "ManagementPort", gdwManagementPort);
 
 	return true;
 }

@@ -12,8 +12,8 @@
 
 bool InitializeApp(void);
 bool UninitializeApp(void);
-bool LoadRegistry(void);
-bool SaveRegistry(void);
+bool LoadSettings(void);
+bool SaveSettings(void);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif

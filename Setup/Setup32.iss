@@ -5,7 +5,7 @@
  AppCopyright                    = Copyright © 1995-2018 NetworkDLS.
  DefaultDirName                  = {pf}\NetworkDLS\Fortitude HTTP
  DefaultGroupName                = NetworkDLS\Fortitude HTTP
- UninstallDisplayIcon            = {app}\Bin\FortitudeMgt.Exe
+ UninstallDisplayIcon            = {app}\FortitudeMgt.Exe
  WizardImageFile                 = ..\SetupResources\Setup\LgSetup.bmp
  WizardSmallImageFile            = ..\SetupResources\Setup\SmSetup.bmp
  PrivilegesRequired              = PowerUser
@@ -35,21 +35,22 @@
  
 [Files]
  Source: "..\SetupResources\Setup\License\EULA.txt";          DestDir: "{app}";             Components: Base;
- Source: "..\AutoUpdate\Win32\Release\AutoUpdate.Exe";        DestDir: "{app}\Bin";         Components: Base\AutoUpdate;      Flags: RestartReplace;
- Source: "AutoUpdate.xml";                                    DestDir: "{app}\Bin";         Components: Base\AutoUpdate;      Flags: IgnoreVersion;
- Source: "..\Source\Console\Release\Win32\FortitudeMgt.exe";  DestDir: "{app}\Bin";         Components: Base\Management;      Flags: IgnoreVersion;
- Source: "..\Source\Service\Release\Win32\FortitudeSvc.exe";  DestDir: "{app}\Bin";         Components: Server;               Flags: IgnoreVersion;
- Source: "..\Source\Console\Release\Win32\FortitudeMgt.pdb";  DestDir: "{app}\Bin";         Components: Base\Debugging;       Flags: IgnoreVersion;
- Source: "..\Source\Service\Release\Win32\FortitudeSvc.pdb";  DestDir: "{app}\Bin";         Components: Base\Debugging;       Flags: IgnoreVersion;
+ Source: "..\AutoUpdate\Win32\Release\AutoUpdate.Exe";        DestDir: "{app}";         Components: Base\AutoUpdate;      Flags: RestartReplace;
+ Source: "AutoUpdate.xml";                                    DestDir: "{app}";         Components: Base\AutoUpdate;      Flags: IgnoreVersion;
+ Source: "..\Source\Console\Release\Win32\FortitudeMgt.exe";  DestDir: "{app}";         Components: Base\Management;      Flags: IgnoreVersion;
+ Source: "..\Source\Service\Release\Win32\FortitudeSvc.exe";  DestDir: "{app}";         Components: Server;               Flags: IgnoreVersion;
+ Source: "..\Source\Console\Release\Win32\FortitudeMgt.pdb";  DestDir: "{app}";         Components: Base\Debugging;       Flags: IgnoreVersion;
+ Source: "..\Source\Service\Release\Win32\FortitudeSvc.pdb";  DestDir: "{app}";         Components: Base\Debugging;       Flags: IgnoreVersion;
  Source: "Resources\Start.ico";                               DestDir: "{app}";             Components: Server;
  Source: "Resources\Stop.ico";                                DestDir: "{app}";             Components: Server;
  Source: "Messages\*.*";                                      DestDir: "{app}\Messages";    Components: Server\CustomErrors;  Flags: RecurseSubDirs OnlyIfDoesntExist;
  Source: "Filters\*.*";                                       DestDir: "{app}\Filters";     Components: Server\PreConfigured; Flags: RecurseSubDirs OnlyIfDoesntExist;
  Source: "IndexImages\*.*";                                   DestDir: "{app}\IndexImages"; Components: Server\IndexImages;   Flags: RecurseSubDirs OnlyIfDoesntExist;
- Source: "Data\*.*";                                          DestDir: "{app}\Data";        Components: Server;               Flags: OnlyIfDoesntExist;
- Source: "Data\preConfigured\32\*.*";                         DestDir: "{app}\Data";        Components: Server\PreConfigured; Flags: OnlyIfDoesntExist;
- Source: "Data\preConfigured\*.*";                            DestDir: "{app}\Data";        Components: Server\PreConfigured; Flags: OnlyIfDoesntExist;
- Source: "Data\nonConfigured\*.*";                            DestDir: "{app}\Data";        Components: Server\nonConfigured; Flags: OnlyIfDoesntExist;
+ Source: "Data\Server\*.*";                                   DestDir: "{app}\Data";        Components: Server;               Flags: OnlyIfDoesntExist;
+ Source: "Data\Server\preConfigured\32\*.*";                  DestDir: "{app}\Data";        Components: Server\PreConfigured; Flags: OnlyIfDoesntExist;
+ Source: "Data\Server\preConfigured\*.*";                     DestDir: "{app}\Data";        Components: Server\PreConfigured; Flags: OnlyIfDoesntExist;
+ Source: "Data\Server\nonConfigured\*.*";                     DestDir: "{app}\Data";        Components: Server\nonConfigured; Flags: OnlyIfDoesntExist;
+ Source: "Data\Interface\*.*";                                DestDir: "{app}\Data";        Components: Base\Management;      Flags: OnlyIfDoesntExist;
  Source: "WebSites\*.*";                                      DestDir: "{app}\WebSites";    Components: Server\PreConfigured; Flags: RecurseSubDirs OnlyIfDoesntExist;
  
 [Dirs]
@@ -57,16 +58,8 @@
  Name: "{app}\Cache"; Components: Server;
 
 [Icons]
- Name: "{group}\Manage Fortitude HTTP";        Filename: "{app}\Bin\FortitudeMgt.Exe"; WorkingDir: "{app}\Bin";     Components: Base\Management;
+ Name: "{group}\Manage Fortitude HTTP";        Filename: "{app}\FortitudeMgt.Exe"; WorkingDir: "{app}";     Components: Base\Management;
  Name: "{group}\Fortitude HTTP Documentation"; Filename: "http://FortitudeHTTP.com/";
- 
-[Registry]
- Root: HKLM; Subkey: "Software\NetworkDLS\Fortitude HTTP"; Flags: uninsdeletekey noerror;
- Root: HKLM; Subkey: "Software\NetworkDLS\Fortitude HTTP"; ValueName: "DataPath";        ValueType: String; ValueData: "{app}\Data";    Flags: CreateValueIfDoesntExist; Components: Server;
- Root: HKLM; Subkey: "Software\NetworkDLS\Fortitude HTTP"; ValueName: "Path";            ValueType: String; ValueData: "{app}";         Flags: CreateValueIfDoesntExist;
- Root: HKLM; Subkey: "Software\NetworkDLS\Fortitude HTTP"; ValueName: "ManagementPort";  ValueType: DWORD;  ValueData: "35634";         Flags: CreateValueIfDoesntExist;
- Root: HKLM; Subkey: "Software\NetworkDLS\Fortitude HTTP"; ValueName: "LastConnectHost"; ValueType: String; ValueData: "localhost";     Flags: CreateValueIfDoesntExist; Components: Base\Management;
- Root: HKLM; Subkey: "Software\NetworkDLS\Fortitude HTTP"; ValueName: "LastConnectUser"; ValueType: String; ValueData: "Administrator"; Flags: CreateValueIfDoesntExist; Components: Base\Management;
 
 [UninstallDelete]
  Type: FilesAndOrDirs; Name: "{app}\Logs";    Components: Server;
@@ -74,11 +67,11 @@
  Type: FilesAndOrDirs; Name: "{app}\ErrorLog";
 
 [Run]
- Filename: "{app}\Bin\FortitudeSvc.exe"; Parameters: "/Install"; StatusMsg: "Installing service...";                               Components: Server;
- Filename: "{app}\Bin\FortitudeSvc.exe"; Parameters: "/Start";   StatusMsg: "Starting Service...";                                 Components: Server;
- Filename: "{app}\Bin\FortitudeMgt.exe"; Description: "Open Management Console"; Flags: PostInstall NoWait shellexec skipifsilent; Components: Base\Management;
+ Filename: "{app}\FortitudeSvc.exe"; Parameters: "/Install"; StatusMsg: "Installing service...";                               Components: Server;
+ Filename: "{app}\FortitudeSvc.exe"; Parameters: "/Start";   StatusMsg: "Starting Service...";                                 Components: Server;
+ Filename: "{app}\FortitudeMgt.exe"; Description: "Open Management Console"; Flags: PostInstall NoWait shellexec skipifsilent; Components: Base\Management;
 
 [UninstallRun]
- Filename: "{app}\Bin\FortitudeSvc.exe"; Parameters: "/Stop";   RunOnceId: "StopService";   MinVersion: 0, 4.0; Components: Server;
- Filename: "{app}\Bin\FortitudeSvc.exe"; Parameters: "/Delete"; RunOnceId: "DeleteService"; MinVersion: 0, 4.0; Components: Server;
+ Filename: "{app}\FortitudeSvc.exe"; Parameters: "/Stop";   RunOnceId: "StopService";   MinVersion: 0, 4.0; Components: Server;
+ Filename: "{app}\FortitudeSvc.exe"; Parameters: "/Delete"; RunOnceId: "DeleteService"; MinVersion: 0, 4.0; Components: Server;
 

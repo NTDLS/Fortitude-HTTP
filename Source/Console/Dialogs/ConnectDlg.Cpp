@@ -127,6 +127,25 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 		dwForeColor = CheckServiceStatus(hSvcStat, true);
 
+		char sXMLFile[MAX_PATH];
+		memset(gsPath, 0, sizeof(sXMLFile));
+
+		XMLReader xmlSettings;
+		_makepath_s(sXMLFile, sizeof(sXMLFile), NULL, gsDataPath, "InterfaceSettings.xml", NULL);
+		if (xmlSettings.FromFile(sXMLFile))
+		{
+			char sBuffer[1024];
+
+			if (xmlSettings.ToString("LastConnectHost", sBuffer, sizeof(sBuffer)) > 0)
+			{
+				Set_Text(hHost, sBuffer);
+			}
+			if (xmlSettings.ToString("LastConnectUser", sBuffer, sizeof(sBuffer)) > 0)
+			{
+				Set_Text(hUser, sBuffer);
+			}
+		}
+
 		SetTimer(hWnd, 0, 1000, NULL);
 
 		CenterOverOwner(hWnd);
@@ -223,11 +242,18 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 							if(_strcmpi(sResult, "Yes") == 0)
 							{
 								bResult = true;
-
 								char sLastHost[MGMT_MAX_HOST_SZ];
 								Get_Text(hHost, sLastHost, sizeof(sLastHost));
-								Set_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "LastConnectHost", sLastHost);
-								Set_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "LastConnectUser", sUsername);
+
+								char sXMLFile[MAX_PATH];
+								memset(gsPath, 0, sizeof(sXMLFile));
+
+								XMLReader xmlSettings;
+								_makepath_s(sXMLFile, sizeof(sXMLFile), NULL, gsDataPath, "InterfaceSettings.xml", NULL);
+								XMLWriter writer("InterfaceSettings");
+								writer.Add("LastConnectHost", sLastHost);
+								writer.Add("LastConnectUser", sUsername);
+								writer.ToFile(sXMLFile);
 
 								strcpy_s(gManage->CurrentConnectioninfo.Username, sizeof(gManage->CurrentConnectioninfo.Username), sUsername);
 								strcpy_s(gManage->CurrentConnectioninfo.Password, sizeof(gManage->CurrentConnectioninfo.Password), sPasswordHash);
@@ -284,33 +310,18 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 	//--------------------------------------------------------------------------
 	else if(uMsg == WM_PAINT)
     {
-		if(bFirstPaint)
+		if (bFirstPaint)
 		{
 			bFirstPaint = false;
 
-			DWORD dwBufferSz = 0;
-			char sBuffer[255];
-
-			dwBufferSz = sizeof(sBuffer);
-			memset(sBuffer, 0, dwBufferSz);
-			if(Get_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "LastConnectHost", sBuffer, dwBufferSz))
+			if (Get_TextLength(hHost) > 0)
 			{
-				if(dwBufferSz > 0)
-				{
-					Set_Text(hHost, sBuffer);
-					SetFocus(hUser);
-				}
+				SetFocus(hUser);
 			}
 
-			dwBufferSz = sizeof(sBuffer);
-			memset(sBuffer, 0, dwBufferSz);
-			if(Get_StringRegistryValue(HKEY_LOCAL_MACHINE, gsRegistryKey, "LastConnectUser", sBuffer, dwBufferSz))
+			if (Get_TextLength(hUser))
 			{
-				if(dwBufferSz > 0)
-				{
-					Set_Text(hUser, sBuffer);
-					SetFocus(hPass);
-				}
+				SetFocus(hPass);
 			}
 		}
 

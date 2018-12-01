@@ -146,10 +146,6 @@ int ProcessCommandLine(CommandLineParser *cmdLine)
 		{
 			gService.ServiceName(gsServiceName);
 		}
-		else if(cmdLine->IsCommand(iCommand, "/Configuration:", gsPath, sizeof(gsPath)))
-		{
-			sprintf_s(gsDataPath, sizeof(gsDataPath), "%s\\Data", gsPath);
-		}
 		else if (cmdLine->IsCommand(iCommand, "/NoManage"))
 		{
 			gbLoadManagementInterface = false;
