@@ -972,8 +972,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,4,1
- PRODUCTVERSION 1,0,4,1
+ FILEVERSION 1,0,4,2
+ PRODUCTVERSION 1,0,4,2
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -991,12 +991,12 @@ BEGIN
             VALUE "Comments", "Fortitude HTTP Console"
             VALUE "CompanyName", "NetworkDLS"
             VALUE "FileDescription", "NetworkDLS Fortitude HTTP Console"
-            VALUE "FileVersion", "1.0.4.1"
+            VALUE "FileVersion", "1.0.4.2"
             VALUE "InternalName", "Fortitude HTTP Console"
             VALUE "LegalCopyright", "Copyright © 2018 NetworkDLS. All rights reserved."
             VALUE "OriginalFilename", "FortitudeMgt.exe"
             VALUE "ProductName", "Fortitude HTTP Console"
-            VALUE "ProductVersion", "1.0.4.1"
+            VALUE "ProductVersion", "1.0.4.2"
         END
     END
     BLOCK "VarFileInfo"
@@ -1115,7 +1115,7 @@ IDR_WORKING             AVI                     "Working.avi"
 STRINGTABLE
 BEGIN
     IDS_TITLECAPTION        "Fortitude HTTP Console"
-    IDS_FILEVERSION         "1.0.4.1"
+    IDS_FILEVERSION         "1.0.4.2"
     IDS_APPCOPYRIGHT        "Copyright © 2018 NetworkDLS. All rights reserved."
     IDS_REGISTRYKEY         "SOFTWARE\\NetworkDLS\\Fortitude HTTP"
 END

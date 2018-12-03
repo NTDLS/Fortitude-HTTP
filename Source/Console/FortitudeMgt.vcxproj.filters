@@ -392,6 +392,9 @@
     <ClCompile Include="..\..\NASCCL\NASCCLStream.Cpp">
       <Filter>Classes &amp; Libraries\NASCCL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\NSWFL\NSWFL_Network.cpp">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\CManagement.H">
@@ -717,6 +720,9 @@
     </ClInclude>
     <ClInclude Include="..\%40Common\Constants.H">
       <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\NSWFL\NSWFL_Network.h">
+      <Filter>Classes &amp; Libraries\NSWFL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
