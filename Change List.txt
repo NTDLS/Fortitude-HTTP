@@ -8,3 +8,6 @@ Upgraded platform SDK for Windows 10.
 Resolved several x64 bugs which were very unlikely to be encountered.
 Resolved issue with buffer overflow when accessing virtual roots.
 Resovled memory leak caused by duplicate statuses being returned by a scripting engine.
+
+1.0.4.2
+Removed all dependencies on the registry. Configuration files are located by relative path to binaries.

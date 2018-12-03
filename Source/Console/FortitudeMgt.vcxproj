@@ -360,6 +360,7 @@
     <ClCompile Include="..\..\NSWFL\NSWFL_Memory.Cpp" />
     <ClCompile Include="..\..\NSWFL\NSWFL_MemoryPool.Cpp" />
     <ClCompile Include="..\..\NSWFL\NSWFL_Menu.Cpp" />
+    <ClCompile Include="..\..\NSWFL\NSWFL_Network.cpp" />
     <ClCompile Include="..\..\NSWFL\NSWFL_Queue.Cpp" />
     <ClCompile Include="..\..\NSWFL\NSWFL_Registry.Cpp" />
     <ClCompile Include="..\..\NSWFL\NSWFL_SHA1.cpp" />
@@ -464,6 +465,7 @@
     <ClInclude Include="..\..\NSWFL\NSWFL_Memory.H" />
     <ClInclude Include="..\..\NSWFL\NSWFL_MemoryPool.H" />
     <ClInclude Include="..\..\NSWFL\NSWFL_Menu.H" />
+    <ClInclude Include="..\..\NSWFL\NSWFL_Network.h" />
     <ClInclude Include="..\..\NSWFL\NSWFL_Queue.H" />
     <ClInclude Include="..\..\NSWFL\NSWFL_Registry.H" />
     <ClInclude Include="..\..\NSWFL\NSWFL_SHA1.h" />
