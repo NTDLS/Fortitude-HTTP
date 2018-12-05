@@ -58,25 +58,25 @@ bool IsApplicationRunning(void)
 	SECURITY_DESCRIPTOR SD;
 	SECURITY_ATTRIBUTES SA;
 
-	if(!InitializeSecurityDescriptor(&SD, SECURITY_DESCRIPTOR_REVISION))
+	if (!InitializeSecurityDescriptor(&SD, SECURITY_DESCRIPTOR_REVISION))
 	{
 		return false;
 	}
 
-	if(!SetSecurityDescriptorDacl(&SD, TRUE, 0, FALSE))
+	if (!SetSecurityDescriptorDacl(&SD, TRUE, 0, FALSE))
 	{
 		return false;
 	}
 
-	SA.nLength				= sizeof(SA);
+	SA.nLength = sizeof(SA);
 	SA.lpSecurityDescriptor = &SD;
-	SA.bInheritHandle		= FALSE;
+	SA.bInheritHandle = FALSE;
 
 	char sMutex[255];
 	sprintf_s(sMutex, "Global\\%s", gsServiceName);
-	if((hMutex = CreateMutex(&SA, FALSE, sMutex)) != NULL)
+	if ((hMutex = CreateMutex(&SA, FALSE, sMutex)) != NULL)
 	{
-		if(GetLastError() == ERROR_ALREADY_EXISTS)
+		if (GetLastError() == ERROR_ALREADY_EXISTS)
 		{
 			bResult = true;
 		}
@@ -96,15 +96,15 @@ bool ServiceProcedure(LPVOID lpVoid)
 	SECURITY_DESCRIPTOR SD;
 	SECURITY_ATTRIBUTES SA;
 
-	if(InitializeSecurityDescriptor(&SD, SECURITY_DESCRIPTOR_REVISION) == FALSE)
+	if (InitializeSecurityDescriptor(&SD, SECURITY_DESCRIPTOR_REVISION) == FALSE)
 		return false;
 
-	if(SetSecurityDescriptorDacl(&SD, TRUE, 0, FALSE) == FALSE)
+	if (SetSecurityDescriptorDacl(&SD, TRUE, 0, FALSE) == FALSE)
 		return false;
 
-	SA.nLength				= sizeof(SA);
+	SA.nLength = sizeof(SA);
 	SA.lpSecurityDescriptor = &SD;
-	SA.bInheritHandle		= FALSE;
+	SA.bInheritHandle = FALSE;
 
 	/*
 	if((MutexHandle = CreateMutex(&SA, FALSE, gsTitleCaption)) != NULL)
@@ -118,7 +118,9 @@ bool ServiceProcedure(LPVOID lpVoid)
 	}
 	*/
 
-	if(pMem->TrackMemory(new CWebSites))
+	auto pWebsites = new CWebSites; //Load the websites.
+
+	if (pMem->TrackMemory(pWebsites))
 	{
 		gWebSites->StopTrace();
 		gService.KeepServiceRunning();
@@ -136,27 +138,29 @@ int ProcessCommandLine(CommandLineParser *cmdLine)
 	bool bRunService = false;
 	bool bRunStandalone = false;
 
-	for(int iCommand = 1; iCommand < cmdLine->Count(); iCommand++)
+#ifdef _PORTABLE_RELEASE
+	bRunStandalone = true;
+	bOpenConsole = true;
+#endif
+
+	for (int iCommand = 1; iCommand < cmdLine->Count(); iCommand++)
 	{
 		const char *sCmdLine = cmdLine->Item(iCommand);
 
 		char sCmdBuf[MAX_PATH];
 
-		if(cmdLine->IsCommand(iCommand, "/ServiceName:", gsServiceName, sizeof(gsServiceName)))
-		{
-			gService.ServiceName(gsServiceName);
-		}
-		else if (cmdLine->IsCommand(iCommand, "/NoManage"))
+		if (cmdLine->IsCommand(iCommand, "/NoManage"))
 		{
 			gbLoadManagementInterface = false;
+		}
+#ifndef _PORTABLE_RELEASE
+		else if (cmdLine->IsCommand(iCommand, "/ServiceName:", gsServiceName, sizeof(gsServiceName)))
+		{
+			gService.ServiceName(gsServiceName);
 		}
 		else if (cmdLine->IsCommand(iCommand, "/Console"))
 		{
 			bOpenConsole = true;
-		}
-		else if(cmdLine->IsCommand(iCommand, "/ManagePort:", sCmdBuf, sizeof(sCmdBuf)))
-		{
-			gdwManagementPort = atol(sCmdBuf);
 		}
 		else if (_strcmpi(sCmdLine, "/RunService") == 0)
 		{
@@ -168,23 +172,29 @@ int ProcessCommandLine(CommandLineParser *cmdLine)
 			bRunService = false;
 			bRunStandalone = true;
 		}
-		//------------------------------------------------------------------------------------------
-		else if(_strcmpi(sCmdLine, "/Install") == 0 )
+#endif
+		else if (cmdLine->IsCommand(iCommand, "/ManagePort:", sCmdBuf, sizeof(sCmdBuf)))
 		{
-			if(gService.IsInstalled() == _SVC_YES_)
+			gdwManagementPort = atol(sCmdBuf);
+		}
+#ifndef _PORTABLE_RELEASE
+		//------------------------------------------------------------------------------------------
+		else if (_strcmpi(sCmdLine, "/Install") == 0)
+		{
+			if (gService.IsInstalled() == _SVC_YES_)
 			{
-    			//MessageBox(NULL, "The service is already installed.", gsTitleCaption, MB_ICONINFORMATION);
+				//MessageBox(NULL, "The service is already installed.", gsTitleCaption, MB_ICONINFORMATION);
 				return 0;
 			}
 
 			char sApplication[257];
 			sprintf_s(sApplication, sizeof(sApplication), "NetworkDLS %s", gsTitleCaption);
-			if(gService.Install(sApplication) == _SVC_SUCCESS_ )
+			if (gService.Install(sApplication) == _SVC_SUCCESS_)
 			{
 				gService.SetDescription("Provides HTTP web services on NT based Operating Systems.");
 				return 0;
 			}
-			else{
+			else {
 				MessageBox(NULL, "Failed to install the service.", gsTitleCaption, MB_ICONWARNING);
 				return 0;
 			}
@@ -192,159 +202,160 @@ int ProcessCommandLine(CommandLineParser *cmdLine)
 			return 0;
 		}
 		//------------------------------------------------------------------------------------------
-		else if(_strcmpi(sCmdLine, "/Delete") == 0 )
+		else if (_strcmpi(sCmdLine, "/Delete") == 0)
 		{
-			if(gService.IsInstalled() == _SVC_NO_)
+			if (gService.IsInstalled() == _SVC_NO_)
 			{
 				return 0;
 			}
-			else if(gService.IsActive() == _SVC_YES_)
+			else if (gService.IsActive() == _SVC_YES_)
 			{
 				gService.Stop(); // Failure would not be an error.
 				return 0;
 			}
-    		else if(gService.Uninstall() != _SVC_SUCCESS_)
-    		{
-    			MessageBox(NULL, "Failed to mark the service for deletion.", gsTitleCaption, MB_ICONWARNING);
+			else if (gService.Uninstall() != _SVC_SUCCESS_)
+			{
+				MessageBox(NULL, "Failed to mark the service for deletion.", gsTitleCaption, MB_ICONWARNING);
 				return 0;
 			}
 
 			return 0;
 		}
 		//------------------------------------------------------------------------------------------
-		else if(_strcmpi(sCmdLine, "/Start") == 0 )
+		else if (_strcmpi(sCmdLine, "/Start") == 0)
 		{
-			if(IsApplicationRunning())
+			if (IsApplicationRunning())
 			{
 				return 0;
 			}
-			else if(gService.IsInstalled() == _SVC_NO_)
+			else if (gService.IsInstalled() == _SVC_NO_)
 			{
-    			MessageBox(NULL, "The service is not installed.", gsTitleCaption, MB_ICONWARNING);
+				MessageBox(NULL, "The service is not installed.", gsTitleCaption, MB_ICONWARNING);
 				return 0;
 			}
-			else if(gService.IsActive() == _SVC_YES_)
+			else if (gService.IsActive() == _SVC_YES_)
 			{
 				return 0;
 			}
-			else if(gService.Start() != _SVC_SUCCESS_)
+			else if (gService.Start() != _SVC_SUCCESS_)
 			{
-    			MessageBox(NULL, "Failed to start the service.", gsTitleCaption, MB_ICONWARNING);
-   				return 0;
+				MessageBox(NULL, "Failed to start the service.", gsTitleCaption, MB_ICONWARNING);
+				return 0;
 			}
 
 			return 0;
 		}
 		//------------------------------------------------------------------------------------------
-		else if(_strcmpi(sCmdLine, "/Stop") == 0 )
+		else if (_strcmpi(sCmdLine, "/Stop") == 0)
 		{
-			if(gService.IsInstalled() == _SVC_NO_)
+			if (gService.IsInstalled() == _SVC_NO_)
 			{
-    			MessageBox(NULL, "The service is not installed.", gsTitleCaption, MB_ICONWARNING);
+				MessageBox(NULL, "The service is not installed.", gsTitleCaption, MB_ICONWARNING);
 				return 0;
 			}
-			else if(gService.IsActive() == _SVC_NO_)
+			else if (gService.IsActive() == _SVC_NO_)
 			{
 				return 0; //Already stopped.
 			}
-    		else if(gService.Stop() != _SVC_SUCCESS_)
-    		{
-    			MessageBox(NULL, "Failed to stop the service.", gsTitleCaption, MB_ICONWARNING);
+			else if (gService.Stop() != _SVC_SUCCESS_)
+			{
+				MessageBox(NULL, "Failed to stop the service.", gsTitleCaption, MB_ICONWARNING);
 				return 0;
 			}
 			return 0;
 		}
 		//------------------------------------------------------------------------------------------
-		else if(_strcmpi(sCmdLine, "/SilentStart") == 0 )
+		else if (_strcmpi(sCmdLine, "/SilentStart") == 0)
 		{
-			if(IsApplicationRunning())
+			if (IsApplicationRunning())
 			{
 				return 0;
 			}
-			else if(gService.IsInstalled() == _SVC_NO_)
+			else if (gService.IsInstalled() == _SVC_NO_)
 			{
 				return 0;
 			}
-			else if(gService.IsActive() == _SVC_YES_)
+			else if (gService.IsActive() == _SVC_YES_)
 			{
 				return 0;
 			}
-			else if(gService.Start() != _SVC_SUCCESS_)
+			else if (gService.Start() != _SVC_SUCCESS_)
 			{
-   				return 0;
+				return 0;
 			}
 
 			return 0;
 		}
 		//------------------------------------------------------------------------------------------
-		else if(_strcmpi(sCmdLine, "/SilentStop") == 0 )
+		else if (_strcmpi(sCmdLine, "/SilentStop") == 0)
 		{
-			if(gService.IsInstalled() == _SVC_NO_)
+			if (gService.IsInstalled() == _SVC_NO_)
 			{
 				return 0;
 			}
-			else if(gService.IsActive() == _SVC_NO_)
+			else if (gService.IsActive() == _SVC_NO_)
 			{
 				return 0; //Already stopped.
 			}
-    		else if(gService.Stop() != _SVC_SUCCESS_)
-    		{
+			else if (gService.Stop() != _SVC_SUCCESS_)
+			{
 				return 0;
 			}
 			return 0;
 		}
 		//------------------------------------------------------------------------------------------
-		else if(_strcmpi(sCmdLine, "/VerboseStart") == 0 )
+		else if (_strcmpi(sCmdLine, "/VerboseStart") == 0)
 		{
-			if(gService.IsInstalled() == _SVC_NO_)
+			if (gService.IsInstalled() == _SVC_NO_)
 			{
-    			MessageBox(NULL, "The service is not installed.", gsTitleCaption, MB_ICONWARNING);
+				MessageBox(NULL, "The service is not installed.", gsTitleCaption, MB_ICONWARNING);
 				return 0;
 			}
-			else if(gService.IsActive() == _SVC_YES_)
+			else if (gService.IsActive() == _SVC_YES_)
 			{
-    			MessageBox(NULL, "The service is already running.", gsTitleCaption, MB_ICONINFORMATION);
+				MessageBox(NULL, "The service is already running.", gsTitleCaption, MB_ICONINFORMATION);
 				return 0;
 			}
-			else if(IsApplicationRunning())
+			else if (IsApplicationRunning())
 			{
-    			MessageBox(NULL, "The application is already running.", gsTitleCaption, MB_ICONINFORMATION);
+				MessageBox(NULL, "The application is already running.", gsTitleCaption, MB_ICONINFORMATION);
 				return 0;
 			}
-			else if(gService.Start() != _SVC_SUCCESS_)
+			else if (gService.Start() != _SVC_SUCCESS_)
 			{
-    			MessageBox(NULL, "Failed to start the service.", gsTitleCaption, MB_ICONWARNING);
-   				return 0;
+				MessageBox(NULL, "Failed to start the service.", gsTitleCaption, MB_ICONWARNING);
+				return 0;
 			}
-			else{
-    			MessageBox(NULL, "The service was successfully started.", gsTitleCaption, MB_ICONINFORMATION);
+			else {
+				MessageBox(NULL, "The service was successfully started.", gsTitleCaption, MB_ICONINFORMATION);
 			}
 
 			return 0;
 		}
 		//------------------------------------------------------------------------------------------
-		else if(_strcmpi(sCmdLine, "/VerboseStop") == 0 )
+		else if (_strcmpi(sCmdLine, "/VerboseStop") == 0)
 		{
-			if(gService.IsInstalled() == _SVC_NO_)
+			if (gService.IsInstalled() == _SVC_NO_)
 			{
-    			MessageBox(NULL, "The service is not installed.", gsTitleCaption, MB_ICONWARNING);
+				MessageBox(NULL, "The service is not installed.", gsTitleCaption, MB_ICONWARNING);
 				return 0;
 			}
-			else if(gService.IsActive() == _SVC_NO_)
+			else if (gService.IsActive() == _SVC_NO_)
 			{
-    			MessageBox(NULL, "The service is not running.", gsTitleCaption, MB_ICONINFORMATION);
+				MessageBox(NULL, "The service is not running.", gsTitleCaption, MB_ICONINFORMATION);
 				return 0;
 			}
-    		else if(gService.Stop() != _SVC_SUCCESS_)
-    		{
-    			MessageBox(NULL, "Failed to stop the service.", gsTitleCaption, MB_ICONWARNING);
+			else if (gService.Stop() != _SVC_SUCCESS_)
+			{
+				MessageBox(NULL, "Failed to stop the service.", gsTitleCaption, MB_ICONWARNING);
 				return 0;
 			}
-			else{
-    			MessageBox(NULL, "The service was successfully stopped.", gsTitleCaption, MB_ICONINFORMATION);
+			else {
+				MessageBox(NULL, "The service was successfully stopped.", gsTitleCaption, MB_ICONINFORMATION);
 			}
 			return 0;
 		}
+#endif
 	}
 
 	if (bRunStandalone || bRunService)
@@ -386,21 +397,20 @@ int ProcessCommandLine(CommandLineParser *cmdLine)
 					char sCaption[sizeof(gsTitleCaption) + sizeof(gsFileVersion)];
 					sprintf_s(sCaption, "%s - %s", gsTitleCaption, gsFileVersion);
 
-					StringBuilder debugText;
+					OpenDebugConsole(sCaption);
 
 #ifdef _DEBUG
-					debugText.AppendF("%s (Standalone Debug Mode)\n", sCaption);
+					printf("%s (Standalone Debug Mode)\n", sCaption);
 #else
-					debugText.AppendF("%s (Standalone Console Mode)\n", sCaption);
+					printf("%s (Portable Mode)\n", sCaption);
 #endif
-					debugText.Append("Type \"?\" or \"Help\" for a list of available commands.\n\n");
-
-					OpenDebugConsole(sCaption, &Fortitude_DebugConsoleHandler, debugText.Buffer);
-
 					if (gbLoadManagementInterface)
 					{
 						printf("Management interface on port %d.\n", gdwManagementPort);
 					}
+
+					printf("Type \"?\" or \"Help\" for a list of available commands.\n\n");
+					StartDebugConsoleHandler(&Fortitude_DebugConsoleHandler);
 				}
 
 				gService.RunAsStandAlone();
@@ -420,29 +430,57 @@ int ProcessCommandLine(CommandLineParser *cmdLine)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevious, LPSTR sCmdLine, int iCmdShow)
+#ifdef _PORTABLE_RELEASE
+
+int main(int argc, char *argv[])
 {
 	ghAppInstance = GetModuleHandle(NULL);
 
-    int iReturnVal = 0;
+	int iReturnVal = 0;
 
-	if(!InitializeApp())
-    {
-        return 1;
-    }
+	if (!InitializeApp())
+	{
+		return 1;
+	}
 
-	if(true)
+	if (true)
 	{
 		CommandLineParser cmdLine;
 
 		gService.Initialize(gsServiceName, &ServiceProcedure, NULL);
 
-		if(IsDebuggerPresent() && cmdLine.Count() == 1)
-		{
-			cmdLine.AddCommand("/Standalone");
-		}
+		cmdLine.AddCommand("/Standalone");
 
-		if(cmdLine.Count() > 1)
+		if (cmdLine.Count() > 1)
+		{
+			iReturnVal = ProcessCommandLine(&cmdLine);
+		}
+		else
+		{
+			MessageBox(NULL, "This service was not intended to run standalone. To force this mode, pass the /Standalone parameter.", gsTitleCaption, MB_ICONINFORMATION);
+		}
+	}
+}
+
+#else
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevious, LPSTR sCmdLine, int iCmdShow)
+{
+	ghAppInstance = GetModuleHandle(NULL);
+
+	int iReturnVal = 0;
+
+	if (!InitializeApp())
+	{
+		return 1;
+	}
+
+	if (true)
+	{
+		CommandLineParser cmdLine;
+
+		gService.Initialize(gsServiceName, &ServiceProcedure, NULL);
+
+		if (cmdLine.Count() > 1)
 		{
 			iReturnVal = ProcessCommandLine(&cmdLine);
 		}
@@ -453,13 +491,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevious, LPSTR sCmdLine, int
 	}
 
 #ifdef _DEBUG
-		CloseDebugConsole();
+	CloseDebugConsole();
 #endif
 
 	UninitializeApp();
 
 	return iReturnVal;
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif

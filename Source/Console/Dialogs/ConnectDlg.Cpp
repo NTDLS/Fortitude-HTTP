@@ -56,9 +56,9 @@ DWORD CheckServiceStatus(HWND hSvcStat, bool bForceRefresh)
 	static DWORD dwLastValue = 0;
 	char *sText = NULL;
 
-	if(gService.IsInstalled() == _SVC_YES_)
+	if (gService.IsInstalled() == _SVC_YES_)
 	{
-		if(gService.IsActive() == _SVC_YES_)
+		if (gService.IsActive() == _SVC_YES_)
 		{
 			sText = "Local service is running.";
 			dwForeColor = COLOR_RUNNING;
@@ -73,7 +73,7 @@ DWORD CheckServiceStatus(HWND hSvcStat, bool bForceRefresh)
 		dwForeColor = COLOR_NOTINSTALLED;
 	}
 
-	if(dwLastValue != dwForeColor || bForceRefresh)
+	if (dwLastValue != dwForeColor || bForceRefresh)
 	{
 		Set_Text(hSvcStat, sText);
 		dwLastValue = dwForeColor;
@@ -100,23 +100,23 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 	static HWND hUser = NULL;
 	static HWND hPass = NULL;
 	static HWND hSvcStat = NULL;
-    static HCURSOR HandCursor = NULL;
+	static HCURSOR HandCursor = NULL;
 	static DWORD dwForeColor = 0;
 
-    //--------------------------------------------------------------------------
+	//--------------------------------------------------------------------------
 
-    if(uMsg == WM_INITDIALOG)
-    {
+	if (uMsg == WM_INITDIALOG)
+	{
 		bFirstPaint = true;
 
-        gConnectDialog = hWnd;
+		gConnectDialog = hWnd;
 
-        HMENU hMenu = GetSystemMenu(hWnd, FALSE);
-        AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
-        AppendMenu(hMenu, MF_STRING, GENERIC_MENU_ABOUT, "About");
+		HMENU hMenu = GetSystemMenu(hWnd, FALSE);
+		AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
+		AppendMenu(hMenu, MF_STRING, GENERIC_MENU_ABOUT, "About");
 
-        SendMessage(hWnd, (UINT)WM_SETTEXT, (WPARAM)0, (LPARAM)gsTitleCaption);
-        SendMessage(hWnd, WM_SETICON, TRUE, (LPARAM) LoadIcon(ghAppInstance, MAKEINTRESOURCE(IDI_MAIN)));
+		SendMessage(hWnd, (UINT)WM_SETTEXT, (WPARAM)0, (LPARAM)gsTitleCaption);
+		SendMessage(hWnd, WM_SETICON, TRUE, (LPARAM)LoadIcon(ghAppInstance, MAKEINTRESOURCE(IDI_MAIN)));
 
 		HandCursor = LoadCursor(ghAppInstance, MAKEINTRESOURCE(IDC_HANDCURSOR));
 
@@ -125,7 +125,11 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 		hPass = GetDlgItem(hWnd, IDC_PASSWORD);
 		hSvcStat = GetDlgItem(hWnd, IDC_SERVICESTATUS);
 
+#ifndef _PORTABLE_RELEASE
 		dwForeColor = CheckServiceStatus(hSvcStat, true);
+#else
+		Set_Text(hSvcStat, "");
+#endif
 
 		char sXMLFile[MAX_PATH];
 		memset(gsPath, 0, sizeof(sXMLFile));
@@ -145,41 +149,48 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 				Set_Text(hUser, sBuffer);
 			}
 		}
+		else
+		{
+			Set_Text(hHost, "LocalHost");
+			Set_Text(hUser, "Administrator");
+		}
 
 		SetTimer(hWnd, 0, 1000, NULL);
 
 		CenterOverOwner(hWnd);
 
-        return TRUE; // Return TRUE to set the keyboard focus, Otherwise return FALSE.
-    }
-    //--------------------------------------------------------------------------
+		return TRUE; // Return TRUE to set the keyboard focus, Otherwise return FALSE.
+	}
+	//--------------------------------------------------------------------------
 	else if (uMsg == WM_CTLCOLORSTATIC)
 	{
-		if((HANDLE)lParam == hSvcStat)
+#ifndef _PORTABLE_RELEASE
+		if ((HANDLE)lParam == hSvcStat)
 		{
 			return (BOOL)Set_Color(dwForeColor, GetSysColor(COLOR_3DFACE), wParam);
 		}
-
-        return FALSE;
+#endif
+		return FALSE;
 	}
-    //--------------------------------------------------------------------------
-	if(IsMouseOverHwnd(hSvcStat) && dwForeColor != COLOR_NOTINSTALLED)
+	//--------------------------------------------------------------------------
+#ifndef _PORTABLE_RELEASE
+	if (IsMouseOverHwnd(hSvcStat) && dwForeColor != COLOR_NOTINSTALLED)
 	{
 		SetCursor(HandCursor);
 
-		if(uMsg == WM_LBUTTONUP)
-        {
-			if(gService.IsInstalled() == _SVC_YES_)
+		if (uMsg == WM_LBUTTONUP)
+		{
+			if (gService.IsInstalled() == _SVC_YES_)
 			{
-				if(gService.IsActive() == _SVC_YES_)
+				if (gService.IsActive() == _SVC_YES_)
 				{
-					if(MessageBox(hWnd, "The local service is currently running, would you like to stop it?", gsTitleCaption, MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2) == IDYES)
+					if (MessageBox(hWnd, "The local service is currently running, would you like to stop it?", gsTitleCaption, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES)
 					{
 						gService.Stop();
 					}
 				}
 				else {
-					if(MessageBox(hWnd, "The local service is not running, would you like to start it?", gsTitleCaption, MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2) == IDYES)
+					if (MessageBox(hWnd, "The local service is not running, would you like to start it?", gsTitleCaption, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2) == IDYES)
 					{
 						gService.Start();
 					}
@@ -188,15 +199,18 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 			}
 		}
 	}
+#endif
 	//--------------------------------------------------------------------------
-    else if(uMsg == WM_TIMER)
+	else if (uMsg == WM_TIMER)
 	{
+#ifndef _PORTABLE_RELEASE
 		dwForeColor = CheckServiceStatus(hSvcStat);
+#endif
 	}
 	//--------------------------------------------------------------------------
-    else if(uMsg == WM_COMMAND)
-    {
-		if(wParam == IDC_OK)
+	else if (uMsg == WM_COMMAND)
+	{
+		if (wParam == IDC_OK)
 		{
 			bool bResult = false;
 
@@ -211,7 +225,7 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 			SimpleSHA1(sPassword, sPasswordHash, sizeof(sPasswordHash));
 
-			if(iHostLen <= 0 || iHostLen >= sizeof(sHost))
+			if (iHostLen <= 0 || iHostLen >= sizeof(sHost))
 			{
 				MessageBox(hWnd, "You must specify a hostname.", gsTitleCaption, MB_ICONINFORMATION);
 				return 0;
@@ -219,27 +233,27 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 			DWORD dwPort = gdwManagementPort;
 			int iPortPos = CharIndex(sHost, ':');
-			if(iPortPos > 0)
+			if (iPortPos > 0)
 			{
 				dwPort = atol(sHost + iPortPos + 1);
 				sHost[iPortPos] = '\0';
 			}
 
-			if(gManage->Connect(sHost, dwPort))
+			if (gManage->Connect(sHost, dwPort))
 			{
 				BASICHUNK Chunk;
 				memset(&Chunk, 0, sizeof(Chunk));
-				if(gManage->QueryChunk(&Chunk))
+				if (gManage->QueryChunk(&Chunk))
 				{
-					if(_strcmpi((char *)Chunk.pBuffer, "Ok") == 0)
+					if (_strcmpi((char *)Chunk.pBuffer, "Ok") == 0)
 					{
-						if(gManage->QueryChunk(&Chunk,
+						if (gManage->QueryChunk(&Chunk,
 							"::Login|<Login><Username>%s</Username><Password>%s</Password><Version>%s</Version></Login>",
 							sUsername, sPasswordHash, gsFileVersion))
 						{
 							char *sResult = (char *)Chunk.pBuffer;
 
-							if(_strcmpi(sResult, "Yes") == 0)
+							if (_strcmpi(sResult, "Yes") == 0)
 							{
 								bResult = true;
 								char sLastHost[MGMT_MAX_HOST_SZ];
@@ -258,7 +272,7 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 								strcpy_s(gManage->CurrentConnectioninfo.Username, sizeof(gManage->CurrentConnectioninfo.Username), sUsername);
 								strcpy_s(gManage->CurrentConnectioninfo.Password, sizeof(gManage->CurrentConnectioninfo.Password), sPasswordHash);
 							}
-							else if(_strcmpi(sResult, "No") == 0)
+							else if (_strcmpi(sResult, "No") == 0)
 							{
 								Set_Text(hPass, "");
 								MessageBox(hWnd, "Login to the server failed.", gsTitleCaption, MB_ICONWARNING);
@@ -274,7 +288,7 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 							MessageBox(hWnd, "Failed to query the server. Is remote management disabled?", gsTitleCaption, MB_ICONWARNING);
 						}
 					}
-					else{
+					else {
 						MessageBox(hWnd, (char *)Chunk.pBuffer, gsTitleCaption, MB_ICONWARNING);
 					}
 
@@ -284,9 +298,9 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 					MessageBox(hWnd, "Failed to query the server. Is remote management disabled?", gsTitleCaption, MB_ICONWARNING);
 				}
 
-				if(!bResult)
+				if (!bResult)
 				{
-					if(gManage->Client->IsConnected())
+					if (gManage->Client->IsConnected())
 					{
 						gManage->Client->Disconnect();
 					}
@@ -296,20 +310,20 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 				MessageBox(hWnd, "Failed to connect to the specified server.", gsTitleCaption, MB_ICONWARNING);
 			}
 
-			if(bResult)
+			if (bResult)
 			{
 				return EndDialog(hWnd, 1);
 			}
 		}
-		else if(wParam == IDC_CANCEL || wParam == IDCANCEL)
+		else if (wParam == IDC_CANCEL || wParam == IDCANCEL)
 		{
 			return EndDialog(hWnd, 0);
 		}
-        return FALSE;
-    }
+		return FALSE;
+	}
 	//--------------------------------------------------------------------------
-	else if(uMsg == WM_PAINT)
-    {
+	else if (uMsg == WM_PAINT)
+	{
 		if (bFirstPaint)
 		{
 			bFirstPaint = false;
@@ -326,45 +340,45 @@ INT_PTR CALLBACK ConnectDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 		}
 
 		HDC ThisHDC;
-        PAINTSTRUCT ThisPS;
+		PAINTSTRUCT ThisPS;
 
-        ThisHDC = BeginPaint(hWnd, &ThisPS);
+		ThisHDC = BeginPaint(hWnd, &ThisPS);
 
-        //- Any painting should be done here.
+		//- Any painting should be done here.
 
-        EndPaint(hWnd, &ThisPS);
-        return TRUE;
-    }
-    //--------------------------------------------------------------------------
-    else if(uMsg == WM_SYSCOMMAND) //- Received a system menu message.
-    {
-        if(LOWORD(wParam) == GENERIC_MENU_ABOUT) //- About.
-        {
-            _AboutDialogInfo ADI;
-    
-            ADI.DisplayIcon  = LoadIcon(ghAppInstance, MAKEINTRESOURCE(IDI_MAIN));
-            ADI.TitleCaption = gsTitleCaption;
-            ADI.FileVersion  = gsFileVersion;
-            ADI.BuildDate    = __DATE__;
-            ADI.BuildTime    = __TIME__;
-            ADI.CopyRight    = gsAppCopyRight;
-            ADI.OwnerHandle  = hWnd;
+		EndPaint(hWnd, &ThisPS);
+		return TRUE;
+	}
+	//--------------------------------------------------------------------------
+	else if (uMsg == WM_SYSCOMMAND) //- Received a system menu message.
+	{
+		if (LOWORD(wParam) == GENERIC_MENU_ABOUT) //- About.
+		{
+			_AboutDialogInfo ADI;
 
-            NetLogo(&ADI);
+			ADI.DisplayIcon = LoadIcon(ghAppInstance, MAKEINTRESOURCE(IDI_MAIN));
+			ADI.TitleCaption = gsTitleCaption;
+			ADI.FileVersion = gsFileVersion;
+			ADI.BuildDate = __DATE__;
+			ADI.BuildTime = __TIME__;
+			ADI.CopyRight = gsAppCopyRight;
+			ADI.OwnerHandle = hWnd;
 
-            return TRUE;
-        }
+			NetLogo(&ADI);
 
-        return FALSE;
-    }
-    //--------------------------------------------------------------------------
-    else if(uMsg == WM_CLOSE) //- Received close message.
-    {
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+	//--------------------------------------------------------------------------
+	else if (uMsg == WM_CLOSE) //- Received close message.
+	{
 		return EndDialog(hWnd, 0);
-    }
-    //--------------------------------------------------------------------------
+	}
+	//--------------------------------------------------------------------------
 
-    return FALSE;
+	return FALSE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

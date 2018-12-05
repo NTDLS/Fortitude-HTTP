@@ -12,6 +12,8 @@ Global
 		Debug|x86 = Debug|x86
 		Optimized Debug|x64 = Optimized Debug|x64
 		Optimized Debug|x86 = Optimized Debug|x86
+		Release Portable|x64 = Release Portable|x64
+		Release Portable|x86 = Release Portable|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -24,6 +26,10 @@ Global
 		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Optimized Debug|x64.Build.0 = Debug|x64
 		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Optimized Debug|x86.ActiveCfg = Debug|Win32
 		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Optimized Debug|x86.Build.0 = Debug|Win32
+		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Release Portable|x64.ActiveCfg = Release Portable|x64
+		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Release Portable|x64.Build.0 = Release Portable|x64
+		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Release Portable|x86.ActiveCfg = Release Portable|Win32
+		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Release Portable|x86.Build.0 = Release Portable|Win32
 		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Release|x64.ActiveCfg = Release|x64
 		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Release|x64.Build.0 = Release|x64
 		{E1627A40-B36D-4EF3-AD74-4949479BB10B}.Release|x86.ActiveCfg = Release|Win32
@@ -36,6 +42,10 @@ Global
 		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Optimized Debug|x64.Build.0 = Optimized Debug|x64
 		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Optimized Debug|x86.ActiveCfg = Optimized Debug|Win32
 		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Optimized Debug|x86.Build.0 = Optimized Debug|Win32
+		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Release Portable|x64.ActiveCfg = Release Portable|x64
+		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Release Portable|x64.Build.0 = Release Portable|x64
+		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Release Portable|x86.ActiveCfg = Release Portable|Win32
+		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Release Portable|x86.Build.0 = Release Portable|Win32
 		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Release|x64.ActiveCfg = Release|x64
 		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Release|x64.Build.0 = Release|x64
 		{B4FA2C9A-A157-4F31-A831-F1AACB2ED52F}.Release|x86.ActiveCfg = Release|Win32
@@ -43,5 +53,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E526EEFF-07A3-4283-9E79-FBAE13768E0E}
 	EndGlobalSection
 EndGlobal

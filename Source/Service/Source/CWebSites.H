@@ -38,10 +38,16 @@ private:
 
 	bool Initialize(void);
 	bool Destroy(void);
+	bool bInitializeSuccess;
 
 public:
 	CWebSites();
 	~CWebSites();
+
+	bool InitializeSuccess()
+	{
+		return bInitializeSuccess;
+	}
 
 	void StopAllSites(void);
 	bool StartAllSites(void);

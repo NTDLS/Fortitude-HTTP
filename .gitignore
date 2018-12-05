@@ -12,7 +12,16 @@
 *.db-shm
 *.db-wal
 *.res
-
 *.ipch
-
 *.aps
+/Output
+
+Setup/Output
+
+Source/Service/Release
+Source/Service/Debug
+Source/Service/Release Portable
+Source/Console/Release
+Source/Console/Debug
+Source/Console/Release Portable
+

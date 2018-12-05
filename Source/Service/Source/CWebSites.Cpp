@@ -51,6 +51,7 @@ CWebSites::~CWebSites()
 CWebSites::CWebSites()
 {
 	gWebSites = this;
+	this->bInitializeSuccess = false;
 
 	memset(&this->InternalTrace, 0, sizeof(this->InternalTrace));
 	memset(&this->Collection, 0, sizeof(this->Collection));
@@ -87,7 +88,12 @@ CWebSites::CWebSites()
 	this->StartTrace(); //Must stop the trace after construction.
 	//-------------------------------------------------------------------
 
-	this->Initialize();
+	this->bInitializeSuccess = this->Initialize();
+
+	if (this->bInitializeSuccess == false)
+	{
+		this->Trace("Initilization failed! The server is NOT functional!");
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +121,11 @@ bool CWebSites::SaveAll(void)
 	//bResult = bResult && this->DfltRealms->Save();
 	bResult = bResult && this->Save(false);
 
+	if (!bResult)
+	{
+		this->Trace("Failed to save configuration changes!");
+	}
+
 	return bResult;
 }
 
@@ -124,15 +135,15 @@ bool CWebSites::Save(bool bOnlySaveReferencedSites)
 {
 	XMLWriter xmlConfig("WebSites");
 
-	if(this->pServerSettings->Save())
+	if (this->pServerSettings->Save())
 	{
-		for(int iItem = 0; iItem < this->Collection.Count; iItem++)
+		for (int iItem = 0; iItem < this->Collection.Count; iItem++)
 		{
 			XMLWriter Item;
 
-			if(bOnlySaveReferencedSites)
+			if (bOnlySaveReferencedSites)
 			{
-				if(this->Collection.WebSite[iItem]->bReferencedInUpdate)
+				if (this->Collection.WebSite[iItem]->bReferencedInUpdate)
 				{
 					this->Collection.WebSite[iItem]->ToXML(&Item, true, false);
 					xmlConfig.Add(&Item);
@@ -146,9 +157,9 @@ bool CWebSites::Save(bool bOnlySaveReferencedSites)
 			Item.Destroy();
 		}
 
-		if(strlen(this->sFileName) > 0)
+		if (strlen(this->sFileName) > 0)
 		{
-			if(xmlConfig.ToFile(this->sFileName))
+			if (xmlConfig.ToFile(this->sFileName))
 			{
 				return true;
 			}
@@ -173,7 +184,7 @@ bool CWebSites::LoadSites(char *sFile)
 	XMLReader xmlWebSites;
 	strcpy_s(this->sFileName, sizeof(this->sFileName), sFile);
 
-	if(xmlWebSites.FromFile(this->sFileName))
+	if (xmlWebSites.FromFile(this->sFileName))
 	{
 		return this->LoadSites(&xmlWebSites);
 	}
@@ -187,12 +198,12 @@ bool CWebSites::LoadSites(XMLReader *pWebSites)
 	pWebSites->ProgressiveScan(true);
 	XMLReader xmlSite;
 
-	while(pWebSites->ToReader("Site", &xmlSite))
+	while (pWebSites->ToReader("Site", &xmlSite))
 	{
 		this->Add(&xmlSite);
 		xmlSite.Destroy();
 	}
-	
+
 	return true;
 }
 
@@ -210,11 +221,19 @@ bool CWebSites::ReloadSites(XMLReader *pWebSites)
 */
 bool CWebSites::Reload(void)
 {
-	if(this->Destroy())
+	this->bInitializeSuccess = this->Destroy();
+
+	if (this->bInitializeSuccess)
 	{
-		return this->Initialize();
+		this->bInitializeSuccess = this->Initialize();
 	}
-	return false;
+
+	if (this->bInitializeSuccess == false)
+	{
+		this->Trace("Initilization failed! The server is NOT functional!");
+	}
+
+	return this->bInitializeSuccess;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,28 +272,28 @@ bool CWebSites::Initialize(void)
 	this->dwTotalConnections = 0;
 
 	//printf("Initializing memory tracker.\n");
-	this->pServerSettings = (CServerSettings *) pMem->TrackMemory(new CServerSettings(this));
-	this->pSocketPools = (CSocketPools *) pMem->TrackMemory(new CSocketPools(this));
+	this->pServerSettings = (CServerSettings *)pMem->TrackMemory(new CServerSettings(this));
+	this->pSocketPools = (CSocketPools *)pMem->TrackMemory(new CSocketPools(this));
 
-	this->DfltWebsiteSettings = (CWebsiteSettings *) pMem->TrackMemory(new CWebsiteSettings(this));
-	this->DfltMimeTypes = (CMimeTypes *) pMem->TrackMemory(new CMimeTypes(this));
-	this->DfltExtensionFilters = (CExtensionFilters *) pMem->TrackMemory(new CExtensionFilters(this));
-	this->DfltURLFilters = (CURLFilters *) pMem->TrackMemory(new CURLFilters(this));
-	this->DfltDefaultPages = (CDefaultPages *) pMem->TrackMemory(new CDefaultPages(this));
-	this->DfltVirtualRoots = (CVirtualRoots *) pMem->TrackMemory(new CVirtualRoots(this));
-	this->DfltErrorPages = (CErrorPages *) pMem->TrackMemory(new CErrorPages(this));
-	this->DfltSSIFiles = (CSSIFiles *) pMem->TrackMemory(new CSSIFiles(this));
-	this->DfltIPFilters = (CIPFilters *) pMem->TrackMemory(new CIPFilters(this));
-	this->DfltCGIFolders = (CCGIFolders *) pMem->TrackMemory(new CCGIFolders(this));
-	this->DfltCompression = (CCompression *) pMem->TrackMemory(new CCompression(this));
-	this->DfltCustomFilters = (CCustomFilters *) pMem->TrackMemory(new CCustomFilters(this));
-	this->DfltScriptingEngines = (CScriptingEngines *) pMem->TrackMemory(new CScriptingEngines(this));
-	this->DfltAuthentication = (CAuthentication *) pMem->TrackMemory(new CAuthentication(this));
-	this->DfltRealms = (CRealms *) pMem->TrackMemory(new CRealms(this));
+	this->DfltWebsiteSettings = (CWebsiteSettings *)pMem->TrackMemory(new CWebsiteSettings(this));
+	this->DfltMimeTypes = (CMimeTypes *)pMem->TrackMemory(new CMimeTypes(this));
+	this->DfltExtensionFilters = (CExtensionFilters *)pMem->TrackMemory(new CExtensionFilters(this));
+	this->DfltURLFilters = (CURLFilters *)pMem->TrackMemory(new CURLFilters(this));
+	this->DfltDefaultPages = (CDefaultPages *)pMem->TrackMemory(new CDefaultPages(this));
+	this->DfltVirtualRoots = (CVirtualRoots *)pMem->TrackMemory(new CVirtualRoots(this));
+	this->DfltErrorPages = (CErrorPages *)pMem->TrackMemory(new CErrorPages(this));
+	this->DfltSSIFiles = (CSSIFiles *)pMem->TrackMemory(new CSSIFiles(this));
+	this->DfltIPFilters = (CIPFilters *)pMem->TrackMemory(new CIPFilters(this));
+	this->DfltCGIFolders = (CCGIFolders *)pMem->TrackMemory(new CCGIFolders(this));
+	this->DfltCompression = (CCompression *)pMem->TrackMemory(new CCompression(this));
+	this->DfltCustomFilters = (CCustomFilters *)pMem->TrackMemory(new CCustomFilters(this));
+	this->DfltScriptingEngines = (CScriptingEngines *)pMem->TrackMemory(new CScriptingEngines(this));
+	this->DfltAuthentication = (CAuthentication *)pMem->TrackMemory(new CAuthentication(this));
+	this->DfltRealms = (CRealms *)pMem->TrackMemory(new CRealms(this));
 
 	//printf("Initializing global [SocketPools].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\SocketPools.xml", gsDataPath);
-	if(!this->pSocketPools->Load(sConfigFile))
+	if (!this->pSocketPools->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -283,7 +302,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [WebsiteSettings].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\WebsiteSettings.xml", gsDataPath);
-	if(!this->DfltWebsiteSettings->Load(sConfigFile))
+	if (!this->DfltWebsiteSettings->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -292,7 +311,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [MimeTypes].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\MimeTypes.xml", gsDataPath);
-	if(!this->DfltMimeTypes->Load(sConfigFile))
+	if (!this->DfltMimeTypes->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -301,7 +320,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [URLFilters].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\URLFilters.xml", gsDataPath);
-	if(!this->DfltURLFilters->Load(sConfigFile))
+	if (!this->DfltURLFilters->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -310,7 +329,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [ExtensionFilters].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\ExtensionFilters.xml", gsDataPath);
-	if(!this->DfltExtensionFilters->Load(sConfigFile))
+	if (!this->DfltExtensionFilters->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -319,7 +338,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [DefaultPages].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\DefaultPages.xml", gsDataPath);
-	if(!this->DfltDefaultPages->Load(sConfigFile))
+	if (!this->DfltDefaultPages->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -328,7 +347,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [VirtualRoots].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\VirtualRoots.xml", gsDataPath);
-	if(!this->DfltVirtualRoots->Load(sConfigFile))
+	if (!this->DfltVirtualRoots->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -337,7 +356,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [SSIFiles].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\SSIFiles.xml", gsDataPath);
-	if(!this->DfltSSIFiles->Load(sConfigFile))
+	if (!this->DfltSSIFiles->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -346,7 +365,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [IPFilters].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\IPFilters.xml", gsDataPath);
-	if(!this->DfltIPFilters->Load(sConfigFile))
+	if (!this->DfltIPFilters->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -355,7 +374,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [CGIFolders].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\CGIFolders.xml", gsDataPath);
-	if(!this->DfltCGIFolders->Load(sConfigFile))
+	if (!this->DfltCGIFolders->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -364,7 +383,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [Compression].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\Compression.xml", gsDataPath);
-	if(!this->DfltCompression->Load(sConfigFile))
+	if (!this->DfltCompression->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -373,7 +392,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [CustomFilters].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\CustomFilters.xml", gsDataPath);
-	if(!this->DfltCustomFilters->Load(sConfigFile))
+	if (!this->DfltCustomFilters->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -382,7 +401,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [ScriptingEngines].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\ScriptingEngines.xml", gsDataPath);
-	if(!this->DfltScriptingEngines->Load(sConfigFile))
+	if (!this->DfltScriptingEngines->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -391,7 +410,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [ErrorPages].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\ErrorPages.xml", gsDataPath);
-	if(!this->DfltErrorPages->Load(sConfigFile))
+	if (!this->DfltErrorPages->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -400,7 +419,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [ServerSettings].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\ServerSettings.xml", gsDataPath);
-	if(!this->pServerSettings->Load(sConfigFile))
+	if (!this->pServerSettings->Load(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -409,7 +428,7 @@ bool CWebSites::Initialize(void)
 
 	//printf("Initializing global [WebSites].\n");
 	sprintf_s(sConfigFile, sizeof(sConfigFile), "%s\\WebSites.xml", gsDataPath);
-	if(!this->LoadSites(sConfigFile))
+	if (!this->LoadSites(sConfigFile))
 	{
 		sprintf_s(sMissingFiles, sizeof(sMissingFiles), sErrorMsg, sConfigFile);
 		this->Trace(sMissingFiles);
@@ -417,7 +436,7 @@ bool CWebSites::Initialize(void)
 	}
 
 	//printf("Starting HTTP Server.\n");
-	pHttp = (CHttp *) pMem->TrackMemory(new CHttp(this));
+	pHttp = (CHttp *)pMem->TrackMemory(new CHttp(this));
 
 	return true;
 }
@@ -428,9 +447,9 @@ int CWebSites::GetCurrentConenctions(void)
 {
 	int iConnections = 0;
 
-	for(int i = 0; i < this->pSocketPools->Collection.Count ; i++)
+	for (int i = 0; i < this->pSocketPools->Collection.Count; i++)
 	{
-		if(this->pSocketPools->Collection.Items[i].pSocket->IsActive())
+		if (this->pSocketPools->Collection.Items[i].pSocket->IsActive())
 		{
 			iConnections += this->pSocketPools->Collection.Items[i].pSocket->CurrentConnections();
 		}
@@ -459,9 +478,9 @@ void CWebSites::DestroySites(void)
 {
 	this->StopAllSites();
 
-	if(this->Collection.Count > 0)
+	if (this->Collection.Count > 0)
 	{
-		for(int iIndex = 0; iIndex < this->Collection.Count; iIndex++)
+		for (int iIndex = 0; iIndex < this->Collection.Count; iIndex++)
 		{
 			delete (CWebSite *)pMem->UnTrackMemory(this->Collection.WebSite[iIndex]);
 		}
@@ -478,24 +497,24 @@ bool CWebSites::Destroy(void)
 {
 	this->DestroySites();
 
-	if(this->DfltMimeTypes) delete (CMimeTypes *)pMem->UnTrackMemory(this->DfltMimeTypes);
-	if(this->DfltURLFilters) delete (CURLFilters *)pMem->UnTrackMemory(this->DfltURLFilters);
-	if(this->DfltExtensionFilters) delete (CExtensionFilters *)pMem->UnTrackMemory(this->DfltExtensionFilters);
-	if(this->DfltDefaultPages) delete (CDefaultPages *)pMem->UnTrackMemory(this->DfltDefaultPages);
-	if(this->DfltWebsiteSettings) delete (CWebsiteSettings *)pMem->UnTrackMemory(this->DfltWebsiteSettings);
-	if(this->DfltVirtualRoots) delete (CVirtualRoots *)pMem->UnTrackMemory(this->DfltVirtualRoots);
-	if(this->DfltSSIFiles) delete (CSSIFiles *)pMem->UnTrackMemory(this->DfltSSIFiles);
-	if(this->DfltIPFilters) delete (CIPFilters *)pMem->UnTrackMemory(this->DfltIPFilters);
-	if(this->DfltCGIFolders) delete (CCGIFolders *)pMem->UnTrackMemory(this->DfltCGIFolders);
-	if(this->DfltCompression) delete (CCompression *)pMem->UnTrackMemory(this->DfltCompression);
-	if(this->DfltCustomFilters) delete (CCustomFilters *)pMem->UnTrackMemory(this->DfltCustomFilters);
-	if(this->DfltScriptingEngines) delete (CScriptingEngines *)pMem->UnTrackMemory(this->DfltScriptingEngines);
-	if(this->DfltErrorPages) delete (CErrorPages *)pMem->UnTrackMemory(this->DfltErrorPages);
-	if(this->DfltAuthentication) delete (CAuthentication *)pMem->UnTrackMemory(this->DfltAuthentication);
-	if(this->DfltRealms) delete (CRealms *)pMem->UnTrackMemory(this->DfltRealms);
-	if(this->pServerSettings) delete (CServerSettings *)pMem->UnTrackMemory(this->pServerSettings);
-	if(this->pSocketPools) delete (CSocketPools *)pMem->UnTrackMemory(this->pSocketPools);
-	if(this->pHttp) delete (CHttp *)pMem->UnTrackMemory(this->pHttp);
+	if (this->DfltMimeTypes) delete (CMimeTypes *)pMem->UnTrackMemory(this->DfltMimeTypes);
+	if (this->DfltURLFilters) delete (CURLFilters *)pMem->UnTrackMemory(this->DfltURLFilters);
+	if (this->DfltExtensionFilters) delete (CExtensionFilters *)pMem->UnTrackMemory(this->DfltExtensionFilters);
+	if (this->DfltDefaultPages) delete (CDefaultPages *)pMem->UnTrackMemory(this->DfltDefaultPages);
+	if (this->DfltWebsiteSettings) delete (CWebsiteSettings *)pMem->UnTrackMemory(this->DfltWebsiteSettings);
+	if (this->DfltVirtualRoots) delete (CVirtualRoots *)pMem->UnTrackMemory(this->DfltVirtualRoots);
+	if (this->DfltSSIFiles) delete (CSSIFiles *)pMem->UnTrackMemory(this->DfltSSIFiles);
+	if (this->DfltIPFilters) delete (CIPFilters *)pMem->UnTrackMemory(this->DfltIPFilters);
+	if (this->DfltCGIFolders) delete (CCGIFolders *)pMem->UnTrackMemory(this->DfltCGIFolders);
+	if (this->DfltCompression) delete (CCompression *)pMem->UnTrackMemory(this->DfltCompression);
+	if (this->DfltCustomFilters) delete (CCustomFilters *)pMem->UnTrackMemory(this->DfltCustomFilters);
+	if (this->DfltScriptingEngines) delete (CScriptingEngines *)pMem->UnTrackMemory(this->DfltScriptingEngines);
+	if (this->DfltErrorPages) delete (CErrorPages *)pMem->UnTrackMemory(this->DfltErrorPages);
+	if (this->DfltAuthentication) delete (CAuthentication *)pMem->UnTrackMemory(this->DfltAuthentication);
+	if (this->DfltRealms) delete (CRealms *)pMem->UnTrackMemory(this->DfltRealms);
+	if (this->pServerSettings) delete (CServerSettings *)pMem->UnTrackMemory(this->pServerSettings);
+	if (this->pSocketPools) delete (CSocketPools *)pMem->UnTrackMemory(this->pSocketPools);
+	if (this->pHttp) delete (CHttp *)pMem->UnTrackMemory(this->pHttp);
 
 	this->StopTrace();
 
@@ -509,12 +528,12 @@ bool CWebSites::Add(XMLReader *xmlSite, int *iOutIndex)
 	this->Collection.WebSite = (CWebSite **)
 		pMem->ReAllocate(this->Collection.WebSite, sizeof(CWebSite), (this->Collection.Count + 1));
 
-	if(iOutIndex)
+	if (iOutIndex)
 	{
 		*iOutIndex = this->Collection.Count;
 	}
 
-	this->Collection.WebSite[this->Collection.Count++] = (CWebSite *) pMem->TrackMemory(new CWebSite(this, xmlSite));
+	this->Collection.WebSite[this->Collection.Count++] = (CWebSite *)pMem->TrackMemory(new CWebSite(this, xmlSite));
 
 	return true;
 }
@@ -531,12 +550,12 @@ bool CWebSites::Add(XMLReader *xmlSite)
 void CWebSites::StartTrace(void)
 {
 	EnterCriticalSection(&this->InternalTrace.CS);
-	if(InternalTrace.bTracingEnabled)
+	if (InternalTrace.bTracingEnabled)
 	{
 		InternalTrace.Stack->Clear();
 	}
-	else{
-		InternalTrace.Stack = (Stack *) pMem->TrackMemory(new Stack());
+	else {
+		InternalTrace.Stack = (Stack *)pMem->TrackMemory(new Stack());
 		InternalTrace.bTracingEnabled = true;
 	}
 	LeaveCriticalSection(&this->InternalTrace.CS);
@@ -547,22 +566,34 @@ void CWebSites::StartTrace(void)
 void CWebSites::Trace(const char *sText)
 {
 	EnterCriticalSection(&this->InternalTrace.CS);
-	if(InternalTrace.bTracingEnabled)
+
+#ifdef _PORTABLE_RELEASE
+	{
+		char sDate[255];
+		char sTime[255];
+		if (Get_ShortDate(sDate, sizeof(sDate)) && Get_Time(sTime, sizeof(sTime), 0))
+		{
+			printf("(%s %s) - %s\n", sDate, sTime, sText);
+		}
+	}
+#endif
+
+	if (InternalTrace.bTracingEnabled)
 	{
 		char sDate[255];
 		char sTime[255];
 
-		if(Get_ShortDate(sDate, sizeof(sDate)) && Get_Time(sTime, sizeof(sTime), 0))
+		if (Get_ShortDate(sDate, sizeof(sDate)) && Get_Time(sTime, sizeof(sTime), 0))
 		{
 			int iAllocate = (int)(strlen(sText) + strlen(sDate) + strlen(sTime) + 10);
-			char *sMessage = (char *) pMem->Allocate(iAllocate, sizeof(char));
-			if(sMessage)
+			char *sMessage = (char *)pMem->Allocate(iAllocate, sizeof(char));
+			if (sMessage)
 			{
 				sprintf_s(sMessage, iAllocate, "(%s %s) - %s", sDate, sTime, sText);
 				this->InternalTrace.Stack->Push(sMessage);
 				pMem->Free(sMessage);
 			}
-			else{
+			else {
 				//Low on memory or the heap is corrupt, either way, I have money on things going badly!
 				this->InternalTrace.Stack->Push(sText);
 			}
@@ -586,16 +617,16 @@ int CWebSites::StopTrace(StringBuilder *pOutText)
 
 	int iErrorCount = 0;
 	EnterCriticalSection(&this->InternalTrace.CS);
-	if(InternalTrace.bTracingEnabled)
+	if (InternalTrace.bTracingEnabled)
 	{
-		if((iErrorCount = (int)this->InternalTrace.Stack->StackSize()) > 0)
+		if ((iErrorCount = (int)this->InternalTrace.Stack->StackSize()) > 0)
 		{
 			char sDate[255];
-			if(Get_ShortDate(sDate, sizeof(sDate)))
+			if (Get_ShortDate(sDate, sizeof(sDate)))
 			{
 				char sServicePath[MAX_PATH];
 				sprintf_s(sServicePath, sizeof(sServicePath), "ErrorLog\\%s", gsServiceName);
-	
+
 				char sPath[MAX_PATH];
 				char sFileName[MAX_PATH];
 				_makepath_s(sPath, sizeof(sPath), NULL, gsPath, sServicePath, NULL);
@@ -606,40 +637,40 @@ int CWebSites::StopTrace(StringBuilder *pOutText)
 				CorrectReversePath(sFileName, sizeof(sFileName), true);
 
 				FILE *hLogFile = NULL;
-				if(fopen_s(&hLogFile, sFileName, "ab") != 0)
+				if (fopen_s(&hLogFile, sFileName, "ab") != 0)
 				{
 					hLogFile = NULL;
 				}
 
-					for(unsigned int iExp = 0; iExp < this->InternalTrace.Stack->StackSize(); iExp++)
+				for (unsigned int iExp = 0; iExp < this->InternalTrace.Stack->StackSize(); iExp++)
+				{
+					if (pOutText)
 					{
-						if(pOutText)
+						if (pOutText->Length > 0)
 						{
-							if(pOutText->Length > 0)
-							{
-								pOutText->Append("\r\n");
-							}
-							pOutText->Append((char *)this->InternalTrace.Stack->Peek(iExp)->Value);
+							pOutText->Append("\r\n");
 						}
-						if(hLogFile)
-						{
-							fprintf_s(hLogFile, "%s\r\n", (char *)this->InternalTrace.Stack->Peek(iExp)->Value);
-						}
-						if(!pOutText && !hLogFile)
-						{
-							if(sLastResort.Length == 0)
-							{
-								sLastResort.AppendF("This message is being raised by %s version %s.\r\n"
-									"This message is not normal and reflects a case where the service"
-									" was unable to write this information to a log file or prompt the"
-									" user in any other manner. The messages are as follows:\r\n\r\n",
-									gsTitleCaption, gsFileVersion);
-							}
-							sLastResort.AppendF("%s\r\n", (char *)this->InternalTrace.Stack->Peek(iExp)->Value);
-						}
+						pOutText->Append((char *)this->InternalTrace.Stack->Peek(iExp)->Value);
 					}
+					if (hLogFile)
+					{
+						fprintf_s(hLogFile, "%s\r\n", (char *)this->InternalTrace.Stack->Peek(iExp)->Value);
+					}
+					if (!pOutText && !hLogFile)
+					{
+						if (sLastResort.Length == 0)
+						{
+							sLastResort.AppendF("This message is being raised by %s version %s.\r\n"
+								"This message is not normal and reflects a case where the service"
+								" was unable to write this information to a log file or prompt the"
+								" user in any other manner. The messages are as follows:\r\n\r\n",
+								gsTitleCaption, gsFileVersion);
+						}
+						sLastResort.AppendF("%s\r\n", (char *)this->InternalTrace.Stack->Peek(iExp)->Value);
+					}
+				}
 
-				if(hLogFile)
+				if (hLogFile)
 				{
 					fclose(hLogFile);
 				}
@@ -650,7 +681,7 @@ int CWebSites::StopTrace(StringBuilder *pOutText)
 	}
 	LeaveCriticalSection(&this->InternalTrace.CS);
 
-	if(sLastResort.Length > 0)
+	if (sLastResort.Length > 0)
 	{
 		MessageBox(NULL, sLastResort.Buffer, gsTitleCaption, MB_ICONERROR | MB_TASKMODAL);
 	}
@@ -662,9 +693,9 @@ int CWebSites::StopTrace(StringBuilder *pOutText)
 
 void CWebSites::StopAllSites(void)
 {
-	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
+	for (int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		if(this->Collection.WebSite[iItem]->IsActive())
+		if (this->Collection.WebSite[iItem]->IsActive())
 		{
 			this->Collection.WebSite[iItem]->Stop();
 		}
@@ -677,9 +708,9 @@ bool CWebSites::StartAllSites(void)
 {
 	bool bResult = true;
 
-	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
+	for (int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
-		if(!this->Collection.WebSite[iItem]->IsActive() && this->Collection.WebSite[iItem]->pWebsiteSettings->AutoStart())
+		if (!this->Collection.WebSite[iItem]->IsActive() && this->Collection.WebSite[iItem]->pWebsiteSettings->AutoStart())
 		{
 			bResult = bResult && this->Collection.WebSite[iItem]->Start();
 		}
@@ -691,7 +722,7 @@ bool CWebSites::StartAllSites(void)
 
 void CWebSites::DeReferenceAllSites(void)
 {
-	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
+	for (int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
 		this->Collection.WebSite[iItem]->bReferencedInUpdate = false;
 	}
@@ -701,7 +732,7 @@ void CWebSites::DeReferenceAllSites(void)
 
 void CWebSites::BindSocketPools(void)
 {
-	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
+	for (int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
 		this->Collection.WebSite[iItem]->BindSocketPool();
 	}
@@ -711,9 +742,9 @@ void CWebSites::BindSocketPools(void)
 
 Stack *CWebSites::RunningSites(void)
 {
-	Stack *runningSites = (Stack *) pMem->TrackMemory(new Stack());
+	Stack *runningSites = (Stack *)pMem->TrackMemory(new Stack());
 
-	for(int iItem = 0; iItem < this->Collection.Count; iItem++)
+	for (int iItem = 0; iItem < this->Collection.Count; iItem++)
 	{
 		runningSites->Push(this->Collection.WebSite[iItem]->Index());
 	}

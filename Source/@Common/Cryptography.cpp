@@ -20,7 +20,7 @@
 #include "../Console/Source/Entry.H"
 #endif
 
-#include "../../../NSWFL/NSWFL.h"
+#include "../../NSWFL/NSWFL.h"
 
 #include "Cryptography.h"
 

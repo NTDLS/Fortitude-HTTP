@@ -65,13 +65,14 @@ bool DebugConsoleMore(void)
 
 bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 {
-	if(_strcmpi(sText, "?") == 0 || _strcmpi(sText, "Help") == 0)
+	if (_strcmpi(sText, "?") == 0 || _strcmpi(sText, "Help") == 0)
 	{
 		printf("Sockets         Lists all socket pools.\n");
 		printf("Sites           Lists all sites.\n");
 		printf("Stats           Shows basic real-time statistics.\n");
 		printf("Stop            Stops all running sites.\n");
-		printf("Restart         Restarts all sites, starts ones configured to auto start.\n");
+		printf("Restart         Stops and restarts all sites.\n");
+		printf("Reload          Stops sites, reloads config and restarts sites.\n");
 		printf("Start           Starts all sites configured to auto start.\n");
 		printf("FlushBuffers    Flushes all file buffers to disk.\n");
 #ifdef _DEBUG
@@ -131,36 +132,49 @@ bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 		getch(); // Read the hit key off the console stack and discard it.
 
 	}
-	else if(_strcmpi(sText, "Stop") == 0)
+	else if (_strcmpi(sText, "Stop") == 0)
 	{
+		printf("Stopping sites...\n");
 		gWebSites->StopAllSites();
 		printf("Complete.");
 	}
-	else if(_strcmpi(sText, "Restart") == 0)
+	else if (_strcmpi(sText, "Restart") == 0)
 	{
+		printf("Restarting sites...\n");
+		gWebSites->ReloadSites();
+	}
+	else if (_strcmpi(sText, "Reload") == 0)
+	{
+		printf("Restarting server...\n");
 		gWebSites->Reload();
 	}
-	else if(_strcmpi(sText, "Start") == 0)
+	else if (_strcmpi(sText, "Start") == 0)
 	{
+		printf("Starting sites...\n");
 		printf("%s", gWebSites->StartAllSites() ? "Success." : "Fail.");
 	}
-	else if(_strcmpi(sText, "FlushBuffers") == 0)
+	else if (_strcmpi(sText, "FlushBuffers") == 0)
 	{
 		printf("Flushed %d open file streams.", _flushall());
 	}
-	else if(_strcmpi(sText, "Sockets") == 0)
+	else if (_strcmpi(sText, "Sockets") == 0)
 	{
-		for(int i = 0; i < gWebSites->pSocketPools->Collection.Count; i++)
+		if (gWebSites->pSocketPools->Collection.Count == 0)
+		{
+			printf("No socket pools are configured.\n");
+		}
+
+		for (int i = 0; i < gWebSites->pSocketPools->Collection.Count; i++)
 		{
 			SOCKETPOOL *pSockPool = &gWebSites->pSocketPools->Collection.Items[i];
 
 			printf("Port: %d, Max Connections: %d\n", pSockPool->Port, pSockPool->MaxConnections);
-			if(pSockPool->ListenIPs.ListenOnAll)
+			if (pSockPool->ListenIPs.ListenOnAll)
 			{
 				printf("\t(All IPs)\n");
 			}
 			else {
-				for(int y = 0; y < pSockPool->ListenIPs.Count; y++)
+				for (int y = 0; y < pSockPool->ListenIPs.Count; y++)
 				{
 					LISTENIP *pListenIP = &pSockPool->ListenIPs.Items[y];
 					printf("\t%s\n", pListenIP->IP);
@@ -168,21 +182,25 @@ bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 			}
 		}
 	}
-	else if(_strcmpi(sText, "Sites") == 0)
+	else if (_strcmpi(sText, "Sites") == 0)
 	{
-		for(int i = 0; i < gWebSites->Collection.Count; i++)
+		if (gWebSites->Collection.Count == 0)
+		{
+			printf("No sites are configured.\n");
+		}
+		for (int i = 0; i < gWebSites->Collection.Count; i++)
 		{
 			CWebSite *pWebSite = gWebSites->Collection.WebSite[i];
 
 			printf("%s\n", pWebSite->Name);
 			SOCKETPOOL *pSockPool = pWebSite->pSocketPool;
 			printf("Port: %d, Max Connections: %d\n", pSockPool->Port, pSockPool->MaxConnections);
-			if(pSockPool->ListenIPs.ListenOnAll)
+			if (pSockPool->ListenIPs.ListenOnAll)
 			{
 				printf("\t(All IPs)\n");
 			}
 			else {
-				for(int y = 0; y < pSockPool->ListenIPs.Count; y++)
+				for (int y = 0; y < pSockPool->ListenIPs.Count; y++)
 				{
 					LISTENIP *pListenIP = &pSockPool->ListenIPs.Items[y];
 					printf("\t%s\n", pListenIP->IP);
@@ -191,26 +209,26 @@ bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 		}
 	}
 #if _DEBUG
-	else if(_strcmpi(sText, "Memory") == 0)
+	else if (_strcmpi(sText, "Memory") == 0)
 	{
 		printf("Total Allocated Buffers: %zd\n", pMem->GetSlotAllocationCount());
 		printf("Total Allocated Buffers (Used): %zd\n", pMem->GetMemAllocationCount());
 		printf("Total Allocated Buffers (free): %zd\n", pMem->GetMemFreeCount());
 		printf("Total bytes allocated: %zd\n", pMem->ReservedBytes());
 	}
-	else if(_strcmpi(sText, "Memory.Allocations") == 0)
+	else if (_strcmpi(sText, "Memory.Allocations") == 0)
 	{
 		FILE *hFile = NULL;
 
-		if(DebugConsoleAsk("Write to file? (y/n)\n") == 'y')
+		if (DebugConsoleAsk("Write to file? (y/n)\n") == 'y')
 		{
 			char sFileName[MAX_PATH];
 			memset(sFileName, 0, sizeof(sFileName));
 			do
 			{
-				if(strlen(sFileName) > 0)
+				if (strlen(sFileName) > 0)
 				{
-					if(DebugConsoleAsk("Access denied, try again?") != 'y')
+					if (DebugConsoleAsk("Access denied, try again?") != 'y')
 					{
 						hFile = NULL;
 						break;
@@ -220,54 +238,55 @@ bool Fortitude_DebugConsoleHandler(const char *sText, int iTextLength)
 				memset(sFileName, 0, sizeof(sFileName));
 				printf("File path: ");
 				gets_s(sFileName, sizeof(sFileName));
-			} while(fopen_s(&hFile, sFileName, "wb") != 0);
+			} while (fopen_s(&hFile, sFileName, "wb") != 0);
 		}
 
 		pMem->Lock();
 
-		for(unsigned int i = 0; i < pMem->Items.iAllocated; i++)
+		for (unsigned int i = 0; i < pMem->Items.iAllocated; i++)
 		{
-			if(pMem->Items.Array[i].iAddress != 0)
+			if (pMem->Items.Array[i].iAddress != 0)
 			{
-				if(hFile)
+				if (hFile)
 				{
 					fprintf(hFile, "%zd\t0x%zX\t\"%s\"\t%zd\r\n",
 						pMem->Items.Array[i].iSize, pMem->Items.Array[i].iAddress,
-						pMem->Items.Array[i].sCodeFile, 	pMem->Items.Array[i].iLineOfCode);
+						pMem->Items.Array[i].sCodeFile, pMem->Items.Array[i].iLineOfCode);
 				}
 				else {
 					printf("%zd bytes at 0x%zX for [%s] on line %zd\n",
 						pMem->Items.Array[i].iSize, pMem->Items.Array[i].iAddress,
-						pMem->Items.Array[i].sCodeFile, 	pMem->Items.Array[i].iLineOfCode);
-					if(i != 0 && (i % 10) == 0)
+						pMem->Items.Array[i].sCodeFile, pMem->Items.Array[i].iLineOfCode);
+					if (i != 0 && (i % 10) == 0)
 					{
-						if(!DebugConsoleMore())
+						if (!DebugConsoleMore())
 						{
 							break;
 						}
-					}
-				}
-			}
+		}
+	}
+}
 		}
 
 		pMem->Unlock();
 
-		if(hFile)
+		if (hFile)
 		{
 			fclose(hFile);
 		}
 	}
 #endif
 
-	else if(_strcmpi(sText, "Cls") == 0)
+	else if (_strcmpi(sText, "Cls") == 0)
 	{
 		system("cls");
 	}
-	else if(_strcmpi(sText, "Exit") == 0)
+	else if (_strcmpi(sText, "Exit") == 0)
 	{
-		if(DebugConsoleAsk())
+		if (DebugConsoleAsk())
 		{
-			if(gService.RunningAsService())
+			printf("Shutting down...\n");
+			if (gService.RunningAsService())
 			{
 				gService.Stop();
 			}
